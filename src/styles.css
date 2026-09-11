@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-ink-950: #0a0a0b;
+  --color-ink-900: #101013;
+  --color-ink-800: #17171b;
+  --color-ink-700: #222228;
+  --color-hairline: rgba(255, 255, 255, 0.09);
+  --color-fog: #a1a1aa;
+  --color-paper: #f4f4f2;
+  --color-accent: #d6fd51;
+  --color-ice: #7dd3fc;
+  --color-vio: #a78bfa;
+  --color-neu-bg: #151a23;
+  --color-neu-ink: #e6ebf2;
+  --color-neu-mute: #9aa6b5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0a0a0b;
+  color: #f4f4f2;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #d6fd51;
+  color: #0a0a0b;
+}
+
+:focus-visible {
+  outline: 2px solid #d6fd51;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- shared prose for markdown blog ---- */
+.prose-blog {
+  line-height: 1.75;
+  color: #d4d4d8;
+}
+.prose-blog h1,
+.prose-blog h2,
+.prose-blog h3 {
+  color: #fafafa;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 2em 0 0.6em;
+}
+.prose-blog h1 { font-size: 2rem; }
+.prose-blog h2 { font-size: 1.5rem; }
+.prose-blog h3 { font-size: 1.2rem; }
+.prose-blog p { margin: 1em 0; }
+.prose-blog a { color: #d6fd51; text-decoration: underline; text-underline-offset: 3px; }
+.prose-blog ul, .prose-blog ol { margin: 1em 0; padding-left: 1.4em; }
+.prose-blog li { margin: 0.35em 0; }
+.prose-blog blockquote {
+  border-left: 2px solid rgba(255,255,255,0.18);
+  padding-left: 1em;
+  color: #a1a1aa;
+  margin: 1.5em 0;
+}
+.prose-blog code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: rgba(255,255,255,0.07);
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+}
+.prose-blog pre {
+  background: #101013;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 12px;
+  padding: 1em 1.1em;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+.prose-blog pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.92em;
+}
+.prose-blog th, .prose-blog td {
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.6em 0.8em;
+  text-align: left;
+}
+
+/* ---- glass tokens ---- */
+.glass-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.glass-chip {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---- dark neumorphism tokens ---- */
+.neu-dark {
+  background: #151a23;
+  color: #e6ebf2;
+}
+.neu-extrude {
+  background: #151a23;
+  box-shadow: 9px 9px 18px rgba(0,0,0,0.55), -7px -7px 16px rgba(255,255,255,0.06);
+}
+.neu-extrude-sm {
+  background: #151a23;
+  box-shadow: 5px 5px 12px rgba(0,0,0,0.55), -4px -4px 10px rgba(255,255,255,0.05);
+}
+.neu-inset {
+  background: #151a23;
+  box-shadow: inset 6px 6px 12px rgba(0,0,0,0.6), inset -6px -6px 12px rgba(255,255,255,0.05);
+}
+.neu-inset-deep {
+  background: #131722;
+  box-shadow: inset 10px 10px 22px rgba(0,0,0,0.65), inset -8px -8px 18px rgba(255,255,255,0.05);
+}
+
+.reveal {
+  animation: rise 0.7s ease-out both;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}

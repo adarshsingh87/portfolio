@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "adarsh-portfolio",
+  "compatibility_date": "2025-09-02",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry"
+  // Deploy: npm run build && wrangler deploy
+  // Custom domain: `wrangler domains add adarshsingh87.com` or set Routes in the Cloudflare dashboard.
+  // www redirect and HTTPS are handled in the Cloudflare dashboard, not here.
+}
