@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { SITE } from '../data/site'
+import { GitHubIcon, LinkedInIcon, XIcon } from './icons'
 
 export function SiteNav() {
   return (
@@ -71,16 +72,26 @@ export function SiteFooter() {
           </p>
         </div>
         <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]">
-          <a href={SITE.github} className="text-zinc-400 hover:text-zinc-100">GitHub</a>
-          <a href={SITE.linkedin} className="text-zinc-400 hover:text-zinc-100">LinkedIn</a>
-          <a href={SITE.twitter} className="text-zinc-400 hover:text-zinc-100">X / Twitter</a>
+          <a href={SITE.github} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
+            <GitHubIcon size={15} /> GitHub
+          </a>
+          <a href={SITE.linkedin} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
+            <LinkedInIcon size={15} /> LinkedIn
+          </a>
+          <a href={SITE.twitter} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
+            <XIcon size={14} /> X / Twitter
+          </a>
           <a href={`mailto:${SITE.email}`} className="text-zinc-400 hover:text-zinc-100">{SITE.email}</a>
           <Link to="/designs" className="text-zinc-500 hover:text-zinc-300">Design variants</Link>
         </nav>
       </div>
       <div className="border-t border-white/5">
-        <p className="mx-auto max-w-6xl px-5 py-4 font-mono text-[11px] text-zinc-600">
-          Built with TanStack Start · Deployed on Cloudflare · adarshsingh87.com
+        <p className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-1.5 gap-y-1 px-5 py-4 font-mono text-[11px] text-zinc-600">
+          Built with
+          <img src="/icons/tanstack.svg" alt="" aria-hidden="true" width={13} height={13} loading="lazy" decoding="async" className="inline-block" />
+          TanStack Start · Deployed on
+          <img src="/icons/cloudflare.svg" alt="" aria-hidden="true" width={13} height={13} loading="lazy" decoding="async" className="inline-block" />
+          Cloudflare · adarshsingh87.com
         </p>
       </div>
     </footer>

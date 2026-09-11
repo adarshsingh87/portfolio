@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { PROJECTS } from '../data/projects'
 import { SITE } from '../data/site'
 import { SiteFooter, SiteNav } from '../components/site'
+import { TechStackLine } from '../components/icons'
 
 export const Route = createFileRoute('/work')({
   head: () => ({
@@ -38,7 +39,7 @@ function Work() {
                   <li key={pt} className="text-[13px] text-zinc-500">— {pt}</li>
                 ))}
               </ul>
-              <p className="mt-3 font-mono text-[11px] text-zinc-600">{p.stack.join(' · ')}</p>
+              <p className="mt-3 font-mono text-[11px] text-zinc-600"><TechStackLine items={p.stack} size={13} /></p>
             </article>
           ))}
         </div>

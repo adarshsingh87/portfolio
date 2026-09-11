@@ -4,6 +4,7 @@ import { PROJECTS } from '../data/projects'
 import { PRINCIPLES, SKILL_GROUPS } from '../data/skills'
 import { SITE } from '../data/site'
 import { SectionHead, SiteFooter, SiteNav } from '../components/site'
+import { MailIcon, SocialLinks, TechIcon, TechStackLine } from '../components/icons'
 
 export const Route = createFileRoute('/')({
   head: () => ({
@@ -41,13 +42,11 @@ function Home() {
               <a href="#work" className="rounded-full bg-[#d6fd51] px-5 py-2.5 text-sm font-bold text-black hover:brightness-110">
                 Selected work
               </a>
-              <a href={`mailto:${SITE.email}`} className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-zinc-100 hover:bg-white/5">
-                {SITE.email}
+              <a href={`mailto:${SITE.email}`} className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-zinc-100 hover:bg-white/5">
+                <MailIcon size={16} /> {SITE.email}
               </a>
-              <span className="flex gap-4 pl-1 font-mono text-xs text-zinc-500">
-                <a href={SITE.github} className="hover:text-zinc-200">GH</a>
-                <a href={SITE.linkedin} className="hover:text-zinc-200">LI</a>
-                <a href={SITE.twitter} className="hover:text-zinc-200">X</a>
+              <span className="flex gap-2 pl-1">
+                <SocialLinks size={17} />
               </span>
             </div>
             <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-6">
@@ -103,7 +102,7 @@ function Home() {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-4 border-t border-white/10 pt-3 font-mono text-[11px] text-zinc-500">{p.stack.join(' · ')}</p>
+                <p className="mt-4 border-t border-white/10 pt-3 font-mono text-[11px] text-zinc-500"><TechStackLine items={p.stack} /></p>
               </article>
             ))}
           </div>
@@ -151,12 +150,25 @@ function Home() {
             {SKILL_GROUPS.map((g) => (
               <div key={g.label} className="border-t border-white/10 pt-4">
                 <dt className="text-sm font-bold">{g.label}</dt>
-                <dd className="mt-1.5 text-sm text-zinc-400">{g.items.join(', ')}</dd>
+                <dd className="mt-2.5 flex flex-wrap gap-x-4 gap-y-2 text-sm text-zinc-300">
+                  {g.items.map((item) => (
+                    <span key={item} className="inline-flex items-center gap-1.5">
+                      <TechIcon name={item} size={17} />
+                      {item}
+                    </span>
+                  ))}
+                </dd>
                 {g.note ? <dd className="mt-1 font-mono text-[11px] text-zinc-600">{g.note}</dd> : null}
               </div>
             ))}
           </dl>
-          <p className="mt-6 font-mono text-xs text-zinc-600">Daily: Arch + Hyprland · Neovim · OpenCode — this site: TanStack Start on Cloudflare</p>
+          <p className="mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-1 font-mono text-xs text-zinc-600">
+            Daily: Arch + Hyprland ·
+            <span className="inline-flex items-center gap-1"><TechIcon name="Neovim" size={13} /> Neovim</span> ·
+            OpenCode — this site:
+            <span className="inline-flex items-center gap-1"><TechIcon name="TanStack" size={13} /> TanStack Start</span> on
+            <span className="inline-flex items-center gap-1"><TechIcon name="Cloudflare" size={13} /> Cloudflare</span>
+          </p>
         </section>
 
         {/* Blog preview */}
@@ -176,10 +188,13 @@ function Home() {
           <p className="font-mono text-xs text-[#d6fd51]">05 — Contact</p>
           <h2 className="mt-4 max-w-xl text-3xl font-extrabold tracking-tight sm:text-5xl">Short emails get fast replies.</h2>
           <p className="mt-4 max-w-lg text-[15px] text-zinc-400">Tell me what you are building and what production means for it. I read everything.</p>
-          <a href={`mailto:${SITE.email}`} className="mt-8 inline-block rounded-full bg-zinc-100 px-7 py-3.5 text-[15px] font-bold text-black hover:bg-[#d6fd51]">
-            {SITE.email}
+          <a href={`mailto:${SITE.email}`} className="mt-8 inline-flex items-center gap-2 rounded-full bg-zinc-100 px-7 py-3.5 text-[15px] font-bold text-black hover:bg-[#d6fd51]">
+            <MailIcon size={18} /> {SITE.email}
           </a>
-          <p className="mt-6 font-mono text-xs text-zinc-600">
+          <div className="mt-6 flex gap-2">
+            <SocialLinks size={17} />
+          </div>
+          <p className="mt-4 font-mono text-xs text-zinc-600">
             GitHub <a className="underline underline-offset-4 hover:text-zinc-300" href={SITE.github}>adarshsingh87</a>
             {' · '}LinkedIn <a className="underline underline-offset-4 hover:text-zinc-300" href={SITE.linkedin}>adarshsingh87</a>
             {' · '}X <a className="underline underline-offset-4 hover:text-zinc-300" href={SITE.twitter}>adarshsingh87</a>

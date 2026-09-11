@@ -32,6 +32,16 @@ npm run deploy   # build + wrangler deploy
 
 See `DESIGN_COMPARISON.md` for strengths, weaknesses, and why V3 won.
 
+## Icons (SVGL)
+
+Brand SVGs are vendored in `public/icons/` from [SVGL](https://svgl.app/)
+([repo](https://github.com/pheralb/svgl)). Dark variants used throughout.
+See `public/icons/ATTRIBUTION.md` for the source file map.
+
+- `src/components/icons.tsx` — `TechIcon`, `TechStackLine`, social icons, `MailIcon`
+- Stack section, project stack lines, hero/contact socials, and footer use them
+- `Arch + Hyprland` and `OpenCode` have no SVGL entry and render text-only
+
 ## Content model
 
 - `src/data/site.ts` — domain, email, socials, nav
