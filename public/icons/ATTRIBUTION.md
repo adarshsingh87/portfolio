@@ -10,6 +10,8 @@ All brand SVGs in this folder come from [SVGL](https://svgl.app/)
 - `React Native` and `OpenCode` have no SVGL entry at the
   time of vendoring, so they render as text-only (React Native reuses React
   where an icon slot requires one).
+- `Liquid Templating` (Shopify Liquid) has no standalone brand mark, so it
+  renders as text-only.
 - `archlinux.svg` and `hyprland.svg` come from
   [Simple Icons](https://simpleicons.org/) (CC0, no SVGL entry), recolored
   `fill="#e4e4e7"` for this dark-only site. Brand marks belong to their
@@ -26,6 +28,10 @@ All brand SVGs in this folder come from [SVGL](https://svgl.app/)
 | `javascript.svg` | `static/library/javascript.svg` |
 | `express.svg` | `static/library/expressjs_dark.svg` |
 | `hono.svg` | `static/library/hono.svg` |
+| `fastapi.svg` | `static/library/fastapi.svg` |
+| `langchain.svg` | `static/library/langchain-logo.svg` |
+| `kubernetes.svg` | `static/library/kubernetes.svg` |
+| `elasticsearch.svg` | Simple Icons `elasticsearch.svg` (recolored `#e4e4e7`) |
 | `flask.svg` | `static/library/flask-dark.svg` |
 | `postgresql.svg` | `static/library/postgresql.svg` |
 | `mysql.svg` | `static/library/mysql-icon-dark.svg` |

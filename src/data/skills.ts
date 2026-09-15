@@ -11,15 +11,15 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     label: 'Backend',
-    items: ['Go', 'TypeScript', 'JavaScript', 'Express', 'Hono', 'Flask'],
+    items: ['Go', 'TypeScript', 'JavaScript', 'Express', 'Hono', 'Flask', 'FastAPI', 'LangChain'],
   },
   {
     label: 'Data',
-    items: ['PostgreSQL', 'MySQL', 'MongoDB'],
+    items: ['PostgreSQL', 'MySQL', 'MongoDB', 'ElasticSearch'],
   },
   {
     label: 'Cloud / Deploy',
-    items: ['AWS', 'Azure', 'Vercel', 'Cloudflare'],
+    items: ['AWS', 'Azure', 'Vercel', 'Cloudflare', 'Kubernetes'],
   },
   {
     label: 'Daily drivers',
