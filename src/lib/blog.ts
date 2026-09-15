@@ -12,6 +12,28 @@ export type BlogPost = BlogFrontmatter & {
   readingMinutes: number
 }
 
+export type { ExternalPost } from '../data/writing'
+import { EXTERNAL_POSTS } from '../data/writing'
+
+export type BlogEntry =
+  | {
+      kind: 'internal'
+      slug: string
+      title: string
+      description: string
+      date: string
+      tags: string[]
+      readingMinutes: number
+    }
+  | {
+      kind: 'external'
+      title: string
+      description: string
+      date: string
+      url: string
+      source: string
+    }
+
 // Minimal frontmatter parser. No dependency, Cloudflare-safe.
 export function parseFrontmatter(raw: string): { data: Record<string, string>; body: string } {
   const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/)
@@ -58,9 +80,20 @@ const modules = import.meta.glob<string>('../content/blog/*.md', {
   eager: true,
 })
 
-export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
-  const { marked } = await import('marked')
-  const posts: BlogPost[] = []
+type PostMeta = {
+  title: string
+  description: string
+  date: string
+  slug: string
+  tags: string[]
+  draft: boolean
+  body: string
+  readingMinutes: number
+}
+
+// Frontmatter only — no Markdown rendering, so index pages stay light.
+function readAllMeta(includeDrafts = false): PostMeta[] {
+  const metas: PostMeta[] = []
   for (const [path, raw] of Object.entries(modules)) {
     const { data, body } = parseFrontmatter(raw as string)
     const slug =
@@ -68,15 +101,34 @@ export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
     const draft = data.draft === 'true'
     if (draft && !includeDrafts) continue
     if (!data.title) continue
-    const html = String(marked.parse(body))
     const words = body.split(/\s+/).length
-    posts.push({
+    metas.push({
       title: data.title,
       description: data.description ?? '',
       date: data.date ?? '',
       slug,
       tags: parseList(data.tags),
       draft,
+      body: body ?? '',
+      readingMinutes: Math.max(1, Math.round(words / 200)),
+    })
+  }
+  return metas.sort((a, b) => (a.date < b.date ? 1 : -1))
+}
+
+export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
+  const { marked } = await import('marked')
+  const posts: BlogPost[] = []
+  for (const meta of readAllMeta(includeDrafts)) {
+    const html = String(marked.parse(meta.body))
+    const words = meta.body.split(/\s+/).length
+    posts.push({
+      title: meta.title,
+      description: meta.description,
+      date: meta.date,
+      slug: meta.slug,
+      tags: meta.tags,
+      draft: meta.draft,
       html,
       readingMinutes: Math.max(1, Math.round(words / 200)),
     })
@@ -87,4 +139,29 @@ export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
 export async function getPost(slug: string): Promise<BlogPost | undefined> {
   const posts = await getAllPosts(true)
   return posts.find((p) => p.slug === slug)
+}
+
+// Merged feed for index pages: local Markdown posts plus external posts
+// (title listed locally, click goes to the external URL). Sorted newest
+// first. Sync and light — no Markdown rendering, so it is safe to load
+// from any route including the homepage.
+export function getAllEntries(): BlogEntry[] {
+  const internal: BlogEntry[] = readAllMeta(false).map((m) => ({
+    kind: 'internal' as const,
+    slug: m.slug,
+    title: m.title,
+    description: m.description,
+    date: m.date,
+    tags: m.tags,
+    readingMinutes: m.readingMinutes,
+  }))
+  const external: BlogEntry[] = EXTERNAL_POSTS.map((e) => ({
+    kind: 'external' as const,
+    title: e.title,
+    description: e.description,
+    date: e.date,
+    url: e.url,
+    source: e.source,
+  }))
+  return [...internal, ...external].sort((a, b) => (a.date < b.date ? 1 : -1))
 }

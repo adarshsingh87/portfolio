@@ -17,7 +17,7 @@ npm run deploy   # build + wrangler deploy
 | --- | --- |
 | `/` | Production homepage |
 | `/work` | Full work archive, OSS first |
-| `/blog` | Blog index — currently a "comming soon" placeholder until the first `.md` lands |
+| `/blog` | Blog index — local Markdown posts + external posts (title listed, links out) |
 | `/blog/$slug` | Markdown post renderer (headings, lists, code, tables, quotes) |
 
 ## Design
@@ -42,6 +42,7 @@ See `public/icons/ATTRIBUTION.md` for the source file map.
 - `src/data/skills.ts` — skill groups + principles
 - `src/data/experience.ts` — CTO-focus experience, education
 - `src/content/blog/*.md` — Markdown posts with frontmatter
+- `src/data/writing.ts` — `EXTERNAL_POSTS`: posts published elsewhere, listed on `/blog` by title and opened externally
 
 No content is hardcoded in UI components. Add a project by appending to `PROJECTS`.
 
@@ -61,7 +62,7 @@ See `DEPLOY.md`. Cloudflare Workers via `@cloudflare/vite-plugin` + `wrangler.js
 - Order: OSS/tooling first
 - Metrics allowed: millions of customers, 3Cr+/day reconciled, 50-60% setup savings
 - Contact: email only (`me@adarshsingh87.com`), no form
-- Blog: "comming soon" placeholder, infra live
+- Blog: live with local Markdown posts + external-post links (was "comming soon" placeholder)
 - Experience: CTO focus, no invented dates
 - Photo: none, monogram `A` / `AS`
 - Socials: GitHub + LinkedIn + X (`adarshsingh87`), project URLs added when shared

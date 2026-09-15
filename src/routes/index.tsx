@@ -5,8 +5,10 @@ import { PRINCIPLES, SKILL_GROUPS } from '../data/skills'
 import { SITE } from '../data/site'
 import { SectionHead, SiteFooter, SiteNav } from '../components/site'
 import { MailIcon, SocialLinks, TechIcon, TechStackLine } from '../components/icons'
+import { getAllEntries } from '../lib/blog'
 
 export const Route = createFileRoute('/')({
+  loader: () => getAllEntries().slice(0, 3),
   head: () => ({
     meta: [
       { title: `${SITE.name} — Hands-on CTO` },
@@ -22,6 +24,7 @@ export const Route = createFileRoute('/')({
 function Home() {
   const featured = PROJECTS.filter((p) => p.featured)
   const rest = PROJECTS.filter((p) => !p.featured)
+  const latestPosts = Route.useLoaderData()
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-zinc-100">
       <SiteNav />
@@ -33,12 +36,12 @@ function Home() {
               Adarsh Singh — CTO, SmokeTrees Digital
             </p>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.03] tracking-tight sm:text-6xl">
-              I run engineering and still ship it.
+              I build software, and I build the teams that ship it.
             </h1>
             <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-              Hands-on CTO working across frontend, backend, integrations, and
-              cloud. I build production systems, then turn the repeatable parts
-              into templates so small teams deliver like bigger ones.
+              I’m Adarsh Singh, a hands-on CTO and software engineer working
+              across product, backend systems, frontend applications, cloud
+              infrastructure, integrations, and developer tooling.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -257,21 +260,68 @@ function Home() {
         {/* Blog preview */}
         <section id="blog" className="border-t border-white/10 py-14">
           <SectionHead index="04" title="Blog" note="" />
-          <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-dashed border-white/15 p-8 sm:flex-row sm:items-center">
+          {latestPosts.length === 0 ? (
+            <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-dashed border-white/15 p-8 sm:flex-row sm:items-center">
+              <div>
+                <p className="text-lg font-bold">Notes, coming soon.</p>
+                <p className="mt-1 max-w-md text-sm text-zinc-500">
+                  Tooling, ONDC lessons, reconciliation patterns, running a small
+                  eng team. Files live in src/content/blog.
+                </p>
+              </div>
+              <Link
+                to="/blog"
+                className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:bg-white/5"
+              >
+                Visit blog →
+              </Link>
+            </div>
+          ) : (
             <div>
-              <p className="text-lg font-bold">Notes, coming soon.</p>
-              <p className="mt-1 max-w-md text-sm text-zinc-500">
-                Tooling, ONDC lessons, reconciliation patterns, running a small
-                eng team. Files live in src/content/blog.
+              <div className="divide-y divide-white/10 border-y border-white/10">
+                {latestPosts.map((e) =>
+                  e.kind === 'internal' ? (
+                    <Link
+                      key={e.slug}
+                      to="/blog/$slug"
+                      params={{ slug: e.slug }}
+                      className="group flex items-baseline justify-between gap-6 py-4"
+                    >
+                      <span className="font-semibold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4">
+                        {e.title}
+                      </span>
+                      <span className="shrink-0 font-mono text-[11px] text-zinc-500">{e.date}</span>
+                    </Link>
+                  ) : (
+                    <a
+                      key={e.url}
+                      href={e.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-baseline justify-between gap-6 py-4"
+                    >
+                      <span className="font-semibold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4">
+                        {e.title}{' '}
+                        <span aria-hidden className="font-mono text-xs text-zinc-500">↗</span>
+                        <span className="sr-only">(opens in a new tab on {e.source})</span>
+                      </span>
+                      <span className="shrink-0 font-mono text-[11px] text-zinc-500">
+                        {e.date} · {e.source}
+                      </span>
+                    </a>
+                  ),
+                )}
+              </div>
+              <p className="mt-6">
+                <Link
+                  to="/blog"
+                  className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:bg-white/5"
+                >
+                  All notes →
+                </Link>
               </p>
             </div>
-            <Link
-              to="/blog"
-              className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:bg-white/5"
-            >
-              Visit blog →
-            </Link>
-          </div>
+          )}
         </section>
 
         {/* Contact */}

@@ -19,6 +19,26 @@ draft: "false"
 3. Run `npm run dev` to preview at `/blog` and `/blog/ondc-strict-specs`.
 4. Run `npm run build` (or push; Cloudflare builds on deploy).
 
+## External posts (published elsewhere)
+
+To list a post you wrote for SmokeTrees or anywhere else — title shown on
+`/blog` and the homepage preview, click opens the external URL in a new tab:
+
+1. Open `src/data/writing.ts`.
+2. Append to `EXTERNAL_POSTS`:
+
+```ts
+{
+  title: 'What I actually do as a CTO',
+  description: 'A week of calendars, code reviews, and client calls.',
+  date: '2026-08-02',
+  url: 'https://smoketrees.in/blog/cto-week',
+  source: 'smoketrees.in',
+},
+```
+
+3. Rebuild. No local page is created for it — there is nothing at `/blog/<slug>` for external entries, by design.
+
 ## Rules
 
 - One file per post, extension `.md`, any filename. The `slug` field sets the URL.
@@ -33,4 +53,9 @@ Headings, paragraphs, bold/italic, links, unordered + ordered lists, inline code
 
 ## Current state
 
-The blog index shows a "comming soon" card until the first non-draft post exists. That is intentional per grilling. The loader (`src/lib/blog.ts`), index route (`src/routes/blog/index.tsx`), and post route (`src/routes/blog/$slug.tsx`) are live and were verified with a temporary test post.
+Live. Local posts render at `/blog/<slug>`; external entries from
+`src/data/writing.ts` link out. The "comming soon" card only shows when both
+lists are empty. The loader (`src/lib/blog.ts`), index route
+(`src/routes/blog/index.tsx`), and post route (`src/routes/blog/$slug.tsx`)
+were verified with a temporary test post, and again with the first two real
+posts.
