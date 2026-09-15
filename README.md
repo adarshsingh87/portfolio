@@ -32,7 +32,8 @@ See `public/icons/ATTRIBUTION.md` for the source file map.
 
 - `src/components/icons.tsx` — `TechIcon`, `TechStackLine`, social icons, `MailIcon`
 - Stack section, project stack lines, hero/contact socials, and footer use them
-- `Arch + Hyprland` and `OpenCode` have no SVGL entry and render text-only
+- Arch Linux + Hyprland come from [Simple Icons](https://simpleicons.org/) (no SVGL entry), recolored `#e4e4e7` for the dark theme
+- `OpenCode` has no icon entry and renders text-only
 
 ## Content model
 

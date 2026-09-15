@@ -15,7 +15,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     label: 'Data',
-    items: ['PostgreSQL'],
+    items: ['PostgreSQL', 'MySQL', 'MongoDB'],
   },
   {
     label: 'Cloud / Deploy',
@@ -23,7 +23,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     label: 'Daily drivers',
-    items: ['Arch + Hyprland', 'Neovim', 'OpenCode'],
+    items: ['Arch Linux', 'Hyprland', 'Neovim', 'OpenCode'],
   },
 ]
 

@@ -12,12 +12,18 @@ const TECH_ICONS: Record<string, string> = {
   flask: '/icons/flask.svg',
   postgresql: '/icons/postgresql.svg',
   psql: '/icons/postgresql.svg',
+  mysql: '/icons/mysql.svg',
+  mongodb: '/icons/mongodb.svg',
+  mongo: '/icons/mongodb.svg',
   aws: '/icons/aws.svg',
   azure: '/icons/azure.svg',
   vercel: '/icons/vercel.svg',
   cloudflare: '/icons/cloudflare.svg',
   tanstack: '/icons/tanstack.svg',
   neovim: '/icons/neovim.svg',
+  'arch linux': '/icons/archlinux.svg',
+  arch: '/icons/archlinux.svg',
+  hyprland: '/icons/hyprland.svg',
   nodejs: '/icons/nodejs.svg',
   'node.js': '/icons/nodejs.svg',
   python: '/icons/python.svg',
@@ -30,16 +36,26 @@ export function techIconSrc(name: string): string | undefined {
   return TECH_ICONS[name.trim().toLowerCase()]
 }
 
+// Per-icon optical scaling. Most marks are roughly square; tall marks like
+// the MongoDB leaf fill the full box height and look oversized, so they
+// render slightly smaller to match the visual weight of the rest.
+const ICON_SCALE: Record<string, number> = {
+  mongodb: 0.75,
+  mongo: 0.75,
+}
+
 export function TechIcon({ name, size = 18 }: { name: string; size?: number }) {
   const src = techIconSrc(name)
   if (!src) return null
+  const key = name.trim().toLowerCase()
+  const s = Math.round(size * (ICON_SCALE[key] ?? 1))
   return (
     <img
       src={src}
       alt=""
       aria-hidden="true"
-      width={size}
-      height={size}
+      width={s}
+      height={s}
       loading="lazy"
       decoding="async"
       className="inline-block shrink-0"
