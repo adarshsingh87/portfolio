@@ -35,8 +35,8 @@ More detail on each: [Work archive](https://adarshsingh87.com/work)
 
 ## Notes (blog)
 
-- [Async context as a mental model, not just a library](https://adarshsingh87.com/blog/async-context-mental-model): AsyncLocalStorage as propagation bound to the async chain, not the process; when context fits observability data and when it hides business dependencies.
-- [What building on ONDC taught me about the difference between an API and a protocol](https://adarshsingh87.com/blog/api-vs-protocol-ondc): no central author, async callbacks, defensive parsing, idempotency, and building for implementation drift.
+- [What building on ONDC taught me about the difference between an API and a protocol](https://adarshsingh87.com/blog/api-vs-protocol-ondc): No central author, callbacks instead of responses, defensive parsing — what changes when you integrate with a shared agreement instead of a service.
+- [Async context as a mental model, not just a library](https://adarshsingh87.com/blog/async-context-mental-model): AsyncLocalStorage is really about how a value survives async boundaries — plus the rule for when context helps and when it hides real dependencies.
 
 ## Elsewhere
 
