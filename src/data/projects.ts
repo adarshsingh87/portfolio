@@ -23,7 +23,12 @@ export const PROJECTS: Project[] = [
       'Works in single-server apps and microservices',
     ],
     stack: ['TypeScript', 'Express', 'Node.js'],
-    links: [{ label: 'GitHub profile', href: 'https://github.com/adarshsingh87' }],
+    links: [
+      {
+        label: 'GitHub profile',
+        href: 'https://github.com/smoke-trees/smoke-context',
+      },
+    ],
     featured: true,
   },
   {
@@ -37,8 +42,13 @@ export const PROJECTS: Project[] = [
       'Defaults that cut setup mistakes',
       'Faster start for new backend work, measured in the 50-60% range on repetitive setup',
     ],
-    stack: ['TypeScript', 'Express', 'Hono', 'PostgreSQL'],
-    links: [{ label: 'GitHub profile', href: 'https://github.com/adarshsingh87' }],
+    stack: ['TypeScript', 'Express', 'PostgreSQL'],
+    links: [
+      {
+        label: 'GitHub profile',
+        href: 'https://github.com/smoke-trees/node-template-ts',
+      },
+    ],
     featured: true,
   },
   {
@@ -53,7 +63,12 @@ export const PROJECTS: Project[] = [
       'Repeatable start for client frontends',
     ],
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-    links: [{ label: 'GitHub profile', href: 'https://github.com/adarshsingh87' }],
+    links: [
+      {
+        label: 'GitHub profile',
+        href: 'https://github.com/smoke-trees/next-FE-template',
+      },
+    ],
     featured: true,
   },
   {
@@ -67,7 +82,7 @@ export const PROJECTS: Project[] = [
       'Personalized recommendations',
       'A calmer, more focused shopping flow',
     ],
-    stack: ['Next.js', 'React', 'TypeScript'],
+    stack: ['Express', 'TypeScript', 'FastAPI', 'Flutter'],
     links: [{ label: 'myfomo.in', href: 'https://myfomo.in/' }],
     featured: true,
   },
@@ -82,8 +97,15 @@ export const PROJECTS: Project[] = [
       'B2B retail seller implementation for a client',
       'Production systems serving millions of customers',
     ],
-    stack: ['TypeScript', 'Go', 'PostgreSQL', 'AWS'],
-    links: [{ label: 'ONDC protocol', href: 'https://ondc.org/' }],
+    stack: [
+      'TypeScript',
+      'Kubernetes',
+      'PostgreSQL',
+      'AWS',
+      'Express',
+      'ElasticSearch',
+    ],
+    links: [],
     featured: true,
   },
   {
@@ -97,7 +119,7 @@ export const PROJECTS: Project[] = [
       'Operational and workflow automation around finance ops',
       'Repetitive manual work cut in the 50-60% range where applied',
     ],
-    stack: ['Go', 'TypeScript', 'PostgreSQL', 'AWS'],
+    stack: ['Go', 'TypeScript', 'PostgreSQL'],
     links: [],
     featured: true,
   },
@@ -107,8 +129,11 @@ export const PROJECTS: Project[] = [
     kind: 'Product',
     summary:
       'Chatbots built for client support and operations. Retrieval over client docs, human handoff where it matters, and honest scoping about what the bot should not answer.',
-    points: ['Client-specific knowledge flows', 'Handoff paths for unresolved cases'],
-    stack: ['TypeScript', 'Python', 'Flask'],
+    points: [
+      'Client-specific knowledge flows',
+      'Handoff paths for unresolved cases',
+    ],
+    stack: ['TypeScript', 'LangChain'],
     links: [],
   },
   {
@@ -117,8 +142,11 @@ export const PROJECTS: Project[] = [
     kind: 'Integration',
     summary:
       'Connectors and small apps that tie Shopify stores into client systems. Orders, inventory, and the unglamorous sync logic that keeps storefronts honest.',
-    points: ['Storefront to internal-system sync', 'Order and catalog connectors'],
-    stack: ['TypeScript', 'Express', 'PostgreSQL'],
+    points: [
+      'Storefront to internal-system sync',
+      'Order and catalog connectors',
+    ],
+    stack: ['TypeScript', 'Express', 'PostgreSQL', 'Liquid Templating'],
     links: [],
   },
   {
