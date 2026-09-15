@@ -36,12 +36,12 @@ function Home() {
               Adarsh Singh — CTO, SmokeTrees Digital
             </p>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.03] tracking-tight sm:text-6xl">
-              I build software, and I build the teams that ship it.
+              CTO. Still mostly an engineer.
             </h1>
             <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-              I’m Adarsh Singh, a hands-on CTO and software engineer working
-              across product, backend systems, frontend applications, cloud
-              infrastructure, integrations, and developer tooling.
+              Most of my week is code review and client meetings these days. The
+              rest is still hands-on: architecture decisions, the harder bugs,
+              and the parts nobody else wants to touch.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -110,11 +110,7 @@ function Home() {
 
         {/* Work */}
         <section id="work" className="border-t border-white/10 py-14">
-          <SectionHead
-            index="01"
-            title="Selected work"
-            note="OSS and tooling first, then product systems. No invented metrics."
-          />
+          <SectionHead index="01" title="Selected work" note="" />
           <div className="grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-2">
             {featured.map((p) => (
               <article
@@ -188,11 +184,7 @@ function Home() {
 
         {/* Experience */}
         <section id="experience" className="border-t border-white/10 py-14">
-          <SectionHead
-            index="02"
-            title="Experience"
-            note="CTO focus. Capabilities over chronology."
-          />
+          <SectionHead index="02" title="Experience" note="" />
           <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
             <div>
               <p className="text-lg font-bold">CTO — {EXPERIENCE[0]?.org}</p>
@@ -227,11 +219,7 @@ function Home() {
 
         {/* Stack */}
         <section id="stack" className="border-t border-white/10 py-14">
-          <SectionHead
-            index="03"
-            title="Stack"
-            note="Breadth, not badges. No logo wall."
-          />
+          <SectionHead index="03" title="Stack" note="" />
           <dl className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {SKILL_GROUPS.map((g) => (
               <div key={g.label} className="border-t border-white/10 pt-4">
@@ -265,8 +253,8 @@ function Home() {
               <div>
                 <p className="text-lg font-bold">Notes, coming soon.</p>
                 <p className="mt-1 max-w-md text-sm text-zinc-500">
-                  Tooling, ONDC lessons, reconciliation patterns, running a small
-                  eng team. Files live in src/content/blog.
+                  Tooling, ONDC lessons, reconciliation patterns, running a
+                  small eng team. Files live in src/content/blog.
                 </p>
               </div>
               <Link
@@ -290,7 +278,9 @@ function Home() {
                       <span className="font-semibold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4">
                         {e.title}
                       </span>
-                      <span className="shrink-0 font-mono text-[11px] text-zinc-500">{e.date}</span>
+                      <span className="shrink-0 font-mono text-[11px] text-zinc-500">
+                        {e.date}
+                      </span>
                     </Link>
                   ) : (
                     <a
@@ -302,8 +292,15 @@ function Home() {
                     >
                       <span className="font-semibold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4">
                         {e.title}{' '}
-                        <span aria-hidden className="font-mono text-xs text-zinc-500">↗</span>
-                        <span className="sr-only">(opens in a new tab on {e.source})</span>
+                        <span
+                          aria-hidden
+                          className="font-mono text-xs text-zinc-500"
+                        >
+                          ↗
+                        </span>
+                        <span className="sr-only">
+                          (opens in a new tab on {e.source})
+                        </span>
                       </span>
                       <span className="shrink-0 font-mono text-[11px] text-zinc-500">
                         {e.date} · {e.source}
@@ -317,7 +314,7 @@ function Home() {
                   to="/blog"
                   className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:bg-white/5"
                 >
-                  All notes →
+                  All BLogs →
                 </Link>
               </p>
             </div>

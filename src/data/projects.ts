@@ -25,7 +25,7 @@ export const PROJECTS: Project[] = [
     stack: ['TypeScript', 'Express', 'Node.js'],
     links: [
       {
-        label: 'GitHub profile',
+        label: 'GitHub',
         href: 'https://github.com/smoke-trees/smoke-context',
       },
     ],
@@ -45,7 +45,7 @@ export const PROJECTS: Project[] = [
     stack: ['TypeScript', 'Express', 'PostgreSQL'],
     links: [
       {
-        label: 'GitHub profile',
+        label: 'GitHub',
         href: 'https://github.com/smoke-trees/node-template-ts',
       },
     ],
@@ -65,7 +65,7 @@ export const PROJECTS: Project[] = [
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
     links: [
       {
-        label: 'GitHub profile',
+        label: 'GitHub',
         href: 'https://github.com/smoke-trees/next-FE-template',
       },
     ],
