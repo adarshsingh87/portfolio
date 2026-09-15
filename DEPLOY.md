@@ -34,7 +34,7 @@ Set `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` as CI secrets.
 ## Checks before going live
 
 - `npm run build` passes, `npx tsc --noEmit` passes
-- `/`, `/work`, `/blog`, `/designs`, `/designs/v1`…`v5` all return 200
+- `/`, `/work`, `/blog` all return 200
 - `https://adarshsingh87.com/sitemap.xml` and `/robots.txt` resolve
 - OG image at `/og.svg` unfurls in a link preview debugger
 - Email links use `mailto:me@adarshsingh87.com` (no form backend by design)

@@ -15,22 +15,14 @@ npm run deploy   # build + wrangler deploy
 
 | Route | What |
 | --- | --- |
-| `/` | Production homepage (V3 Editorial Minimal, refined) |
+| `/` | Production homepage |
 | `/work` | Full work archive, OSS first |
 | `/blog` | Blog index — currently a "comming soon" placeholder until the first `.md` lands |
 | `/blog/$slug` | Markdown post renderer (headings, lists, code, tables, quotes) |
-| `/designs` | Comparison of all five variants + recommendation |
-| `/designs/v1` … `/designs/v5` | Five working dark-minimal variants, same content |
 
-## The five variants (all dark minimal, per grilling)
+## Design
 
-- **V1 Midnight Glass** — dark glassmorphism, aurora bg, blur panels
-- **V2 Soft Press Dark** — neumorphism adapted to dark mode, extruded/inset physics
-- **V3 Editorial Minimal** — production pick. Type-led, hairlines, no cards
-- **V4 Hairline Grid** — product-grid precision, hairline cells, small caps
-- **V5 Ink Serif** — warm-black serif, centered, quiet luxury
-
-See `DESIGN_COMPARISON.md` for strengths, weaknesses, and why V3 won.
+Single dark-minimal homepage. No variants, no preview routes.
 
 ## Icons (SVGL)
 

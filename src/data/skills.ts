@@ -19,7 +19,6 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     label: 'Cloud / Deploy',
-    note: 'Cloudflare for this site',
     items: ['AWS', 'Azure', 'Vercel', 'Cloudflare'],
   },
   {

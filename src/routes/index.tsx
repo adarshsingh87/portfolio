@@ -162,13 +162,6 @@ function Home() {
               </div>
             ))}
           </dl>
-          <p className="mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-1 font-mono text-xs text-zinc-600">
-            Daily: Arch + Hyprland ·
-            <span className="inline-flex items-center gap-1"><TechIcon name="Neovim" size={13} /> Neovim</span> ·
-            OpenCode — this site:
-            <span className="inline-flex items-center gap-1"><TechIcon name="TanStack" size={13} /> TanStack Start</span> on
-            <span className="inline-flex items-center gap-1"><TechIcon name="Cloudflare" size={13} /> Cloudflare</span>
-          </p>
         </section>
 
         {/* Blog preview */}
