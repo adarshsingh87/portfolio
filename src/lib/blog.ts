@@ -34,9 +34,19 @@ export type BlogEntry =
       source: string
     }
 
+// Hoisted (js-hoist-regexp): shared instances, no per-call recreation.
+// Non-global on purpose — global RegExp carries mutable lastIndex state.
+const FRONTMATTER_RE = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
+const LEADING_BRACKET_RE = /^\[/
+const TRAILING_BRACKET_RE = /\]$/
+const LEADING_QUOTE_RE = /^["']/
+const TRAILING_QUOTE_RE = /["']$/
+const MD_EXT_RE = /\.md$/
+const WS_RE = /\s+/
+
 // Minimal frontmatter parser. No dependency, Cloudflare-safe.
 export function parseFrontmatter(raw: string): { data: Record<string, string>; body: string } {
-  const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/)
+  const match = raw.match(FRONTMATTER_RE)
   if (!match) return { data: {}, body: raw }
   const [, fm, body] = match
   const data: Record<string, string> = {}
@@ -61,10 +71,10 @@ function parseList(value: string | undefined): string[] {
   const v = value.trim()
   if (v.startsWith('[')) {
     return v
-      .replace(/^\[/, '')
-      .replace(/\]$/, '')
+      .replace(LEADING_BRACKET_RE, '')
+      .replace(TRAILING_BRACKET_RE, '')
       .split(',')
-      .map((s) => s.trim().replace(/^["']|["']$/g, ''))
+      .map((s) => s.trim().replace(LEADING_QUOTE_RE, '').replace(TRAILING_QUOTE_RE, ''))
       .filter(Boolean)
   }
   return v
@@ -97,11 +107,11 @@ function readAllMeta(includeDrafts = false): PostMeta[] {
   for (const [path, raw] of Object.entries(modules)) {
     const { data, body } = parseFrontmatter(raw as string)
     const slug =
-      data.slug ?? path.split('/').pop()?.replace(/\.md$/, '') ?? 'untitled'
+      data.slug ?? path.split('/').pop()?.replace(MD_EXT_RE, '') ?? 'untitled'
     const draft = data.draft === 'true'
     if (draft && !includeDrafts) continue
     if (!data.title) continue
-    const words = body.split(/\s+/).length
+    const words = body.split(WS_RE).length
     metas.push({
       title: data.title,
       description: data.description ?? '',
@@ -113,7 +123,7 @@ function readAllMeta(includeDrafts = false): PostMeta[] {
       readingMinutes: Math.max(1, Math.round(words / 200)),
     })
   }
-  return metas.sort((a, b) => (a.date < b.date ? 1 : -1))
+  return [...metas].sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
 export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
@@ -121,7 +131,7 @@ export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
   const posts: BlogPost[] = []
   for (const meta of readAllMeta(includeDrafts)) {
     const html = String(marked.parse(meta.body))
-    const words = meta.body.split(/\s+/).length
+    const words = meta.body.split(WS_RE).length
     posts.push({
       title: meta.title,
       description: meta.description,
@@ -133,7 +143,7 @@ export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
       readingMinutes: Math.max(1, Math.round(words / 200)),
     })
   }
-  return posts.sort((a, b) => (a.date < b.date ? 1 : -1))
+  return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
 export async function getPost(slug: string): Promise<BlogPost | undefined> {

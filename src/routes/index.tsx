@@ -22,8 +22,13 @@ export const Route = createFileRoute('/')({
 })
 
 function Home() {
-  const featured = PROJECTS.filter((p) => p.featured)
-  const rest = PROJECTS.filter((p) => !p.featured)
+  // Single pass (js-combine-iterations): one loop instead of two .filter()s.
+  const featured: typeof PROJECTS = []
+  const rest: typeof PROJECTS = []
+  for (const p of PROJECTS) {
+    if (p.featured) featured.push(p)
+    else rest.push(p)
+  }
   const latestPosts = Route.useLoaderData()
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-zinc-100">
@@ -64,7 +69,7 @@ function Home() {
               {[
                 ['Millions', 'customers on systems I built or led'],
                 ['3Cr+ / day', 'money through reconciliation flows'],
-                ['50-60%', 'repetitive setup work removed'],
+                ['50-60%', 'time savings by automating recon'],
               ].map(([v, l]) => (
                 <div key={l}>
                   <dt className="text-lg font-extrabold tracking-tight sm:text-xl">

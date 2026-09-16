@@ -38,8 +38,23 @@ const TECH_ICONS: Record<string, string> = {
   x: '/icons/x.svg',
 }
 
+type TechIconLookup = { src: string | undefined; key: string }
+
+// Cache repeated lookups (js-cache-function-results): stack badges repeat
+// the same names dozens of times per page. Finite key space, safe to hold.
+const techIconLookupCache = new Map<string, TechIconLookup>()
+
+function lookupTechIcon(name: string): TechIconLookup {
+  const cached = techIconLookupCache.get(name)
+  if (cached) return cached
+  const key = name.trim().toLowerCase()
+  const result: TechIconLookup = { src: TECH_ICONS[key], key }
+  techIconLookupCache.set(name, result)
+  return result
+}
+
 export function techIconSrc(name: string): string | undefined {
-  return TECH_ICONS[name.trim().toLowerCase()]
+  return lookupTechIcon(name).src
 }
 
 // Per-icon optical scaling. Most marks are roughly square; tall marks like
@@ -51,9 +66,8 @@ const ICON_SCALE: Record<string, number> = {
 }
 
 export function TechIcon({ name, size = 18 }: { name: string; size?: number }) {
-  const src = techIconSrc(name)
+  const { src, key } = lookupTechIcon(name)
   if (!src) return null
-  const key = name.trim().toLowerCase()
   const s = Math.round(size * (ICON_SCALE[key] ?? 1))
   return (
     <img
