@@ -7,6 +7,9 @@ export function getRouter() {
     scrollRestoration: true,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
+    // Wrap client navigations in document.startViewTransition().
+    // Ignored by browsers without support. Styling lives in styles.css.
+    defaultViewTransition: true,
   })
 
   return router

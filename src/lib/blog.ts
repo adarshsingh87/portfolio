@@ -43,6 +43,8 @@ const LEADING_QUOTE_RE = /^["']/
 const TRAILING_QUOTE_RE = /["']$/
 const MD_EXT_RE = /\.md$/
 const WS_RE = /\s+/
+// External links inside post bodies open in a new tab.
+const EXTERNAL_ANCHOR_RE = /<a(?![^>]*\btarget=)(?=[^>]*\bhref="https?:\/\/)/g
 
 // Minimal frontmatter parser. No dependency, Cloudflare-safe.
 export function parseFrontmatter(raw: string): { data: Record<string, string>; body: string } {
@@ -130,7 +132,10 @@ export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
   const { marked } = await import('marked')
   const posts: BlogPost[] = []
   for (const meta of readAllMeta(includeDrafts)) {
-    const html = String(marked.parse(meta.body))
+    const html = String(marked.parse(meta.body)).replace(
+      EXTERNAL_ANCHOR_RE,
+      '<a target="_blank" rel="noopener noreferrer"',
+    )
     const words = meta.body.split(WS_RE).length
     posts.push({
       title: meta.title,
@@ -149,6 +154,15 @@ export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
 export async function getPost(slug: string): Promise<BlogPost | undefined> {
   const posts = await getAllPosts(true)
   return posts.find((p) => p.slug === slug)
+}
+
+// View-transition wiring for the blog title shared-element morph
+// (list row <-> post header). The `blog-open` transition type lets CSS
+// swap the root cross-fade for a clean title glide; see styles.css.
+export const BLOG_TITLE_TRANSITION_TYPE = 'blog-open'
+
+export function blogTitleTransitionName(slug: string): string {
+  return `blog-title-${slug}`
 }
 
 // Merged feed for index pages: local Markdown posts plus external posts

@@ -38,6 +38,16 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ---- shared prose for markdown blog ---- */
@@ -95,4 +105,81 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   padding: 0.6em 0.8em;
   text-align: left;
+}
+
+/* ---- View Transitions: route changes (see defaultViewTransition in router.tsx) ---- */
+::view-transition {
+  background: #0a0a0b;
+}
+
+::view-transition-old(root) {
+  animation: vt-page-out 180ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: vt-page-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+    transform: scale(0.996);
+  }
+}
+
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Persistent chrome: the nav stays put while page content transitions. */
+.site-chrome {
+  view-transition-name: site-header;
+}
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* ---- Shared blog-title morph (transition type: blog-open) ----
+   Kills the root cross-fade so the title glide reads cleanly with no
+   ghosting: old content is covered instantly, new content fades in softly
+   while the title morphs from list row to post header (and back). */
+html:active-view-transition-type(blog-open)::view-transition-old(root) {
+  animation: none;
+}
+html:active-view-transition-type(blog-open)::view-transition-new(root) {
+  animation: vt-page-in-soft 220ms ease-out both;
+}
+@keyframes vt-page-in-soft {
+  from {
+    opacity: 0;
+  }
+}
+html:active-view-transition-type(blog-open)::view-transition-group(*) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Scroll reveal (see components/reveal.tsx) ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

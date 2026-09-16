@@ -4,7 +4,7 @@ import { GitHubIcon, LinkedInIcon, XIcon } from './icons'
 
 export function SiteNav() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0b]/85 backdrop-blur-md">
+    <header className="site-chrome sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0b]/85 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
         <Link to="/" className="flex items-center gap-2.5" aria-label="Adarsh Singh home">
           <span
@@ -59,20 +59,20 @@ export function SiteFooter() {
           <p className="text-sm font-semibold text-zinc-200">Adarsh Singh</p>
           <p className="mt-1 text-[13px] text-zinc-500">
             CTO at{' '}
-            <a href={SITE.companyUrl} className="underline underline-offset-4 hover:text-zinc-300">
+            <a href={SITE.companyUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-zinc-300">
               SmokeTrees Digital
             </a>{' '}
             · {SITE.education}
           </p>
         </div>
         <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]">
-          <a href={SITE.github} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
+          <a href={SITE.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
             <GitHubIcon size={15} /> GitHub
           </a>
-          <a href={SITE.linkedin} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
             <LinkedInIcon size={15} /> LinkedIn
           </a>
-          <a href={SITE.twitter} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
+          <a href={SITE.twitter} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100">
             <XIcon size={14} /> X / Twitter
           </a>
           <a href={`mailto:${SITE.email}`} className="text-zinc-400 hover:text-zinc-100">{SITE.email}</a>

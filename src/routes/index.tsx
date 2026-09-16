@@ -5,7 +5,12 @@ import { PRINCIPLES, SKILL_GROUPS } from '../data/skills'
 import { SITE } from '../data/site'
 import { SectionHead, SiteFooter, SiteNav } from '../components/site'
 import { MailIcon, SocialLinks, TechIcon, TechStackLine } from '../components/icons'
-import { getAllEntries } from '../lib/blog'
+import { Reveal } from '../components/reveal'
+import {
+  BLOG_TITLE_TRANSITION_TYPE,
+  blogTitleTransitionName,
+  getAllEntries,
+} from '../lib/blog'
 
 export const Route = createFileRoute('/')({
   loader: () => getAllEntries().slice(0, 3),
@@ -37,12 +42,15 @@ function Home() {
         {/* Hero */}
         <section className="grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
+            <Reveal>
             <p className="font-mono text-xs text-zinc-500">
               Adarsh Singh — CTO, SmokeTrees Digital
             </p>
             <h1 className="mt-4 text-4xl font-extrabold leading-[1.03] tracking-tight sm:text-6xl">
               CTO. Still mostly an engineer.
             </h1>
+            </Reveal>
+            <Reveal delay={120}>
             <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
               Most of my week is code review and client meetings these days. The
               rest is still hands-on: architecture decisions, the harder bugs,
@@ -65,6 +73,8 @@ function Home() {
                 <SocialLinks size={17} />
               </span>
             </div>
+            </Reveal>
+            <Reveal delay={240}>
             <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-6">
               {[
                 ['Millions', 'customers on systems I built or led'],
@@ -81,7 +91,9 @@ function Home() {
                 </div>
               ))}
             </dl>
+            </Reveal>
           </div>
+          <Reveal delay={180}>
           <aside
             className="h-fit rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
             aria-label="Currently"
@@ -111,10 +123,12 @@ function Home() {
               </ul>
             </div>
           </aside>
+          </Reveal>
         </section>
 
         {/* Work */}
         <section id="work" className="border-t border-white/10 py-14">
+          <Reveal>
           <SectionHead index="01" title="Selected work" note="" />
           <div className="grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-2">
             {featured.map((p) => (
@@ -129,6 +143,8 @@ function Home() {
                   {p.links[0] ? (
                     <a
                       href={p.links[0].href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="font-mono text-[11px] text-zinc-500 underline-offset-4 hover:text-zinc-200 hover:underline"
                     >
                       {p.links[0].label} ↗
@@ -185,16 +201,20 @@ function Home() {
               Full work archive →
             </Link>
           </p>
+          </Reveal>
         </section>
 
         {/* Experience */}
         <section id="experience" className="border-t border-white/10 py-14">
+          <Reveal>
           <SectionHead index="02" title="Experience" note="" />
           <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
             <div>
               <p className="text-lg font-bold">CTO — {EXPERIENCE[0]?.org}</p>
               <a
                 href={EXPERIENCE[0]?.orgUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-mono text-xs text-zinc-500 hover:text-zinc-300"
               >
                 smoketrees.in ↗
@@ -220,10 +240,12 @@ function Home() {
               ))}
             </ul>
           </div>
+          </Reveal>
         </section>
 
         {/* Stack */}
         <section id="stack" className="border-t border-white/10 py-14">
+          <Reveal>
           <SectionHead index="03" title="Stack" note="" />
           <dl className="grid gap-x-10 gap-y-6 sm:grid-cols-2">
             {SKILL_GROUPS.map((g) => (
@@ -248,10 +270,12 @@ function Home() {
               </div>
             ))}
           </dl>
+          </Reveal>
         </section>
 
         {/* Blog preview */}
         <section id="blog" className="border-t border-white/10 py-14">
+          <Reveal>
           <SectionHead index="04" title="Blog" note="" />
           {latestPosts.length === 0 ? (
             <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-dashed border-white/15 p-8 sm:flex-row sm:items-center">
@@ -278,9 +302,10 @@ function Home() {
                       key={e.slug}
                       to="/blog/$slug"
                       params={{ slug: e.slug }}
+                      viewTransition={{ types: [BLOG_TITLE_TRANSITION_TYPE] }}
                       className="group flex items-baseline justify-between gap-6 py-4"
                     >
-                      <span className="font-semibold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4">
+                      <span className="font-semibold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4" style={{ viewTransitionName: blogTitleTransitionName(e.slug) }}>
                         {e.title}
                       </span>
                       <span className="shrink-0 font-mono text-[11px] text-zinc-500">
@@ -324,6 +349,7 @@ function Home() {
               </p>
             </div>
           )}
+          </Reveal>
         </section>
 
         {/* Contact */}
@@ -331,6 +357,7 @@ function Home() {
           id="contact"
           className="border-t border-white/10 py-14 sm:py-20"
         >
+          <Reveal>
           <p className="font-mono text-xs text-[#d6fd51]">05 — Contact</p>
           <h2 className="mt-4 max-w-xl text-3xl font-extrabold tracking-tight sm:text-5xl">
             Short emails get fast replies.
@@ -351,6 +378,8 @@ function Home() {
           <p className="mt-4 font-mono text-xs text-zinc-600">
             GitHub{' '}
             <a
+              target="_blank"
+              rel="noopener noreferrer"
               className="underline underline-offset-4 hover:text-zinc-300"
               href={SITE.github}
             >
@@ -358,6 +387,8 @@ function Home() {
             </a>
             {' · '}LinkedIn{' '}
             <a
+              target="_blank"
+              rel="noopener noreferrer"
               className="underline underline-offset-4 hover:text-zinc-300"
               href={SITE.linkedin}
             >
@@ -365,12 +396,15 @@ function Home() {
             </a>
             {' · '}X{' '}
             <a
+              target="_blank"
+              rel="noopener noreferrer"
               className="underline underline-offset-4 hover:text-zinc-300"
               href={SITE.twitter}
             >
               adarshsingh87
             </a>
           </p>
+          </Reveal>
         </section>
       </main>
       <SiteFooter />

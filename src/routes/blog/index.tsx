@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { SITE } from '../../data/site'
 import { SiteFooter, SiteNav } from '../../components/site'
-import { getAllEntries } from '../../lib/blog'
+import { Reveal } from '../../components/reveal'
+import {
+  BLOG_TITLE_TRANSITION_TYPE,
+  blogTitleTransitionName,
+  getAllEntries,
+} from '../../lib/blog'
 
 export const Route = createFileRoute('/blog/')({
   loader: () => getAllEntries(),
@@ -20,8 +25,10 @@ function BlogIndex() {
     <div className="min-h-screen bg-[#0a0a0b] text-zinc-100">
       <SiteNav />
       <main id="main" className="mx-auto max-w-3xl px-5 py-14">
+        <Reveal>
         <p className="font-mono text-xs text-zinc-500">Blog</p>
         <h1 className="mt-3 text-4xl font-extrabold tracking-tight">Notes.</h1>
+        </Reveal>
         {entries.length === 0 ? (
           <div className="mt-10 rounded-2xl border border-dashed border-white/15 p-10 text-center">
             <p className="inline-block rounded-full border border-white/10 px-4 py-1.5 font-mono text-xs text-zinc-400">comming soon</p>
@@ -33,12 +40,13 @@ function BlogIndex() {
             <p className="mt-6 font-mono text-[11px] text-zinc-600">See BLOG_GUIDE.md for the 60-second workflow</p>
           </div>
         ) : (
+          <Reveal delay={120}>
           <div className="mt-10 divide-y divide-white/10 border-y border-white/10">
             {entries.map((e) =>
               e.kind === 'internal' ? (
-                <Link key={e.slug} to="/blog/$slug" params={{ slug: e.slug }} className="group block py-6">
+                <Link key={e.slug} to="/blog/$slug" params={{ slug: e.slug }} viewTransition={{ types: [BLOG_TITLE_TRANSITION_TYPE] }} className="group block py-6">
                   <p className="font-mono text-[11px] text-zinc-500">{e.date} · {e.readingMinutes} min</p>
-                  <h2 className="mt-2 text-xl font-bold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4">{e.title}</h2>
+                  <h2 className="mt-2 text-xl font-bold tracking-tight group-hover:underline group-hover:decoration-[#d6fd51] group-hover:underline-offset-4" style={{ viewTransitionName: blogTitleTransitionName(e.slug) }}>{e.title}</h2>
                   <p className="mt-2 text-sm text-zinc-400">{e.description}</p>
                 </Link>
               ) : (
@@ -53,6 +61,7 @@ function BlogIndex() {
               ),
             )}
           </div>
+          </Reveal>
         )}
       </main>
       <SiteFooter />
