@@ -83,12 +83,22 @@ export function TechIcon({ name, size = 18 }: { name: string; size?: number }) {
   )
 }
 
-export function TechStackLine({ items, size = 14 }: { items: string[]; size?: number }) {
+export function TechStackLine({
+  items,
+  size = 14,
+}: {
+  items: string[]
+  size?: number
+}) {
   return (
     <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
       {items.map((item, i) => (
         <span key={item} className="inline-flex items-center gap-1">
-          {i > 0 ? <span aria-hidden="true" className="mr-1 opacity-50">·</span> : null}
+          {i > 0 ? (
+            <span aria-hidden="true" className="mr-1 opacity-50">
+              ·
+            </span>
+          ) : null}
           <TechIcon name={item} size={size} />
           {item}
         </span>
@@ -144,7 +154,13 @@ export function MailIcon({ size = 18 }: { size?: number }) {
   )
 }
 
-export function SocialLinks({ size = 18, className = '' }: { size?: number; className?: string }) {
+export function SocialLinks({
+  size = 18,
+  className = '',
+}: {
+  size?: number
+  className?: string
+}) {
   return (
     <>
       <a

@@ -11,7 +11,16 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     label: 'Backend',
-    items: ['Go', 'TypeScript', 'JavaScript', 'Express', 'Hono', 'Flask', 'FastAPI', 'LangChain'],
+    items: [
+      'Go',
+      'TypeScript',
+      'JavaScript',
+      'Express',
+      'Hono',
+      'Flask',
+      'FastAPI',
+      'LangChain',
+    ],
   },
   {
     label: 'Data',

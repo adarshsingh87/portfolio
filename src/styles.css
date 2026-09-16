@@ -1,8 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 html {
@@ -63,15 +65,33 @@ body {
   letter-spacing: -0.02em;
   margin: 2em 0 0.6em;
 }
-.prose-blog h1 { font-size: 2rem; }
-.prose-blog h2 { font-size: 1.5rem; }
-.prose-blog h3 { font-size: 1.2rem; }
-.prose-blog p { margin: 1em 0; }
-.prose-blog a { color: #d6fd51; text-decoration: underline; text-underline-offset: 3px; }
-.prose-blog ul, .prose-blog ol { margin: 1em 0; padding-left: 1.4em; }
-.prose-blog li { margin: 0.35em 0; }
+.prose-blog h1 {
+  font-size: 2rem;
+}
+.prose-blog h2 {
+  font-size: 1.5rem;
+}
+.prose-blog h3 {
+  font-size: 1.2rem;
+}
+.prose-blog p {
+  margin: 1em 0;
+}
+.prose-blog a {
+  color: #d6fd51;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-blog ul,
+.prose-blog ol {
+  margin: 1em 0;
+  padding-left: 1.4em;
+}
+.prose-blog li {
+  margin: 0.35em 0;
+}
 .prose-blog blockquote {
-  border-left: 2px solid rgba(255,255,255,0.18);
+  border-left: 2px solid rgba(255, 255, 255, 0.18);
   padding-left: 1em;
   color: #a1a1aa;
   margin: 1.5em 0;
@@ -79,13 +99,13 @@ body {
 .prose-blog code {
   font-family: var(--font-mono);
   font-size: 0.85em;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   padding: 0.15em 0.4em;
   border-radius: 6px;
 }
 .prose-blog pre {
   background: #101013;
-  border: 1px solid rgba(255,255,255,0.09);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 12px;
   padding: 1em 1.1em;
   overflow-x: auto;
@@ -101,8 +121,9 @@ body {
   margin: 1.5em 0;
   font-size: 0.92em;
 }
-.prose-blog th, .prose-blog td {
-  border: 1px solid rgba(255,255,255,0.1);
+.prose-blog th,
+.prose-blog td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.6em 0.8em;
   text-align: left;
 }

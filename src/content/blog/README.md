@@ -16,12 +16,12 @@ Posts are Markdown files in this folder. The blog index reads every `*.md` file 
 
 ```md
 ---
-title: "Your title"
-description: "One or two sentences for cards and SEO."
-date: "2026-09-20"
-slug: "your-slug"
-tags: ["go", "postgres"]
-draft: "false"
+title: 'Your title'
+description: 'One or two sentences for cards and SEO.'
+date: '2026-09-20'
+slug: 'your-slug'
+tags: ['go', 'postgres']
+draft: 'false'
 ---
 ```
 

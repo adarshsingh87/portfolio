@@ -1,7 +1,12 @@
 export type Project = {
   slug: string
   title: string
-  kind: 'OSS / Tooling' | 'Product' | 'Integration' | 'Automation' | 'Selected experience'
+  kind:
+    | 'OSS / Tooling'
+    | 'Product'
+    | 'Integration'
+    | 'Automation'
+    | 'Selected experience'
   summary: string
   points: string[]
   stack: string[]

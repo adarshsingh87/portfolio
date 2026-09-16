@@ -47,7 +47,10 @@ const WS_RE = /\s+/
 const EXTERNAL_ANCHOR_RE = /<a(?![^>]*\btarget=)(?=[^>]*\bhref="https?:\/\/)/g
 
 // Minimal frontmatter parser. No dependency, Cloudflare-safe.
-export function parseFrontmatter(raw: string): { data: Record<string, string>; body: string } {
+export function parseFrontmatter(raw: string): {
+  data: Record<string, string>
+  body: string
+} {
   const match = raw.match(FRONTMATTER_RE)
   if (!match) return { data: {}, body: raw }
   const [, fm, body] = match
@@ -76,7 +79,9 @@ function parseList(value: string | undefined): string[] {
       .replace(LEADING_BRACKET_RE, '')
       .replace(TRAILING_BRACKET_RE, '')
       .split(',')
-      .map((s) => s.trim().replace(LEADING_QUOTE_RE, '').replace(TRAILING_QUOTE_RE, ''))
+      .map((s) =>
+        s.trim().replace(LEADING_QUOTE_RE, '').replace(TRAILING_QUOTE_RE, ''),
+      )
       .filter(Boolean)
   }
   return v

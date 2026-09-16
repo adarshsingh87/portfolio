@@ -1,7 +1,8 @@
 export const SITE = {
   name: 'Adarsh Singh',
   role: 'CTO, SmokeTrees Digital',
-  tagline: 'Hands-on CTO. I build production systems and the templates that make them repeatable.',
+  tagline:
+    'Hands-on CTO. I build production systems and the templates that make them repeatable.',
   domain: 'https://adarshsingh87.com',
   email: 'me@adarshsingh87.com',
   github: 'https://github.com/adarshsingh87',

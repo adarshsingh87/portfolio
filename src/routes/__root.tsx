@@ -40,14 +40,22 @@ export const Route = createRootRoute({
       { name: 'twitter:title', content: `${SITE.name} — Hands-on CTO` },
       { name: 'twitter:description', content: SITE.description },
       { name: 'twitter:image', content: `${SITE.domain}/og.svg` },
-      { name: 'keywords', content: 'Adarsh Singh, CTO, software engineer, full-stack engineer, React, Next.js, Go, TypeScript, cloud, developer tooling' },
+      {
+        name: 'keywords',
+        content:
+          'Adarsh Singh, CTO, software engineer, full-stack engineer, React, Next.js, Go, TypeScript, cloud, developer tooling',
+      },
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
       { rel: 'canonical', href: SITE.domain },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+      },
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap',
@@ -61,7 +69,11 @@ export const Route = createRootRoute({
           '@type': 'Person',
           name: SITE.name,
           jobTitle: 'CTO',
-          worksFor: { '@type': 'Organization', name: SITE.company, url: SITE.companyUrl },
+          worksFor: {
+            '@type': 'Organization',
+            name: SITE.company,
+            url: SITE.companyUrl,
+          },
           url: SITE.domain,
           email: `mailto:${SITE.email}`,
           sameAs: [SITE.github, SITE.linkedin, SITE.twitter],
@@ -91,7 +103,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <TanStackDevtools
               config={{ position: 'bottom-right' }}
               plugins={[
-                { name: 'Tanstack Router', render: <TanStackRouterDevtoolsPanel /> },
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
               ]}
             />
           </Suspense>
