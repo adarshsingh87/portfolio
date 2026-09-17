@@ -17,9 +17,9 @@ export const Route = createFileRoute('/')({
   loader: () => getAllEntries().slice(0, 3),
   head: () => ({
     meta: [
-      { title: `${SITE.name} — Hands-on CTO` },
+      { title: `${SITE.name}, CTO at ${SITE.company}` },
       { name: 'description', content: SITE.description },
-      { property: 'og:title', content: `${SITE.name} — Hands-on CTO` },
+      { property: 'og:title', content: `${SITE.name}, CTO at ${SITE.company}` },
       { property: 'og:description', content: SITE.description },
       { property: 'og:url', content: SITE.domain },
     ],
@@ -45,7 +45,7 @@ function Home() {
           <div>
             <Reveal>
               <p className="font-mono text-xs text-zinc-500">
-                Adarsh Singh — CTO, SmokeTrees Digital
+                Adarsh Singh, CTO at SmokeTrees Digital
               </p>
               <h1 className="mt-4 text-4xl font-extrabold leading-[1.03] tracking-tight sm:text-6xl">
                 CTO. Still mostly an engineer.
@@ -53,9 +53,9 @@ function Home() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-                Most of my week is code review and client meetings these days.
-                The rest is still hands-on: architecture decisions, the harder
-                bugs, and the parts nobody else wants to touch.
+                Most of my week goes to code reviews and client meetings. The
+                rest is still hands-on: architecture decisions, the harder bugs,
+                and the parts nobody else wants to touch.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <a
@@ -79,8 +79,8 @@ function Home() {
               <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-6">
                 {[
                   ['Millions', 'customers on systems I built or led'],
-                  ['3Cr+ / day', 'money through reconciliation flows'],
-                  ['50-60%', 'time savings by automating recon'],
+                  ['3Cr+ / day', 'transaction value reconciled'],
+                  ['50-60%', 'less manual reconciliation work where automated'],
                 ].map(([v, l]) => (
                   <div key={l}>
                     <dt className="text-lg font-extrabold tracking-tight sm:text-xl">
@@ -107,7 +107,7 @@ function Home() {
               </p>
               <div className="mt-5 border-t border-white/10 pt-5">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500">
-                  Defaults I defend
+                  How I work
                 </p>
                 <ul className="mt-3 space-y-2.5">
                   {PRINCIPLES.map((p) => (
@@ -211,7 +211,7 @@ function Home() {
             <SectionHead index="02" title="Experience" note="" />
             <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
               <div>
-                <p className="text-lg font-bold">CTO — {EXPERIENCE[0]?.org}</p>
+                <p className="text-lg font-bold">CTO at {EXPERIENCE[0]?.org}</p>
                 <a
                   href={EXPERIENCE[0]?.orgUrl}
                   target="_blank"
@@ -356,13 +356,12 @@ function Home() {
           className="border-t border-white/10 py-14 sm:py-20"
         >
           <Reveal>
-            <p className="font-mono text-xs text-[#d6fd51]">05 — Contact</p>
+            <p className="font-mono text-xs text-[#d6fd51]">05. Contact</p>
             <h2 className="mt-4 max-w-xl text-3xl font-extrabold tracking-tight sm:text-5xl">
-              Short emails get fast replies.
+              Tell me what you are building.
             </h2>
             <p className="mt-4 max-w-lg text-[15px] text-zinc-400">
-              Tell me what you are building and what production means for it. I
-              read everything.
+              Send me a short email about the project and where you need help.
             </p>
             <a
               href={`mailto:${SITE.email}`}

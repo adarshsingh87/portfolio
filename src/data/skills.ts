@@ -6,7 +6,7 @@ export type SkillGroup = {
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    label: 'Frontend / Mobile',
+    label: 'Frontend and mobile',
     items: ['React', 'Next.js', 'Tailwind CSS', 'React Native', 'Flutter'],
   },
   {
@@ -27,7 +27,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     items: ['PostgreSQL', 'MySQL', 'MongoDB', 'ElasticSearch'],
   },
   {
-    label: 'Cloud / Deploy',
+    label: 'Cloud and deployment',
     items: ['AWS', 'Azure', 'Vercel', 'Cloudflare', 'Kubernetes'],
   },
   {
@@ -42,11 +42,11 @@ export const PRINCIPLES = [
     body: 'If it cannot be deployed, monitored, and handed over, it is not done.',
   },
   {
-    title: 'Boring where it counts',
-    body: 'Templates, conventions, and defaults. Novelty only where the problem is novel.',
+    title: 'Reuse the setup',
+    body: 'I use shared templates so we do not repeat the same setup on every project.',
   },
   {
     title: 'Write it down',
-    body: 'Context propagation, runbooks, readable code. The next person should not need me in the room.',
+    body: 'I document decisions and write runbooks so the next engineer can work without waiting for me.',
   },
 ]

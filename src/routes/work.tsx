@@ -8,11 +8,11 @@ import { Reveal } from '../components/reveal'
 export const Route = createFileRoute('/work')({
   head: () => ({
     meta: [
-      { title: `Work — ${SITE.name}` },
+      { title: `Work by ${SITE.name}` },
       {
         name: 'description',
         content:
-          'Selected engineering work: OSS tooling, product builds, integrations, and automation.',
+          'Engineering projects by Adarsh Singh, including open-source tools, ONDC integrations, and financial reconciliation systems.',
       },
     ],
   }),
@@ -27,13 +27,12 @@ function Work() {
         <Reveal>
           <p className="font-mono text-xs text-zinc-500">Archive</p>
           <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">
-            All work, OSS first.
+            Open-source tools and client work.
           </h1>
           <p className="mt-4 max-w-2xl text-[15px] text-zinc-400">
-            Tooling I maintain, products I shaped, integrations that survived
-            contact with production. Metrics shown are the ones confirmed:
-            millions of customers, 3Cr+ reconciled daily, 50-60% repetitive work
-            removed.
+            I maintain the open-source tools listed here and build software for
+            clients at SmokeTrees Digital. The projects include ONDC
+            integrations, shopping apps, and daily financial reconciliation.
           </p>
         </Reveal>
         <div className="mt-10 space-y-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
@@ -54,7 +53,7 @@ function Work() {
                 <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
                   {p.points.map((pt) => (
                     <li key={pt} className="text-[13px] text-zinc-500">
-                      — {pt}
+                      • {pt}
                     </li>
                   ))}
                 </ul>

@@ -41,11 +41,10 @@ export const PROJECTS: Project[] = [
     title: 'SmokeTrees Backend Template',
     kind: 'OSS / Tooling',
     summary:
-      'A mildly opinionated backend starting point. Sensible defaults, consistent layout, and the boring setup already done so new services start clean and stay consistent.',
+      'A backend starting point. Project layout and defaults are decided up front, so every new service starts from the same structure instead of being assembled from scratch.',
     points: [
       'Consistent project layout across services',
-      'Defaults that cut setup mistakes',
-      'Faster start for new backend work, measured in the 50-60% range on repetitive setup',
+      'Defaults chosen up front to cut common setup mistakes',
     ],
     stack: ['TypeScript', 'Express', 'PostgreSQL'],
     links: [
@@ -61,11 +60,11 @@ export const PROJECTS: Project[] = [
     title: 'SmokeTrees Frontend Template',
     kind: 'OSS / Tooling',
     summary:
-      'A mildly opinionated Next.js starting point. Shared conventions for routing, data fetching, and styling so client projects begin from the same solid base.',
+      'A Next.js starting point. Routing, data fetching, and styling conventions are decided once, so every client project starts from the same base instead of re-answering those questions.',
     points: [
-      'Next.js conventions decided once, reused everywhere',
-      'Reduces common implementation errors',
-      'Repeatable start for client frontends',
+      'Next.js conventions decided once, reused across client projects',
+      'Shared conventions help reduce common implementation errors',
+      'Client frontends start from a repeatable base',
     ],
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
     links: [
@@ -81,7 +80,7 @@ export const PROJECTS: Project[] = [
     title: 'Fomofy / MyFomo',
     kind: 'Product',
     summary:
-      'An e-commerce experience built around less scrolling and better discovery. Focused product views with recommendations that narrow choices instead of adding noise.',
+      'An e-commerce app that helps shoppers find products with less scrolling. Focused product views and personalized recommendations narrow the choices.',
     points: [
       'Product discovery over endless scrolling',
       'Personalized recommendations',
@@ -96,7 +95,7 @@ export const PROJECTS: Project[] = [
     title: 'ONDC integrations',
     kind: 'Integration',
     summary:
-      'Buyer-side and seller-side gift card flows plus a B2B retail seller implementation on ONDC. Protocol work where the spec is strict and the edge cases are real.',
+      'ONDC integrations for buying and selling gift cards, plus a B2B retail seller implementation for a client.',
     points: [
       'Gift cards, buyer side and seller side',
       'B2B retail seller implementation for a client',
@@ -133,7 +132,7 @@ export const PROJECTS: Project[] = [
     title: 'AI chatbots',
     kind: 'Product',
     summary:
-      'Chatbots built for client support and operations. Retrieval over client docs, human handoff where it matters, and honest scoping about what the bot should not answer.',
+      'Support and operations chatbots that retrieve answers from client documents. They hand unresolved questions to people and have defined limits on what they answer.',
     points: [
       'Client-specific knowledge flows',
       'Handoff paths for unresolved cases',
@@ -146,7 +145,7 @@ export const PROJECTS: Project[] = [
     title: 'Shopify connectors',
     kind: 'Integration',
     summary:
-      'Connectors and small apps that tie Shopify stores into client systems. Orders, inventory, and the unglamorous sync logic that keeps storefronts honest.',
+      'Connectors and small apps that sync orders, inventory, and catalog data between Shopify stores and client systems.',
     points: [
       'Storefront to internal-system sync',
       'Order and catalog connectors',
@@ -159,7 +158,7 @@ export const PROJECTS: Project[] = [
     title: 'Business applications',
     kind: 'Selected experience',
     summary:
-      'Learning management systems, CRMs, employee rewards and recognition tooling, and other custom internal software. Grouped here because each one matters less than the pattern: find the workflow, then encode it.',
+      'Custom internal software, including learning management systems, CRMs, and employee rewards and recognition tools. I map the workflow before building the software.',
     points: ['LMS builds', 'CRM builds', 'Rewards and recognition systems'],
     stack: ['React', 'Next.js', 'Go', 'PostgreSQL'],
     links: [],

@@ -1,9 +1,9 @@
-# Adarsh Singh — Hands-on CTO
+# Adarsh Singh, CTO at SmokeTrees Digital
 
-> Adarsh Singh is CTO at SmokeTrees Digital (India). He works across the stack
-> on production systems, integrations, automation, and cloud infrastructure,
-> and turns repeatable parts into templates so small teams deliver like bigger
-> ones. Contact is email only: me@adarshsingh87.com.
+> Adarsh Singh leads engineering at SmokeTrees Digital in India. He builds web
+> applications, ONDC integrations, and financial reconciliation systems. He
+> also maintains open-source tools and shared project templates.
+> Contact him by email at me@adarshsingh87.com.
 
 ## Key pages
 
@@ -13,12 +13,12 @@
 
 ## Selected work
 
-- Smoke Context: context-management library for Express built on async storage; carries request-scoped context so logs trace without threading IDs through every function. [GitHub](https://github.com/smoke-trees/smoke-context)
-- SmokeTrees Backend Template: opinionated backend starting point (TypeScript, Express, PostgreSQL). [GitHub](https://github.com/smoke-trees/node-template-ts)
-- SmokeTrees Frontend Template: opinionated Next.js starting point (Next.js, React, TypeScript, Tailwind CSS). [GitHub](https://github.com/smoke-trees/next-FE-template)
+- Smoke Context: an Express library that uses async storage to pass request context through a call chain. It lets you trace logs without passing IDs to every function. [GitHub](https://github.com/smoke-trees/smoke-context)
+- SmokeTrees Backend Template: shared project layout and setup for TypeScript, Express, and PostgreSQL services. [GitHub](https://github.com/smoke-trees/node-template-ts)
+- SmokeTrees Frontend Template: shared routing, data fetching, and styling conventions for Next.js projects using React, TypeScript, and Tailwind CSS. [GitHub](https://github.com/smoke-trees/next-FE-template)
 - Fomofy / MyFomo: e-commerce product with discovery-focused views and recommendations. [myfomo.in](https://myfomo.in/)
 - ONDC integrations: buyer-side and seller-side gift card flows plus a B2B retail seller implementation; production systems serving millions of customers.
-- Reconciliation and financial automation: daily reconciliation flows handling 3Cr+ in transactions, plus finance-ops automation (50-60% repetitive manual work cut where applied).
+- Reconciliation and financial automation: systems that reconcile 3Cr+ in transactions daily. Automation cut repetitive manual work by 50-60% where applied.
 - AI chatbots: client support and operations bots with retrieval over client docs and human handoff.
 - Shopify connectors: orders, inventory, and storefront-to-system sync.
 - Business applications: LMS, CRM, and rewards/recognition builds.
@@ -27,10 +27,10 @@ More detail on each: [Work archive](https://adarshsingh87.com/work)
 
 ## Stack
 
-- Frontend / Mobile: React, Next.js, Tailwind CSS, React Native, Flutter
+- Frontend and mobile: React, Next.js, Tailwind CSS, React Native, Flutter
 - Backend: Go, TypeScript, JavaScript, Express, Hono, Flask, FastAPI, LangChain
 - Data: PostgreSQL, MySQL, MongoDB, ElasticSearch
-- Cloud / Deploy: AWS, Azure, Vercel, Cloudflare, Kubernetes
+- Cloud and deployment: AWS, Azure, Vercel, Cloudflare, Kubernetes
 - Daily drivers: Arch Linux, Hyprland, Neovim, OpenCode
 
 ## Notes (blog)

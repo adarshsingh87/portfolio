@@ -14,10 +14,10 @@ export const EXPERIENCE: Experience[] = [
     summary:
       'I run engineering at SmokeTrees. Half the job is architecture and delivery calls. The other half is still code: templates, integrations, and the systems clients depend on daily.',
     bullets: [
-      'Own architecture across client and internal builds, from Next.js frontends to Go and TypeScript backends on Postgres',
-      'Set the defaults: backend and frontend templates, review habits, deploy paths on AWS, Azure, Vercel, and Cloudflare',
-      'Delivered ONDC buyer and seller flows, Shopify connectors, AI chatbots, and reconciliation systems moving 3Cr+ per day',
-      'Kept the team small and the output steady by removing repetitive setup work, often in the 50-60% range',
+      'Design client and internal systems using Next.js, Go, TypeScript, and PostgreSQL',
+      'Maintain shared project templates, set code review practices, and plan deployments on AWS, Azure, Vercel, and Cloudflare',
+      'Delivered ONDC buyer and seller flows, Shopify connectors, AI chatbots, and systems that reconcile 3Cr+ in transactions per day',
+      'Cut repetitive setup work by 50-60% in projects where we applied shared templates and automation',
     ],
   },
 ]
