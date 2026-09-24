@@ -9,12 +9,9 @@ type RevealProps = {
 }
 
 /**
- * Subtle scroll-reveal wrapper. Hidden until ~12% visible, then fades up once.
- *
- * SSR-safe by design: no React state, the `is-visible` class is added via the
- * DOM so server and client markup always match. Without JS the
- * `@media (scripting: none)` CSS guard keeps content visible, and
- * `prefers-reduced-motion` disables the animation in CSS.
+ * Subtle scroll-reveal wrapper. Content remains visible in the server render;
+ * the client adds a pending class only when an observer is available, so
+ * reduced-motion and no-script readers never get hidden content.
  */
 export function Reveal({ children, delay = 0, className = '' }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
@@ -29,6 +26,7 @@ export function Reveal({ children, delay = 0, className = '' }: RevealProps) {
       el.classList.add('is-visible')
       return
     }
+    el.classList.add('reveal-ready')
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {

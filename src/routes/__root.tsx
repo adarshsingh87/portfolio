@@ -12,7 +12,7 @@ export const Route = createRootRoute({
       { title: `${SITE.name}, CTO at ${SITE.company}` },
       { name: 'description', content: SITE.description },
       { name: 'author', content: SITE.name },
-      { name: 'theme-color', content: '#0a0f0e' },
+      { name: 'theme-color', content: '#0e0f0d' },
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: `${SITE.name}, portfolio` },
       { property: 'og:title', content: `${SITE.name}, CTO at ${SITE.company}` },
@@ -44,7 +44,7 @@ export const Route = createRootRoute({
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap',
       },
     ],
     scripts: [
@@ -77,10 +77,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-sm focus:bg-signal focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink"
-        >
+        <a href="#main" className="skip-link">
           Skip to content
         </a>
         {children}

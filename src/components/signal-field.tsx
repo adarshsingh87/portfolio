@@ -1,43 +1,48 @@
 export function SignalField() {
   return (
     <div
-      className="orbital-stage"
+      className="signal-field"
       role="img"
-      aria-label="An orbital systems instrument showing architecture, delivery, and operations"
+      aria-label="A technical map showing product intent moving through APIs, data, infrastructure, and teams"
     >
-      <div className="orbital-noise" aria-hidden="true" />
-      <div className="orbital-topline">
-        <span>Signal / 001</span>
-        <span>Live system study</span>
+      <div className="signal-field-header">
+        <span>system map / 01</span>
+        <span>adarshsingh87.com</span>
       </div>
-      <div className="orbital-object" aria-hidden="true">
-        <div className="orbital-shadow" />
-        <div className="orbital-ring orbital-ring-outer" />
-        <div className="orbital-ring orbital-ring-mid" />
-        <div className="orbital-ring orbital-ring-inner" />
-        <div className="orbital-axis orbital-axis-x" />
-        <div className="orbital-axis orbital-axis-y" />
-        <div className="orbital-core">
-          <span>01 / 03</span>
-          <strong>make</strong>
-          <em>it real</em>
-        </div>
-        <div className="orbital-node orbital-node-top">
-          <span>architecture</span>
-          <strong>model</strong>
-        </div>
-        <div className="orbital-node orbital-node-right">
-          <span>operations</span>
-          <strong>3Cr+ / day</strong>
-        </div>
-        <div className="orbital-node orbital-node-bottom">
-          <span>delivery</span>
-          <strong>50–60% less manual work</strong>
-        </div>
+      <div className="signal-field-grid" aria-hidden="true" />
+      <div className="signal-route" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
       </div>
-      <div className="orbital-bottomline">
-        <span>systems that stay</span>
-        <span>01—∞</span>
+      <div className="signal-node signal-node-product">
+        <span>01</span>
+        <strong>Product</strong>
+        <small>intent</small>
+      </div>
+      <div className="signal-node signal-node-api">
+        <span>02</span>
+        <strong>APIs</strong>
+        <small>contracts</small>
+      </div>
+      <div className="signal-node signal-node-data">
+        <span>03</span>
+        <strong>Data</strong>
+        <small>evidence</small>
+      </div>
+      <div className="signal-node signal-node-team">
+        <span>04</span>
+        <strong>Teams</strong>
+        <small>ownership</small>
+      </div>
+      <div className="signal-field-center" aria-hidden="true">
+        <span>hold</span>
+        <i />
+      </div>
+      <div className="signal-field-footer">
+        <span>built to keep working</span>
+        <span>01—04</span>
       </div>
     </div>
   )

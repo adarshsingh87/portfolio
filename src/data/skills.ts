@@ -38,15 +38,15 @@ export const SKILL_GROUPS: SkillGroup[] = [
 
 export const PRINCIPLES = [
   {
-    title: 'Design for the handover',
-    body: 'Build for the operator who inherits the system, not only the launch demo.',
+    title: 'Production first',
+    body: 'Build for the team that will operate it, not only the launch demo.',
   },
   {
-    title: 'Create leverage',
-    body: 'Templates, automation, and shared decisions should make the next project cheaper.',
+    title: 'Boring where it counts',
+    body: 'Choose the dependable path at the boundaries and spend novelty on the product.',
   },
   {
-    title: 'Leave a trail',
-    body: 'Runbooks and architecture notes should let the team move without waiting for me.',
+    title: 'Write it down',
+    body: 'Leave the trade-off, the runbook, and the reason behind the decision.',
   },
 ]

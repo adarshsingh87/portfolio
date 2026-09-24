@@ -25,6 +25,8 @@ export const Route = createFileRoute('/blog/')({
 
 function BlogIndex() {
   const entries = Route.useLoaderData()
+  const [featured, ...rest] = entries
+
   return (
     <div className="blog-page">
       <SiteNav />
@@ -44,21 +46,65 @@ function BlogIndex() {
         </Reveal>
         {entries.length === 0 ? (
           <div className="blog-empty">
-            <p>
-              No posts published yet. New posts are Markdown files in{' '}
-              <code>src/content/blog</code>. Add one, rebuild, and it appears
-              here automatically.
-            </p>
-            <p>See BLOG_GUIDE.md for the 60-second workflow.</p>
+            <p>Notes are taking shape. The first few should be here soon.</p>
           </div>
         ) : (
           <>
+            <Reveal className="blog-feature">
+              <div className="blog-feature-top">
+                <span>Featured note</span>
+                <span>{featured.date}</span>
+              </div>
+              {featured.kind === 'internal' ? (
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: featured.slug }}
+                  viewTransition={{ types: [BLOG_TITLE_TRANSITION_TYPE] }}
+                >
+                  <h2
+                    style={{
+                      viewTransitionName: blogTitleTransitionName(
+                        featured.slug,
+                      ),
+                    }}
+                  >
+                    {featured.title}
+                  </h2>
+                  <p>{featured.description}</p>
+                  <span className="blog-feature-link">
+                    Read note · {featured.readingMinutes} min{' '}
+                    <i aria-hidden="true">↗</i>
+                  </span>
+                </Link>
+              ) : (
+                <a
+                  href={featured.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <h2>{featured.title}</h2>
+                  <p>{featured.description}</p>
+                  <span className="blog-feature-link">
+                    Open note · {featured.source} <i aria-hidden="true">↗</i>
+                  </span>
+                </a>
+              )}
+              <div className="blog-feature-glyph" aria-hidden="true">
+                <span>AS</span>
+                <i />
+                <strong>
+                  read
+                  <br />
+                  slowly
+                </strong>
+              </div>
+            </Reveal>
             <div className="blog-list-head">
               <span>Archive</span>
               <span>Newest first</span>
             </div>
             <div className="blog-list">
-              {entries.map((entry, index) =>
+              {rest.map((entry, index) =>
                 entry.kind === 'internal' ? (
                   <Link
                     key={entry.slug}
@@ -69,7 +115,7 @@ function BlogIndex() {
                   >
                     <div className="blog-entry-top">
                       <span className="blog-entry-number">
-                        {String(index + 1).padStart(2, '0')}
+                        {String(index + 2).padStart(2, '0')}
                       </span>
                       <p className="blog-entry-meta">
                         {entry.date} · {entry.readingMinutes} min
@@ -94,10 +140,11 @@ function BlogIndex() {
                   >
                     <div className="blog-entry-top">
                       <span className="blog-entry-number">
-                        {String(index + 1).padStart(2, '0')}
+                        {String(index + 2).padStart(2, '0')}
                       </span>
                       <p className="blog-entry-meta">
-                        {entry.date} · {entry.source} <span aria-hidden>↗</span>
+                        {entry.date} · {entry.source}{' '}
+                        <span aria-hidden="true">↗</span>
                         <span className="sr-only">(opens in a new tab)</span>
                       </p>
                     </div>

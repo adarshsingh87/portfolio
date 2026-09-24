@@ -3,19 +3,20 @@ import { useEffect, useRef } from 'react'
 export function CursorField() {
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     if (
       typeof window === 'undefined' ||
       !window.matchMedia('(pointer: fine)').matches ||
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
+    )
       return
-    }
 
     const dot = dotRef.current
     const ring = ringRef.current
-    if (!dot || !ring) return
+    const label = labelRef.current
+    if (!dot || !ring || !label) return
 
     let pointerX = -100
     let pointerY = -100
@@ -36,7 +37,13 @@ export function CursorField() {
       const target = event.target
       if (!(target instanceof Element)) return
       const interactive = target.closest('a, button, [data-cursor]')
-      document.body.classList.toggle('cursor-hover', Boolean(interactive))
+      if (!interactive) return
+      const cursorTarget = interactive as HTMLElement
+      const href =
+        interactive instanceof HTMLAnchorElement ? interactive.href : ''
+      label.textContent =
+        cursorTarget.dataset.cursor || (href.startsWith('http') ? 'Open' : '')
+      document.body.classList.toggle('cursor-hover', Boolean(label.textContent))
     }
 
     const onPointerOut = (event: PointerEvent) => {
@@ -46,6 +53,7 @@ export function CursorField() {
         !target.closest('a, button, [data-cursor]')
       ) {
         document.body.classList.remove('cursor-hover')
+        label.textContent = ''
       }
     }
 
@@ -73,7 +81,9 @@ export function CursorField() {
 
   return (
     <>
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true">
+        <span ref={labelRef} className="cursor-label" />
+      </div>
       <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
     </>
   )

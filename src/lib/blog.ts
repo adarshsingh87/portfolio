@@ -1,3 +1,5 @@
+import { EXTERNAL_POSTS } from '../data/writing'
+
 export type BlogFrontmatter = {
   title: string
   description: string
@@ -13,7 +15,6 @@ export type BlogPost = BlogFrontmatter & {
 }
 
 export type { ExternalPost } from '../data/writing'
-import { EXTERNAL_POSTS } from '../data/writing'
 
 export type BlogEntry =
   | {
@@ -55,7 +56,7 @@ export function parseFrontmatter(raw: string): {
   if (!match) return { data: {}, body: raw }
   const [, fm, body] = match
   const data: Record<string, string> = {}
-  for (const line of (fm ?? '').split('\n')) {
+  for (const line of fm.split('\n')) {
     const idx = line.indexOf(':')
     if (idx === -1) continue
     const key = line.slice(0, idx).trim()
@@ -68,7 +69,7 @@ export function parseFrontmatter(raw: string): {
     }
     if (key) data[key] = value
   }
-  return { data, body: body ?? '' }
+  return { data, body }
 }
 
 function parseList(value: string | undefined): string[] {
@@ -112,21 +113,21 @@ type PostMeta = {
 function readAllMeta(includeDrafts = false): PostMeta[] {
   const metas: PostMeta[] = []
   for (const [path, raw] of Object.entries(modules)) {
-    const { data, body } = parseFrontmatter(raw as string)
+    const { data, body } = parseFrontmatter(raw)
     const slug =
-      data.slug ?? path.split('/').pop()?.replace(MD_EXT_RE, '') ?? 'untitled'
+      data.slug || path.split('/').pop()?.replace(MD_EXT_RE, '') || 'untitled'
     const draft = data.draft === 'true'
     if (draft && !includeDrafts) continue
     if (!data.title) continue
     const words = body.split(WS_RE).length
     metas.push({
       title: data.title,
-      description: data.description ?? '',
-      date: data.date ?? '',
+      description: data.description || '',
+      date: data.date || '',
       slug,
       tags: parseList(data.tags),
       draft,
-      body: body ?? '',
+      body,
       readingMinutes: Math.max(1, Math.round(words / 200)),
     })
   }

@@ -21,7 +21,7 @@ export const SITE = {
 export const NAV = [
   { label: 'Work', href: '/#work' },
   { label: 'Experience', href: '/#experience' },
-  { label: 'Stack', href: '/#stack' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Writing', href: '/blog' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: `mailto:${SITE.email}` },
 ] as const
