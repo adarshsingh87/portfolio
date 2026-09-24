@@ -3448,37 +3448,42 @@ body.warp-mode .scroll-cue::after {
   content: '';
   mask-image: radial-gradient(ellipse at center, #000 20%, transparent 88%);
 }
-.route-string {
+.route-threads {
   position: absolute;
   z-index: 1;
-  height: 2px;
-  background: #b85b48;
-  box-shadow: 0 0 0 1px rgba(184, 91, 72, 0.15);
-  transform-origin: left center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
-.route-string-one {
-  top: 44%;
-  left: 42%;
-  width: 25%;
-  transform: rotate(-27deg);
+.route-threads line {
+  fill: none;
+  stroke: #b85b48;
+  stroke-width: 0.35;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
 }
-.route-string-two {
-  top: 51%;
-  left: 42%;
-  width: 31%;
-  transform: rotate(19deg);
+.route-thread {
+  opacity: 0.46;
+  transition:
+    opacity 180ms ease,
+    stroke 180ms ease,
+    stroke-width 180ms ease;
 }
-.route-string-three {
-  top: 47%;
-  left: 49%;
-  width: 25%;
-  transform: rotate(41deg);
+.route-thread-evidence {
+  stroke-width: 0.25;
+  stroke-dasharray: 1 1;
 }
-.route-string-four {
-  top: 55%;
-  left: 46%;
-  width: 28%;
-  transform: rotate(-44deg);
+.route-thread-cross {
+  stroke-width: 0.2;
+  stroke-dasharray: 0.7 1.2;
+  opacity: 0.3;
+}
+.route-thread-active {
+  stroke: #f1b2a4;
+  stroke-width: 0.55;
+  opacity: 1;
 }
 .route-node {
   position: absolute;
@@ -3504,8 +3509,8 @@ body.warp-mode .scroll-cue::after {
   letter-spacing: -0.04em;
 }
 .route-node-primary {
-  top: 40%;
-  left: 39%;
+  top: 50%;
+  left: 50%;
   min-width: 160px;
   border-color: var(--signal);
   transform: translate(-50%, -50%) rotate(-3deg);
@@ -3518,6 +3523,7 @@ body.warp-mode .scroll-cue::after {
   min-width: 140px;
   font: inherit;
   cursor: pointer;
+  transform: translate(-50%, -50%) rotate(-2deg);
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -3528,23 +3534,87 @@ body.warp-mode .scroll-cue::after {
 .route-node-selected {
   border-color: #f1b2a4;
   background: #241612;
-  transform: translateY(-4px) rotate(-2deg);
+  transform: translate(-50%, calc(-50% - 4px)) rotate(-2deg);
 }
 .route-node-cause-1 {
-  top: 13%;
-  left: 13%;
+  top: 22%;
+  left: 20%;
 }
 .route-node-cause-2 {
-  top: 17%;
-  right: 11%;
+  top: 22%;
+  left: 80%;
 }
 .route-node-cause-3 {
-  right: 12%;
-  bottom: 12%;
+  top: 78%;
+  left: 80%;
 }
 .route-node-cause-4 {
-  bottom: 13%;
-  left: 10%;
+  top: 78%;
+  left: 20%;
+}
+.route-node-evidence {
+  min-width: 125px;
+  padding: 8px 10px;
+  border-style: dashed;
+  background: rgba(14, 15, 13, 0.92);
+  color: var(--paper);
+  text-align: left;
+  cursor: pointer;
+  transform: translate(-50%, -50%) rotate(1deg);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+.route-node-evidence span {
+  color: var(--fog-dim);
+  font-size: 8px;
+}
+.route-node-evidence strong {
+  font-size: 12px;
+  letter-spacing: -0.02em;
+}
+.route-node-evidence:hover,
+.route-node-evidence:focus-visible,
+.route-node-evidence.route-node-selected {
+  border-color: #f1b2a4;
+  background: #241612;
+  transform: translate(-50%, calc(-50% - 4px)) rotate(1deg);
+}
+.route-board-legend {
+  position: absolute;
+  z-index: 3;
+  right: 16px;
+  bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 15px;
+  justify-content: flex-end;
+  color: var(--fog-dim);
+  font: 8px var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.route-board-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.route-board-legend i {
+  display: block;
+  width: 14px;
+  height: 1px;
+  background: #b85b48;
+}
+.route-board-legend .route-legend-evidence {
+  height: 0;
+  border-top: 1px dashed #b85b48;
+  background: transparent;
+}
+.route-board-legend .route-legend-cross {
+  height: 0;
+  border-top: 1px dotted #b85b48;
+  background: transparent;
 }
 .route-board-readout {
   display: grid;
@@ -3659,6 +3729,19 @@ body.warp-mode .scroll-cue::after {
   .route-node strong {
     font-size: 13px;
   }
+  .route-node-evidence {
+    min-width: 88px;
+    padding: 7px 8px;
+  }
+  .route-node-evidence span {
+    font-size: 7px;
+  }
+  .route-node-evidence strong {
+    font-size: 11px;
+  }
+  .route-board-legend {
+    display: none;
+  }
   .route-node-primary {
     min-width: 125px;
   }
@@ -3666,20 +3749,20 @@ body.warp-mode .scroll-cue::after {
     font-size: 19px;
   }
   .route-node-cause-1 {
-    top: 8%;
-    left: 5%;
+    top: 22%;
+    left: 20%;
   }
   .route-node-cause-2 {
-    top: 10%;
-    right: 4%;
+    top: 22%;
+    left: 80%;
   }
   .route-node-cause-3 {
-    right: 4%;
-    bottom: 8%;
+    top: 78%;
+    left: 80%;
   }
   .route-node-cause-4 {
-    bottom: 9%;
-    left: 4%;
+    top: 78%;
+    left: 20%;
   }
   .route-board-readout {
     grid-template-columns: 1fr;
