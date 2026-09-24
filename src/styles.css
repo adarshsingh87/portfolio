@@ -698,11 +698,6 @@ body.menu-is-open {
   color: var(--signal-ink);
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.signal-field-center span {
-  font: 600 11px var(--font-mono);
-  text-transform: uppercase;
-  transform: rotate(-45deg);
-}
 .signal-field-center i {
   position: absolute;
   inset: 13px;

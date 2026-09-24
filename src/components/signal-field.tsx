@@ -37,7 +37,6 @@ export function SignalField() {
         <small>ownership</small>
       </div>
       <div className="signal-field-center" aria-hidden="true">
-        <span>hold</span>
         <i />
       </div>
       <div className="signal-field-footer">
