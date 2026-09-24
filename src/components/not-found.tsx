@@ -1,8 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { PointerEvent as ReactPointerEvent } from 'react'
 import { Link, useLocation } from '@tanstack/react-router'
 import { SiteFooter, SiteNav } from './site'
 
 type CauseId = 'unbuilt' | 'renamed' | 'future-feature' | 'user-confidence'
+type EvidenceId =
+  'meeting-notes' | 'browser-history' | 'deployment-log' | 'url-parser'
+type NodeId = '404' | CauseId | EvidenceId
+
+type Point = {
+  x: number
+  y: number
+}
 
 type Cause = {
   id: CauseId
@@ -11,6 +20,7 @@ type Cause = {
 }
 
 type Evidence = {
+  id: EvidenceId
   label: string
   detail: string
   cause: CauseId
@@ -19,10 +29,8 @@ type Evidence = {
 }
 
 type RouteThread = {
-  x1: number
-  y1: number
-  x2: number
-  y2: number
+  from: NodeId
+  to: NodeId
   cause: CauseId
   kind: 'core' | 'evidence' | 'cross'
 }
@@ -52,6 +60,7 @@ const CAUSES: Cause[] = [
 
 const EVIDENCE: Evidence[] = [
   {
+    id: 'meeting-notes',
     label: 'meeting notes',
     detail: 'idea / 04.12',
     cause: 'unbuilt',
@@ -59,6 +68,7 @@ const EVIDENCE: Evidence[] = [
     y: 8,
   },
   {
+    id: 'browser-history',
     label: 'browser history',
     detail: 'stale link / 03',
     cause: 'user-confidence',
@@ -66,6 +76,7 @@ const EVIDENCE: Evidence[] = [
     y: 50,
   },
   {
+    id: 'deployment-log',
     label: 'deployment log',
     detail: 'no route / 09:14',
     cause: 'renamed',
@@ -73,6 +84,7 @@ const EVIDENCE: Evidence[] = [
     y: 50,
   },
   {
+    id: 'url-parser',
     label: 'url parser',
     detail: '404 / unresolved',
     cause: 'future-feature',
@@ -81,32 +93,95 @@ const EVIDENCE: Evidence[] = [
   },
 ]
 
+const INITIAL_NODE_POSITIONS: Record<NodeId, Point> = {
+  '404': { x: 50, y: 50 },
+  unbuilt: { x: 20, y: 22 },
+  renamed: { x: 80, y: 22 },
+  'future-feature': { x: 80, y: 78 },
+  'user-confidence': { x: 20, y: 78 },
+  'meeting-notes': { x: EVIDENCE[0].x, y: EVIDENCE[0].y },
+  'browser-history': { x: EVIDENCE[1].x, y: EVIDENCE[1].y },
+  'deployment-log': { x: EVIDENCE[2].x, y: EVIDENCE[2].y },
+  'url-parser': { x: EVIDENCE[3].x, y: EVIDENCE[3].y },
+}
+
 const THREADS: RouteThread[] = [
-  { x1: 50, y1: 50, x2: 20, y2: 22, cause: 'unbuilt', kind: 'core' },
-  { x1: 50, y1: 50, x2: 80, y2: 22, cause: 'renamed', kind: 'core' },
-  { x1: 50, y1: 50, x2: 80, y2: 78, cause: 'future-feature', kind: 'core' },
-  { x1: 50, y1: 50, x2: 20, y2: 78, cause: 'user-confidence', kind: 'core' },
-  { x1: 20, y1: 22, x2: 50, y2: 8, cause: 'unbuilt', kind: 'evidence' },
-  { x1: 80, y1: 22, x2: 85, y2: 50, cause: 'renamed', kind: 'evidence' },
-  { x1: 80, y1: 78, x2: 50, y2: 92, cause: 'future-feature', kind: 'evidence' },
+  { from: '404', to: 'unbuilt', cause: 'unbuilt', kind: 'core' },
+  { from: '404', to: 'renamed', cause: 'renamed', kind: 'core' },
   {
-    x1: 20,
-    y1: 78,
-    x2: 15,
-    y2: 50,
+    from: '404',
+    to: 'future-feature',
+    cause: 'future-feature',
+    kind: 'core',
+  },
+  {
+    from: '404',
+    to: 'user-confidence',
+    cause: 'user-confidence',
+    kind: 'core',
+  },
+  {
+    from: 'unbuilt',
+    to: 'meeting-notes',
+    cause: 'unbuilt',
+    kind: 'evidence',
+  },
+  {
+    from: 'renamed',
+    to: 'deployment-log',
+    cause: 'renamed',
+    kind: 'evidence',
+  },
+  {
+    from: 'future-feature',
+    to: 'url-parser',
+    cause: 'future-feature',
+    kind: 'evidence',
+  },
+  {
+    from: 'user-confidence',
+    to: 'browser-history',
     cause: 'user-confidence',
     kind: 'evidence',
   },
-  { x1: 50, y1: 8, x2: 15, y2: 50, cause: 'unbuilt', kind: 'cross' },
-  { x1: 85, y1: 50, x2: 50, y2: 92, cause: 'renamed', kind: 'cross' },
-  { x1: 50, y1: 92, x2: 15, y2: 50, cause: 'future-feature', kind: 'cross' },
-  { x1: 15, y1: 50, x2: 50, y2: 8, cause: 'user-confidence', kind: 'cross' },
+  {
+    from: 'meeting-notes',
+    to: 'browser-history',
+    cause: 'unbuilt',
+    kind: 'cross',
+  },
+  {
+    from: 'deployment-log',
+    to: 'url-parser',
+    cause: 'renamed',
+    kind: 'cross',
+  },
+  {
+    from: 'url-parser',
+    to: 'browser-history',
+    cause: 'future-feature',
+    kind: 'cross',
+  },
+  {
+    from: 'browser-history',
+    to: 'meeting-notes',
+    cause: 'user-confidence',
+    kind: 'cross',
+  },
 ]
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
 
 export function NotFoundPage() {
   const pathname = useLocation({ select: (location) => location.pathname })
+  const mapRef = useRef<HTMLDivElement>(null)
+  const dragRef = useRef<{ id: NodeId; pointerId: number } | null>(null)
   const [phase, setPhase] = useState<'diagnosing' | 'board'>('diagnosing')
   const [selectedCause, setSelectedCause] = useState<CauseId>(CAUSES[0].id)
+  const [positions, setPositions] = useState(INITIAL_NODE_POSITIONS)
+  const [dragging, setDragging] = useState<NodeId | null>(null)
 
   useEffect(() => {
     setPhase('diagnosing')
@@ -115,6 +190,46 @@ export function NotFoundPage() {
   }, [pathname])
 
   const cause = CAUSES.find((item) => item.id === selectedCause) ?? CAUSES[0]
+
+  const getNodeStyle = (id: NodeId) => {
+    const position = positions[id]
+    return {
+      left: `${position.x}%`,
+      top: `${position.y}%`,
+    }
+  }
+
+  const onNodePointerDown = (
+    event: ReactPointerEvent<HTMLElement>,
+    id: NodeId,
+  ) => {
+    if (event.button !== 0) return
+    event.preventDefault()
+    event.currentTarget.setPointerCapture(event.pointerId)
+    dragRef.current = { id, pointerId: event.pointerId }
+    setDragging(id)
+  }
+
+  const onMapPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current
+    const map = mapRef.current
+    if (!drag || !map || event.pointerId !== drag.pointerId) return
+    const bounds = map.getBoundingClientRect()
+    if (bounds.width === 0 || bounds.height === 0) return
+    setPositions((current) => ({
+      ...current,
+      [drag.id]: {
+        x: clamp(((event.clientX - bounds.left) / bounds.width) * 100, 4, 96),
+        y: clamp(((event.clientY - bounds.top) / bounds.height) * 100, 4, 96),
+      },
+    }))
+  }
+
+  const onMapPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (dragRef.current?.pointerId !== event.pointerId) return
+    dragRef.current = null
+    setDragging(null)
+  }
 
   return (
     <div className="not-found-page">
@@ -155,9 +270,13 @@ export function NotFoundPage() {
               </p>
             </div>
             <div
+              ref={mapRef}
               className="route-board-map"
               role="group"
-              aria-label="A conspiracy board explaining the missing route"
+              aria-label="A conspiracy board explaining the missing route. Drag the boxes to rearrange the investigation."
+              onPointerMove={onMapPointerMove}
+              onPointerUp={onMapPointerUp}
+              onPointerCancel={onMapPointerUp}
             >
               <svg
                 className="route-threads"
@@ -165,28 +284,41 @@ export function NotFoundPage() {
                 preserveAspectRatio="none"
                 aria-hidden="true"
               >
-                {THREADS.map((thread, index) => (
-                  <line
-                    key={`${thread.cause}-${thread.kind}-${index}`}
-                    className={`route-thread route-thread-${thread.kind} ${selectedCause === thread.cause ? 'route-thread-active' : ''}`}
-                    x1={thread.x1}
-                    y1={thread.y1}
-                    x2={thread.x2}
-                    y2={thread.y2}
-                  />
-                ))}
+                {THREADS.map((thread, index) => {
+                  const from = positions[thread.from]
+                  const to = positions[thread.to]
+                  return (
+                    <line
+                      key={`${thread.cause}-${thread.kind}-${index}`}
+                      className={`route-thread route-thread-${thread.kind} ${selectedCause === thread.cause ? 'route-thread-active' : ''}`}
+                      x1={from.x}
+                      y1={from.y}
+                      x2={to.x}
+                      y2={to.y}
+                    />
+                  )
+                })}
               </svg>
-              <div className="route-node route-node-primary">
+              <button
+                type="button"
+                className={`route-node route-node-primary ${dragging === '404' ? 'route-node-dragging' : ''}`}
+                style={getNodeStyle('404')}
+                onPointerDown={(event) => onNodePointerDown(event, '404')}
+                aria-label="404, missing route. Drag to reposition."
+              >
                 <span>404</span>
                 <strong>missing route</strong>
-              </div>
+              </button>
               {CAUSES.map((item, index) => (
                 <button
                   type="button"
-                  className={`route-node route-node-cause route-node-cause-${index + 1} ${selectedCause === item.id ? 'route-node-selected' : ''}`}
+                  className={`route-node route-node-cause route-node-cause-${index + 1} ${selectedCause === item.id ? 'route-node-selected' : ''} ${dragging === item.id ? 'route-node-dragging' : ''}`}
+                  style={getNodeStyle(item.id)}
                   key={item.id}
                   onClick={() => setSelectedCause(item.id)}
+                  onPointerDown={(event) => onNodePointerDown(event, item.id)}
                   aria-pressed={selectedCause === item.id}
+                  aria-label={`${item.label}. Drag to reposition.`}
                 >
                   <span>0{index + 1}</span>
                   <strong>{item.label}</strong>
@@ -195,11 +327,13 @@ export function NotFoundPage() {
               {EVIDENCE.map((item) => (
                 <button
                   type="button"
-                  className={`route-node route-node-evidence ${selectedCause === item.cause ? 'route-node-selected' : ''}`}
-                  style={{ left: `${item.x}%`, top: `${item.y}%` }}
-                  key={item.label}
+                  className={`route-node route-node-evidence ${selectedCause === item.cause ? 'route-node-selected' : ''} ${dragging === item.id ? 'route-node-dragging' : ''}`}
+                  style={getNodeStyle(item.id)}
+                  key={item.id}
                   onClick={() => setSelectedCause(item.cause)}
+                  onPointerDown={(event) => onNodePointerDown(event, item.id)}
                   aria-pressed={selectedCause === item.cause}
+                  aria-label={`${item.label}. Drag to reposition.`}
                 >
                   <span>evidence / {item.detail}</span>
                   <strong>{item.label}</strong>

@@ -3460,7 +3460,7 @@ body.warp-mode .scroll-cue::after {
 .route-threads line {
   fill: none;
   stroke: #b85b48;
-  stroke-width: 0.35;
+  stroke-width: 0.5;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
@@ -3472,17 +3472,17 @@ body.warp-mode .scroll-cue::after {
     stroke-width 180ms ease;
 }
 .route-thread-evidence {
-  stroke-width: 0.25;
+  stroke-width: 0.4;
   stroke-dasharray: 1 1;
 }
 .route-thread-cross {
-  stroke-width: 0.2;
+  stroke-width: 0.3;
   stroke-dasharray: 0.7 1.2;
   opacity: 0.3;
 }
 .route-thread-active {
   stroke: #f1b2a4;
-  stroke-width: 0.55;
+  stroke-width: 0.75;
   opacity: 1;
 }
 .route-node {
@@ -3493,9 +3493,20 @@ body.warp-mode .scroll-cue::after {
   gap: 5px;
   padding: 12px 14px;
   border: 1px solid var(--line);
+  border-radius: 0;
+  appearance: none;
   background: var(--canvas);
   color: var(--paper);
+  font: inherit;
   text-align: left;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.route-node-dragging {
+  z-index: 5;
+  cursor: grabbing;
+  opacity: 0.92;
 }
 .route-node span {
   color: var(--signal);
@@ -3522,7 +3533,7 @@ body.warp-mode .scroll-cue::after {
 .route-node-cause {
   min-width: 140px;
   font: inherit;
-  cursor: pointer;
+  cursor: grab;
   transform: translate(-50%, -50%) rotate(-2deg);
   transition:
     border-color 180ms ease,
@@ -3536,22 +3547,6 @@ body.warp-mode .scroll-cue::after {
   background: #241612;
   transform: translate(-50%, calc(-50% - 4px)) rotate(-2deg);
 }
-.route-node-cause-1 {
-  top: 22%;
-  left: 20%;
-}
-.route-node-cause-2 {
-  top: 22%;
-  left: 80%;
-}
-.route-node-cause-3 {
-  top: 78%;
-  left: 80%;
-}
-.route-node-cause-4 {
-  top: 78%;
-  left: 20%;
-}
 .route-node-evidence {
   min-width: 125px;
   padding: 8px 10px;
@@ -3559,7 +3554,7 @@ body.warp-mode .scroll-cue::after {
   background: rgba(14, 15, 13, 0.92);
   color: var(--paper);
   text-align: left;
-  cursor: pointer;
+  cursor: grab;
   transform: translate(-50%, -50%) rotate(1deg);
   transition:
     border-color 180ms ease,
@@ -3747,22 +3742,6 @@ body.warp-mode .scroll-cue::after {
   }
   .route-node-primary span {
     font-size: 19px;
-  }
-  .route-node-cause-1 {
-    top: 22%;
-    left: 20%;
-  }
-  .route-node-cause-2 {
-    top: 22%;
-    left: 80%;
-  }
-  .route-node-cause-3 {
-    top: 78%;
-    left: 80%;
-  }
-  .route-node-cause-4 {
-    top: 78%;
-    left: 20%;
   }
   .route-board-readout {
     grid-template-columns: 1fr;
