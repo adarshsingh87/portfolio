@@ -38,15 +38,15 @@ export const SKILL_GROUPS: SkillGroup[] = [
 
 export const PRINCIPLES = [
   {
-    title: 'Production first',
-    body: 'If it cannot be deployed, monitored, and handed over, it is not done.',
+    title: 'Design for the handover',
+    body: 'Build for the operator who inherits the system, not only the launch demo.',
   },
   {
-    title: 'Reuse the setup',
-    body: 'I use shared templates so we do not repeat the same setup on every project.',
+    title: 'Create leverage',
+    body: 'Templates, automation, and shared decisions should make the next project cheaper.',
   },
   {
-    title: 'Write it down',
-    body: 'I document decisions and write runbooks so the next engineer can work without waiting for me.',
+    title: 'Leave a trail',
+    body: 'Runbooks and architecture notes should let the team move without waiting for me.',
   },
 ]

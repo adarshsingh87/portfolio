@@ -1,25 +1,8 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { lazy, Suspense } from 'react'
 
 import appCss from '../styles.css?url'
+import { CursorField } from '../components/cursor'
 import { SITE } from '../data/site'
-
-// Devtools are dev-only: lazy + never rendered in prod so they stay out
-// of the production bundle (bundle-dynamic-imports / bundle-defer-third-party).
-const TanStackDevtools = import.meta.env.PROD
-  ? () => null
-  : lazy(() =>
-      import('@tanstack/react-devtools').then((m) => ({
-        default: m.TanStackDevtools,
-      })),
-    )
-const TanStackRouterDevtoolsPanel = import.meta.env.PROD
-  ? () => null
-  : lazy(() =>
-      import('@tanstack/react-router-devtools').then((m) => ({
-        default: m.TanStackRouterDevtoolsPanel,
-      })),
-    )
 
 export const Route = createRootRoute({
   head: () => ({
@@ -29,7 +12,7 @@ export const Route = createRootRoute({
       { title: `${SITE.name}, CTO at ${SITE.company}` },
       { name: 'description', content: SITE.description },
       { name: 'author', content: SITE.name },
-      { name: 'theme-color', content: '#11110f' },
+      { name: 'theme-color', content: '#0a0f0e' },
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: `${SITE.name}, portfolio` },
       { property: 'og:title', content: `${SITE.name}, CTO at ${SITE.company}` },
@@ -101,19 +84,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           Skip to content
         </a>
         {children}
-        {import.meta.env.DEV ? (
-          <Suspense fallback={null}>
-            <TanStackDevtools
-              config={{ position: 'bottom-right' }}
-              plugins={[
-                {
-                  name: 'Tanstack Router',
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-              ]}
-            />
-          </Suspense>
-        ) : null}
+        <CursorField />
         <Scripts />
       </body>
     </html>

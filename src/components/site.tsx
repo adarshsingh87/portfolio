@@ -12,7 +12,7 @@ export function SiteNav() {
           </span>
           <span className="brand-name">
             {SITE.name}
-            <span className="brand-role">engineering / systems</span>
+            <span className="brand-role">CTO / builder</span>
           </span>
         </Link>
         <nav aria-label="Primary" className="primary-nav">
@@ -26,10 +26,10 @@ export function SiteNav() {
             Stack
           </a>
           <Link className="nav-link" to="/blog">
-            Blog
+            Notes
           </Link>
           <a className="nav-cta" href={`mailto:${SITE.email}`}>
-            Email me <span aria-hidden="true">↗</span>
+            Start a conversation <span aria-hidden="true">↗</span>
           </a>
         </nav>
       </div>
@@ -51,6 +51,7 @@ export function SiteFooter() {
             · {SITE.location}
           </p>
         </div>
+        <p className="footer-note">Architecture / delivery / operations</p>
         <nav aria-label="Footer" className="footer-nav">
           <a href={SITE.github} target="_blank" rel="noopener noreferrer">
             <GitHubIcon size={14} /> GitHub
@@ -75,14 +76,14 @@ export function SectionHead(props: {
 }) {
   return (
     <div className="mb-8 flex items-baseline justify-between gap-6">
-      <h2 className="flex items-baseline gap-3 text-xl font-bold tracking-tight text-zinc-100 sm:text-2xl">
+      <h2 className="flex items-baseline gap-3 text-xl font-bold tracking-tight text-ink sm:text-2xl">
         <span className="font-mono text-xs font-medium text-signal">
           {props.index}
         </span>
         {props.title}
       </h2>
       {props.note ? (
-        <p className="hidden max-w-xs text-right text-[13px] leading-relaxed text-zinc-500 sm:block">
+        <p className="hidden max-w-xs text-right text-[13px] leading-relaxed text-fog sm:block">
           {props.note}
         </p>
       ) : null}

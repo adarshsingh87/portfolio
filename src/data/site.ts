@@ -1,8 +1,8 @@
 export const SITE = {
   name: 'Adarsh Singh',
-  role: 'CTO, SmokeTrees Digital',
+  role: 'CTO, builder, and systems thinker',
   tagline:
-    'I lead engineering at SmokeTrees Digital and write code for client projects and our open-source tools.',
+    'CTO at SmokeTrees Digital. I help teams turn hard product questions into clear architecture, dependable delivery, and systems that keep working after launch.',
   domain: 'https://adarshsingh87.com',
   email: 'me@adarshsingh87.com',
   github: 'https://github.com/adarshsingh87',
@@ -15,7 +15,7 @@ export const SITE = {
   location: 'India',
   education: 'Computer Science, VIT Vellore',
   description:
-    'Adarsh Singh leads engineering at SmokeTrees Digital. He builds web applications, ONDC integrations, and financial reconciliation systems, and maintains open-source developer tools.',
+    'Adarsh Singh is a CTO and builder at SmokeTrees Digital. He helps teams turn hard product questions into clear architecture, dependable delivery, and systems that keep working after launch.',
 } as const
 
 export const NAV = [
