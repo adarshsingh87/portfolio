@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { SITE } from '../../data/site'
+import { NotFoundPage } from '../../components/not-found'
 import { SiteFooter, SiteNav } from '../../components/site'
 import {
   BLOG_TITLE_TRANSITION_TYPE,
@@ -24,19 +25,7 @@ export const Route = createFileRoute('/blog/$slug')({
       : [],
   }),
   component: Post,
-  notFoundComponent: () => (
-    <div className="post-page">
-      <SiteNav />
-      <main className="post-main">
-        <span className="section-index">404 / missing note</span>
-        <h1 className="post-title">Post not found.</h1>
-        <Link className="post-back" to="/blog">
-          ← Back to blog
-        </Link>
-      </main>
-      <SiteFooter />
-    </div>
-  ),
+  notFoundComponent: () => <NotFoundPage />,
 })
 
 function Post() {

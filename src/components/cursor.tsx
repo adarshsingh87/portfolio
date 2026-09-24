@@ -23,6 +23,8 @@ export function CursorField() {
     let ringX = -100
     let ringY = -100
     let frame = 0
+    let lastTrailAt = 0
+    const trails: HTMLSpanElement[] = []
 
     document.body.classList.add('cursor-ready')
 
@@ -31,6 +33,21 @@ export function CursorField() {
       pointerY = event.clientY
       dot.classList.add('is-visible')
       ring.classList.add('is-visible')
+
+      if (event.timeStamp - lastTrailAt < 90) return
+      lastTrailAt = event.timeStamp
+      const trail = document.createElement('span')
+      trail.className = 'cursor-trail'
+      trail.setAttribute('aria-hidden', 'true')
+      trail.style.left = `${event.clientX}px`
+      trail.style.top = `${event.clientY}px`
+      document.body.appendChild(trail)
+      trails.push(trail)
+      window.setTimeout(() => {
+        trail.remove()
+        const index = trails.indexOf(trail)
+        if (index >= 0) trails.splice(index, 1)
+      }, 850)
     }
 
     const onPointerOver = (event: PointerEvent) => {
@@ -76,6 +93,7 @@ export function CursorField() {
       document.removeEventListener('pointerover', onPointerOver)
       document.removeEventListener('pointerout', onPointerOut)
       document.body.classList.remove('cursor-ready', 'cursor-hover')
+      trails.forEach((trail) => trail.remove())
     }
   }, [])
 

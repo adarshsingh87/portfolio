@@ -2,6 +2,8 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 
 import appCss from '../styles.css?url'
 import { CursorField } from '../components/cursor'
+import { EasterEggs } from '../components/easter-eggs'
+import { NotFoundPage } from '../components/not-found'
 import { SITE } from '../data/site'
 
 export const Route = createRootRoute({
@@ -68,6 +70,7 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: () => <NotFoundPage />,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -82,6 +85,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         </a>
         {children}
         <CursorField />
+        <EasterEggs />
         <Scripts />
       </body>
     </html>
