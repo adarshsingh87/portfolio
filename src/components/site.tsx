@@ -4,62 +4,32 @@ import { GitHubIcon, LinkedInIcon, XIcon } from './icons'
 
 export function SiteNav() {
   return (
-    <header className="site-chrome sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0b]/85 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
-        <Link
-          to="/"
-          className="flex items-center gap-2.5"
-          aria-label="Adarsh Singh home"
-        >
-          <span
-            aria-hidden
-            className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#d6fd51] text-[13px] font-extrabold text-black"
-          >
-            A
+    <header className="site-nav site-chrome">
+      <div className="nav-shell">
+        <Link to="/" className="brand-lockup" aria-label="Adarsh Singh home">
+          <span className="brand-mark" aria-hidden="true">
+            AS
           </span>
-          <span className="text-sm font-semibold tracking-tight text-zinc-100">
-            Adarsh Singh
-            <span className="ml-2 hidden font-mono text-[11px] font-normal text-zinc-500 sm:inline">
-              cto / engineer
-            </span>
+          <span className="brand-name">
+            {SITE.name}
+            <span className="brand-role">engineering / systems</span>
           </span>
         </Link>
-        <nav aria-label="Primary" className="flex items-center gap-1">
-          <a
-            href="/#work"
-            className="hidden rounded-md px-2.5 py-1.5 text-[13px] text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-100 sm:inline-block"
-          >
+        <nav aria-label="Primary" className="primary-nav">
+          <a className="nav-link" href="/#work">
             Work
           </a>
-          <a
-            href="/#experience"
-            className="hidden rounded-md px-2.5 py-1.5 text-[13px] text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-100 sm:inline-block"
-          >
+          <a className="nav-link" href="/#experience">
             Experience
           </a>
-          <a
-            href="/#stack"
-            className="hidden rounded-md px-2.5 py-1.5 text-[13px] text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-100 sm:inline-block"
-          >
+          <a className="nav-link" href="/#stack">
             Stack
           </a>
-          <Link
-            to="/blog"
-            className="rounded-md px-2.5 py-1.5 text-[13px] text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-100"
-          >
+          <Link className="nav-link" to="/blog">
             Blog
           </Link>
-          <a
-            href="/#contact"
-            className="hidden rounded-md px-2.5 py-1.5 text-[13px] text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-100 sm:inline-block"
-          >
-            Contact
-          </a>
-          <a
-            href={`mailto:${SITE.email}`}
-            className="ml-1 rounded-full bg-zinc-100 px-3.5 py-1.5 text-[13px] font-semibold text-black transition-colors hover:bg-[#d6fd51]"
-          >
-            Email me
+          <a className="nav-cta" href={`mailto:${SITE.email}`}>
+            Email me <span aria-hidden="true">↗</span>
           </a>
         </nav>
       </div>
@@ -69,57 +39,29 @@ export function SiteNav() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="site-footer">
+      <div className="footer-shell">
         <div>
-          <p className="text-sm font-semibold text-zinc-200">Adarsh Singh</p>
-          <p className="mt-1 text-[13px] text-zinc-500">
+          <p className="footer-name">{SITE.name}</p>
+          <p className="footer-copy">
             CTO at{' '}
-            <a
-              href={SITE.companyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-zinc-300"
-            >
-              SmokeTrees Digital
+            <a href={SITE.companyUrl} target="_blank" rel="noopener noreferrer">
+              {SITE.company}
             </a>{' '}
-            · {SITE.education}
+            · {SITE.location}
           </p>
         </div>
-        <nav
-          aria-label="Footer"
-          className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]"
-        >
-          <a
-            href={SITE.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100"
-          >
-            <GitHubIcon size={15} /> GitHub
+        <nav aria-label="Footer" className="footer-nav">
+          <a href={SITE.github} target="_blank" rel="noopener noreferrer">
+            <GitHubIcon size={14} /> GitHub
           </a>
-          <a
-            href={SITE.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100"
-          >
-            <LinkedInIcon size={15} /> LinkedIn
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+            <LinkedInIcon size={14} /> LinkedIn
           </a>
-          <a
-            href={SITE.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-100"
-          >
-            <XIcon size={14} /> X / Twitter
+          <a href={SITE.twitter} target="_blank" rel="noopener noreferrer">
+            <XIcon size={13} /> X
           </a>
-          <a
-            href={`mailto:${SITE.email}`}
-            className="text-zinc-400 hover:text-zinc-100"
-          >
-            {SITE.email}
-          </a>
+          <a href={`mailto:${SITE.email}`}>Email</a>
         </nav>
       </div>
     </footer>
@@ -134,7 +76,7 @@ export function SectionHead(props: {
   return (
     <div className="mb-8 flex items-baseline justify-between gap-6">
       <h2 className="flex items-baseline gap-3 text-xl font-bold tracking-tight text-zinc-100 sm:text-2xl">
-        <span className="font-mono text-xs font-medium text-[#d6fd51]">
+        <span className="font-mono text-xs font-medium text-signal">
           {props.index}
         </span>
         {props.title}

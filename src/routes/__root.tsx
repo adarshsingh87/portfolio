@@ -29,7 +29,7 @@ export const Route = createRootRoute({
       { title: `${SITE.name}, CTO at ${SITE.company}` },
       { name: 'description', content: SITE.description },
       { name: 'author', content: SITE.name },
-      { name: 'theme-color', content: '#0a0a0b' },
+      { name: 'theme-color', content: '#11110f' },
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: `${SITE.name}, portfolio` },
       { property: 'og:title', content: `${SITE.name}, CTO at ${SITE.company}` },
@@ -61,7 +61,7 @@ export const Route = createRootRoute({
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap',
       },
     ],
     scripts: [
@@ -96,7 +96,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[#d6fd51] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-black"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-sm focus:bg-signal focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink"
         >
           Skip to content
         </a>

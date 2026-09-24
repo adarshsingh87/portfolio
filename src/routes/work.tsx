@@ -21,45 +21,51 @@ export const Route = createFileRoute('/work')({
 
 function Work() {
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-zinc-100">
+    <div className="archive-page">
       <SiteNav />
-      <main id="main" className="mx-auto max-w-6xl px-5 py-14">
-        <Reveal>
-          <p className="font-mono text-xs text-zinc-500">Archive</p>
-          <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Open-source tools and client work.
-          </h1>
-          <p className="mt-4 max-w-2xl text-[15px] text-zinc-400">
-            I maintain the open-source tools listed here and build software for
-            clients at SmokeTrees Digital. The projects include ONDC
-            integrations, shopping apps, and daily financial reconciliation.
+      <main id="main" className="archive-main">
+        <Reveal className="archive-intro">
+          <div>
+            <span className="section-index">archive / 2019 → now</span>
+            <h1 className="archive-title">
+              Open-source tools and client work.
+            </h1>
+          </div>
+          <p className="archive-copy">
+            A working list of systems, tools, and client engagements. Some are
+            open, some are under NDA, and all of them taught me something
+            useful.
           </p>
         </Reveal>
-        <div className="mt-10 space-y-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
-          {PROJECTS.map((p, i) => (
-            <Reveal key={p.slug} delay={Math.min(i * 60, 300)}>
-              <article className="bg-[#0a0a0b] p-7 sm:p-8">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h2 className="text-xl font-bold tracking-tight">
-                    {p.title}
-                  </h2>
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-[#d6fd51]">
-                    {p.kind}
-                  </span>
+        <div className="archive-list">
+          {PROJECTS.map((project, index) => (
+            <Reveal key={project.slug} delay={Math.min(index * 40, 240)}>
+              <article className="archive-item">
+                <span className="work-item-index">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h2>{project.title}</h2>
+                  <p>{project.summary}</p>
+                  <ul className="archive-points">
+                    {project.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
                 </div>
-                <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-400">
-                  {p.summary}
-                </p>
-                <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
-                  {p.points.map((pt) => (
-                    <li key={pt} className="text-[13px] text-zinc-500">
-                      • {pt}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-3 font-mono text-[11px] text-zinc-600">
-                  <TechStackLine items={p.stack} size={13} />
-                </p>
+                <div className="archive-meta">
+                  <span>{project.kind}</span>
+                  <TechStackLine items={project.stack} size={13} />
+                  {project.links[0] ? (
+                    <a
+                      href={project.links[0].href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open project ↗
+                    </a>
+                  ) : null}
+                </div>
               </article>
             </Reveal>
           ))}

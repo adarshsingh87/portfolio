@@ -25,14 +25,16 @@ export const Route = createFileRoute('/blog/$slug')({
   }),
   component: Post,
   notFoundComponent: () => (
-    <div className="min-h-screen bg-[#0a0a0b] text-zinc-100">
+    <div className="post-page">
       <SiteNav />
-      <main className="mx-auto max-w-3xl px-5 py-20 text-center">
-        <h1 className="text-3xl font-extrabold">Post not found.</h1>
-        <Link to="/blog" className="mt-4 inline-block underline">
-          Back to blog
+      <main className="post-main">
+        <span className="section-index">404 / missing note</span>
+        <h1 className="post-title">Post not found.</h1>
+        <Link className="post-back" to="/blog">
+          ← Back to blog
         </Link>
       </main>
+      <SiteFooter />
     </div>
   ),
 })
@@ -40,29 +42,27 @@ export const Route = createFileRoute('/blog/$slug')({
 function Post() {
   const post = Route.useLoaderData()
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-zinc-100">
+    <div className="post-page">
       <SiteNav />
-      <main id="main" className="mx-auto max-w-3xl px-5 py-14">
-        {/* No Reveal here: this header is the shared-element morph target and
-            must be snapshot-visible the moment the transition starts. */}
+      <main id="main" className="post-main">
         <Link
           to="/blog"
           viewTransition={{ types: [BLOG_TITLE_TRANSITION_TYPE] }}
-          className="font-mono text-xs text-zinc-500 hover:text-zinc-200"
+          className="post-back"
         >
           ← All notes
         </Link>
         <h1
-          className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl"
+          className="post-title"
           style={{ viewTransitionName: blogTitleTransitionName(post.slug) }}
         >
           {post.title}
         </h1>
-        <p className="mt-3 font-mono text-xs text-zinc-500">
+        <p className="post-meta">
           {post.date} · {post.readingMinutes} min · {post.tags.join(', ')}
         </p>
         <article
-          className="prose-blog mt-8"
+          className="prose-blog"
           dangerouslySetInnerHTML={{ __html: post.html }}
         />
       </main>
