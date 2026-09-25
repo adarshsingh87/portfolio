@@ -35,6 +35,7 @@ More detail on each: [Work archive](https://adarshsingh87.com/work)
 
 ## Notes (blog)
 
+- [Why we built a backend template for developers and AI agents](https://adarshsingh87.com/blog/backend-template-for-developers-and-ai-agents): A TypeScript starter that fixes the backend decisions once, so developers and coding agents can spend their time on business logic instead of conventions.
 - [What building on ONDC taught me about the difference between an API and a protocol](https://adarshsingh87.com/blog/api-vs-protocol-ondc): No central author, callbacks instead of responses, defensive parsing — what changes when you integrate with a shared agreement instead of a service.
 - [Async context as a mental model, not just a library](https://adarshsingh87.com/blog/async-context-mental-model): AsyncLocalStorage is really about how a value survives async boundaries — plus the rule for when context helps and when it hides real dependencies.
 

@@ -7,7 +7,7 @@ tags: [nodejs, backend, architecture]
 
 There's a specific kind of annoying bug that shows up in every backend eventually: you need a request ID to appear in a log line ten function calls deep, in code you didn't write, and the only two options anyone hands you are bad. Thread the ID through every function signature between here and there, polluting a dozen unrelated functions with a parameter they don't care about. Or stash it in a module-level variable and hope nothing else touches it before you're done, which works fine until two requests land at the same time and your "global" starts leaking one user's data into another user's logs.
 
-I built Smoke Context to get out of that trap. But the useful part wasn't the library. It was understanding what async context actually is, because once that clicked, a lot of other things about how Node handles concurrency clicked with it.
+I built Smoke Context to get out of that trap. But the useful part wasn't the library. It was understanding what async context actually is, because once that clicked, a lot of other things about how Node handles concurrency clicked with it. I later wrote about [how we turned that context model into a default in our backend template](/blog/backend-template-for-developers-and-ai-agents), so new services don't have to rediscover where context belongs.
 
 ## It's not a global. It's bound to the chain, not the process.
 
