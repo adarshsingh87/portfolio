@@ -932,9 +932,13 @@ body.menu-is-open {
   color: var(--signal);
   font: 9px var(--font-mono);
 }
-.project-index-link:hover {
+.project-index-link:hover,
+.project-index-link.is-active {
   padding-left: 8px;
   color: var(--paper);
+}
+.project-index-link.is-active span {
+  color: var(--signal);
 }
 .project-index-all {
   display: flex;
@@ -998,25 +1002,29 @@ body.menu-is-open {
   align-items: flex-start;
 }
 .project-summary {
+  width: 100%;
   max-width: 390px;
+  margin-bottom: 8px;
   color: var(--fog);
   font-size: 13px;
   line-height: 1.55;
 }
 .project-story h2 {
+  width: 100%;
   max-width: 500px;
-  margin-top: 18px;
+  margin-top: 32px;
   color: var(--paper);
-  font-size: clamp(2.4rem, 4.4vw, 5rem);
+  font-size: clamp(2.4rem, 3.6vw, 4.2rem);
   font-weight: 500;
   letter-spacing: -0.1em;
-  line-height: 0.88;
+  line-height: 0.9;
   text-wrap: balance;
 }
 .project-points {
   display: grid;
+  width: 100%;
   gap: 6px;
-  margin-top: auto;
+  margin-top: 32px;
   color: var(--fog-dim);
   font: 10px/1.5 var(--font-mono);
 }
@@ -2482,12 +2490,12 @@ body.menu-is-open {
     gap: 35px;
   }
   .project-story {
-    grid-template-columns: 44px minmax(200px, 0.8fr) minmax(290px, 1.2fr);
+    grid-template-columns: 76px minmax(200px, 0.8fr) minmax(290px, 1.2fr);
     gap: 18px;
     padding-inline: 20px;
   }
   .project-story h2 {
-    font-size: clamp(2.3rem, 4.3vw, 4.4rem);
+    font-size: clamp(2.2rem, 3.6vw, 4.2rem);
   }
   .project-visual {
     min-height: 420px;
@@ -2622,12 +2630,13 @@ body.menu-is-open {
     border: 0;
     white-space: nowrap;
   }
-  .project-index-link:hover {
+  .project-index-link:hover,
+  .project-index-link.is-active {
     padding-left: 0;
   }
   .project-story {
     min-height: 0;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 76px 1fr;
     gap: 16px;
     padding: 19px 16px 16px;
   }
@@ -2638,7 +2647,7 @@ body.menu-is-open {
     min-height: 350px;
   }
   .project-story h2 {
-    font-size: clamp(2.5rem, 11vw, 5rem);
+    font-size: clamp(2.4rem, 4vw, 4.2rem);
   }
   .project-story-bottom {
     flex-direction: column;
@@ -2748,6 +2757,23 @@ body.menu-is-open {
 }
 
 @media (max-width: 620px) {
+  .project-story {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .project-story-meta {
+    grid-row: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .project-story-copy {
+    min-height: 0;
+  }
+  .project-story h2 {
+    font-size: clamp(1.7rem, 8.5vw, 4.2rem);
+  }
+
   .nav-shell {
     width: calc(100% - 20px);
     min-height: 62px;
@@ -2863,8 +2889,8 @@ body.menu-is-open {
     min-height: 0;
   }
   .project-story h2 {
-    margin-top: 15px;
-    font-size: clamp(2.7rem, 13vw, 5.3rem);
+    margin-top: 32px;
+    font-size: clamp(1.7rem, 8.5vw, 4.2rem);
   }
   .project-points {
     margin-top: 32px;

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { PointerEvent } from 'react'
 import { Link } from '@tanstack/react-router'
 import type { Project } from '../data/projects'
@@ -319,7 +320,55 @@ export function ProjectSequence({
   projects = FEATURED,
   compact = false,
 }: ProjectSequenceProps) {
-  const visibleProjects = compact ? projects : projects
+  const visibleProjects = projects
+  const [activeProject, setActiveProject] = useState(visibleProjects[0]?.slug)
+
+  useEffect(() => {
+    const projectElements = visibleProjects
+      .map((project) => document.getElementById(`project-${project.slug}`))
+      .filter((element): element is HTMLElement => Boolean(element))
+
+    if (projectElements.length === 0) {
+      return
+    }
+
+    let frame: number | undefined
+
+    const updateActiveProject = () => {
+      frame = undefined
+      const marker = window.innerHeight * 0.38
+      const current = projectElements.reduce(
+        (closest, element) => {
+          const distance = Math.abs(
+            element.getBoundingClientRect().top - marker,
+          )
+          return distance < closest.distance ? { distance, element } : closest
+        },
+        { distance: Number.POSITIVE_INFINITY, element: projectElements[0] },
+      )
+
+      setActiveProject(current.element.id.replace('project-', ''))
+    }
+
+    const scheduleUpdate = () => {
+      if (frame === undefined) {
+        frame = window.requestAnimationFrame(updateActiveProject)
+      }
+    }
+
+    setActiveProject(visibleProjects[0]?.slug)
+    updateActiveProject()
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
+
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+      if (frame !== undefined) {
+        window.cancelAnimationFrame(frame)
+      }
+    }
+  }, [visibleProjects])
 
   return (
     <div
@@ -331,7 +380,13 @@ export function ProjectSequence({
           <a
             key={project.slug}
             href={`#project-${project.slug}`}
-            className="project-index-link"
+            className={`project-index-link ${
+              activeProject === project.slug ? 'is-active' : ''
+            }`}
+            aria-current={
+              activeProject === project.slug ? 'location' : undefined
+            }
+            onClick={() => setActiveProject(project.slug)}
           >
             <span>{String(index + 1).padStart(2, '0')}</span>
             {project.title}
