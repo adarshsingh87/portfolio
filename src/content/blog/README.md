@@ -8,9 +8,11 @@ Posts are Markdown files in this folder. The blog index reads every `*.md` file 
 2. Fill in frontmatter and write Markdown.
 3. Run `npm run build` (or push and let Cloudflare build).
 4. The post appears at `/blog` and `/blog/your-slug` automatically.
-   The build also regenerates `public/sitemap.xml` and the Notes section of
-   `public/llms.txt` from your frontmatter, so no manual SEO edits are needed
-   (`npm run generate:seo` runs the same step on its own).
+   The build also generates a 1200×630 post preview from its title, date, and
+   tags, then refreshes `public/sitemap.xml` and the Notes section of
+   `public/llms.txt`. No manual SEO or image edits are needed
+   (`npm run generate:previews` and `npm run generate:seo` run those steps on
+   their own).
 
 ## Frontmatter
 

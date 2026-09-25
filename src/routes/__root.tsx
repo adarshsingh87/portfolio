@@ -6,8 +6,15 @@ import { EasterEggs } from '../components/easter-eggs'
 import { NotFoundPage } from '../components/not-found'
 import { SITE } from '../data/site'
 
+const TRAILING_SLASH_RE = /\/$/
+
+function getCanonicalUrl(pathname: string | undefined) {
+  if (!pathname || pathname === '/') return SITE.domain
+  return `${SITE.domain}${pathname.replace(TRAILING_SLASH_RE, '')}`
+}
+
 export const Route = createRootRoute({
-  head: () => ({
+  head: ({ matches }) => ({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -20,14 +27,24 @@ export const Route = createRootRoute({
       { property: 'og:title', content: `${SITE.name}, CTO at ${SITE.company}` },
       { property: 'og:description', content: SITE.description },
       { property: 'og:url', content: SITE.domain },
-      { property: 'og:image', content: `${SITE.domain}/og.svg` },
+      { property: 'og:image', content: `${SITE.domain}/og.png` },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      {
+        property: 'og:image:alt',
+        content: 'Adarsh Singh, CTO, engineer, and builder',
+      },
       { name: 'twitter:card', content: 'summary_large_image' },
       {
         name: 'twitter:title',
         content: `${SITE.name}, CTO at ${SITE.company}`,
       },
       { name: 'twitter:description', content: SITE.description },
-      { name: 'twitter:image', content: `${SITE.domain}/og.svg` },
+      { name: 'twitter:image', content: `${SITE.domain}/og.png` },
+      {
+        name: 'twitter:image:alt',
+        content: 'Adarsh Singh, CTO, engineer, and builder',
+      },
       {
         name: 'keywords',
         content:
@@ -36,7 +53,7 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
-      { rel: 'canonical', href: SITE.domain },
+      { rel: 'canonical', href: getCanonicalUrl(matches.at(-1)?.pathname) },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       {

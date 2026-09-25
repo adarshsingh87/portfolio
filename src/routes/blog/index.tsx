@@ -8,16 +8,37 @@ import {
   getAllEntries,
 } from '../../lib/blog'
 
+const BLOG_DESCRIPTION =
+  'Field notes on software systems, developer tools, integrations, and the work around building products.'
+const BLOG_URL = `${SITE.domain}/blog`
+const BLOG_PREVIEW_IMAGE = `${SITE.domain}/blog-preview.png`
+const BLOG_PREVIEW_IMAGE_ALT =
+  'Field notes by Adarsh Singh on software systems, tools, and building products'
+
 export const Route = createFileRoute('/blog/')({
   loader: () => getAllEntries(),
   head: () => ({
     meta: [
-      { title: `Blog — ${SITE.name}` },
-      {
-        name: 'description',
-        content:
-          'Notes on tooling, integrations, and running a small engineering team. Markdown-driven, no CMS.',
-      },
+      { title: `Notes by ${SITE.name}` },
+      { name: 'description', content: BLOG_DESCRIPTION },
+      { name: 'author', content: SITE.name },
+      { name: 'robots', content: 'index, follow' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:site_name', content: `${SITE.name}, portfolio` },
+      { property: 'og:title', content: `Notes by ${SITE.name}` },
+      { property: 'og:description', content: BLOG_DESCRIPTION },
+      { property: 'og:url', content: BLOG_URL },
+      { property: 'og:image', content: BLOG_PREVIEW_IMAGE },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:alt', content: BLOG_PREVIEW_IMAGE_ALT },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:site', content: SITE.twitterHandle },
+      { name: 'twitter:creator', content: SITE.twitterHandle },
+      { name: 'twitter:title', content: `Notes by ${SITE.name}` },
+      { name: 'twitter:description', content: BLOG_DESCRIPTION },
+      { name: 'twitter:image', content: BLOG_PREVIEW_IMAGE },
+      { name: 'twitter:image:alt', content: BLOG_PREVIEW_IMAGE_ALT },
     ],
   }),
   component: BlogIndex,

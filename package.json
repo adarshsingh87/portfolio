@@ -9,7 +9,8 @@
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
     "generate:seo": "node scripts/generate-seo.mjs",
-    "build": "node scripts/generate-seo.mjs && vite build",
+    "generate:previews": "node scripts/generate-blog-previews.mjs",
+    "build": "node scripts/generate-seo.mjs && node scripts/generate-blog-previews.mjs && vite build",
     "preview": "vite preview",
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",
@@ -38,6 +39,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.20.0",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.4",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "wrangler": "^4.70.0"
