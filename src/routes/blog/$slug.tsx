@@ -101,7 +101,7 @@ function Post() {
   const { others } = post
 
   return (
-    <main id="main" className="post">
+    <main id="main" className="wrap post" data-atmo="quiet">
       <article>
         <header className="post-head" data-chapter={post.title}>
           <Link

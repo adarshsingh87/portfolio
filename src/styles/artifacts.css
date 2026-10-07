@@ -1,0 +1,817 @@
+@property --gap {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 52px;
+}
+
+/* ------------------------------------------------------------------
+   Artifacts
+   Working sketches of each project. Colour comes from --accent, which
+   the page sets to match the project.
+   ------------------------------------------------------------------ */
+
+.swipe {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-areas:
+    'deck model'
+    'controls model';
+  gap: 1.5rem clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.swipe-deck {
+  grid-area: deck;
+  position: relative;
+  height: 25rem;
+  border-radius: 18px;
+}
+
+.swipe-card {
+  --dx: 0;
+  --depth: 0;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(100%, 17.5rem);
+  height: 23.5rem;
+  display: grid;
+  grid-template-rows: 60% 1fr;
+  border-radius: 18px;
+  background: var(--card);
+  color: var(--card-text);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  transform: translate3d(calc(var(--dx) * 1px), calc(var(--depth) * 14px), 0)
+    rotate(calc(var(--dx) * 0.05deg)) scale(calc(1 - var(--depth) * 0.05));
+  filter: brightness(calc(1 - var(--depth) * 0.16));
+  transition:
+    transform 560ms var(--ease-out),
+    filter 560ms var(--ease-out);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Drag feedback: the verdict fades in as the card is pulled. */
+.swipe-card::before,
+.swipe-card::after {
+  position: absolute;
+  top: 1rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 640;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.swipe-card::before {
+  content: 'Keep';
+  left: 1rem;
+  color: var(--card-text);
+  background: color-mix(in srgb, var(--accent) 80%, transparent);
+  opacity: clamp(0, calc(var(--dx) / 90), 1);
+}
+
+.swipe-card::after {
+  content: 'Pass';
+  right: 1rem;
+  color: #eef1f5;
+  background: rgba(19, 27, 41, 0.55);
+  opacity: clamp(0, calc(var(--dx) / -90), 1);
+}
+
+.swipe-card[data-gone] {
+  --dx: 0;
+}
+
+.swipe-card:last-of-type:not([data-gone]) {
+  cursor: grab;
+}
+
+.swipe-card[data-dragging] {
+  transition: none;
+  cursor: grabbing;
+}
+
+.swipe-card[data-gone] {
+  pointer-events: none;
+  animation: fling 640ms var(--ease-out) forwards;
+}
+
+.swipe-card[data-gone='left'] {
+  --to: -1;
+}
+
+.swipe-card[data-gone='right'] {
+  --to: 1;
+}
+
+@keyframes fling {
+  from {
+    transform: translate3d(calc(var(--to) * 90px), 0, 0)
+      rotate(calc(var(--to) * 5deg));
+  }
+  to {
+    transform: translate3d(calc(var(--to) * 160%), -20px, 0)
+      rotate(calc(var(--to) * 22deg));
+    opacity: 0;
+  }
+}
+
+.swatch {
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(160deg, var(--c1), var(--c2));
+  position: relative;
+  overflow: hidden;
+}
+
+.swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.swatch[data-fabric='linen']::after {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.07) 0 1px,
+      transparent 1px 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.06) 0 1px,
+      transparent 1px 4px
+    );
+}
+
+.swatch[data-fabric='denim']::after {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.09) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+.swatch[data-fabric='silk']::after {
+  background:
+    radial-gradient(
+      ellipse 70% 40% at 30% 25%,
+      rgba(255, 255, 255, 0.42),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 30% at 75% 75%,
+      rgba(255, 255, 255, 0.18),
+      transparent 70%
+    );
+}
+
+.swatch[data-fabric='knit']::after {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.13) 0 2px,
+    transparent 2px 8px
+  );
+}
+
+.swatch[data-fabric='cotton']::after {
+  background-image: var(--noise);
+  background-size: 120px;
+  opacity: 0.25;
+  mix-blend-mode: overlay;
+}
+
+.swipe-card-body {
+  padding: 1rem 1.15rem 1.15rem;
+  display: grid;
+  align-content: start;
+  gap: 0.2rem;
+}
+
+.swipe-card-name {
+  font-size: 1.2rem;
+  font-weight: 560;
+  font-stretch: 106%;
+  letter-spacing: -0.01em;
+}
+
+.swipe-card-body p:not(.swipe-card-name) {
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+.swipe-card-body ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.6rem;
+}
+
+.swipe-card-body li {
+  font-size: 0.72rem;
+  font-weight: 540;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(19, 27, 41, 0.07);
+}
+
+.swipe-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+  color: var(--text-2);
+  padding: 2rem;
+}
+
+.swipe-controls {
+  grid-area: controls;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.swipe-controls .chip-button {
+  min-width: 6.5rem;
+  justify-content: center;
+}
+
+.swipe-model {
+  grid-area: model;
+  padding-top: 0.5rem;
+}
+
+.swipe-model-title {
+  font-weight: 560;
+  margin-bottom: 1rem;
+}
+
+.swipe-model-empty {
+  color: var(--text-2);
+  font-size: var(--step--1);
+  max-width: 26ch;
+}
+
+.swipe-model ul {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.swipe-model li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 2.75rem;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: var(--step--1);
+  color: var(--text-2);
+  animation: focus-in 600ms var(--ease-out) both;
+}
+
+.swipe-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: left;
+  transform: scaleX(var(--w));
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.swipe-bar[data-sign='up']::after {
+  background: linear-gradient(90deg, var(--accent), var(--accent));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.swipe-bar[data-sign='down']::after {
+  background: var(--text-3);
+}
+
+.swipe-weight {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* ------------------------------------------------------------------
+   Artifact: protocol sequence
+   ------------------------------------------------------------------ */
+
+.protocol {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+}
+
+.protocol-scroll {
+  width: 100%;
+}
+
+.protocol-diagram {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--display);
+}
+
+.protocol-lane {
+  font-size: 13px;
+  font-weight: 560;
+  fill: var(--text);
+}
+
+.protocol-life {
+  stroke: var(--line-strong);
+  stroke-dasharray: 2 5;
+}
+
+.protocol-timeout {
+  stroke: var(--accent);
+  stroke-opacity: 0.4;
+  stroke-dasharray: 6 6;
+}
+
+.protocol-timeout-label {
+  font-size: 11px;
+  fill: var(--accent);
+  fill-opacity: 0.8;
+}
+
+.protocol-msg line {
+  stroke: var(--text-2);
+  stroke-width: 1.5;
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  transition: stroke-dashoffset 700ms var(--ease-out);
+}
+
+.protocol-msg .protocol-head,
+.protocol-msg text {
+  opacity: 0;
+  transition: opacity 300ms 380ms var(--ease-out);
+}
+
+.protocol-head {
+  fill: var(--text-2);
+}
+
+.protocol-msg text {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--text-2);
+}
+
+.protocol-msg[data-shown='true'] line {
+  stroke-dashoffset: 0;
+}
+
+.protocol-msg[data-shown='true'] .protocol-head,
+.protocol-msg[data-shown='true'] text {
+  opacity: 1;
+}
+
+.protocol-msg[data-tone='ok'] line {
+  stroke: var(--accent);
+}
+
+.protocol-msg[data-tone='ok'] .protocol-head,
+.protocol-msg[data-tone='ok'] text {
+  fill: var(--accent);
+}
+
+.protocol-msg[data-tone='dup'] line {
+  stroke: var(--text-3);
+}
+
+.protocol-msg[data-tone='dup'] text,
+.protocol-msg[data-tone='dup'] .protocol-head {
+  fill: var(--text-3);
+}
+
+.protocol-msg[data-tone='late'] line {
+  stroke: var(--accent);
+}
+
+.protocol-msg[data-tone='late'] .protocol-head,
+.protocol-msg[data-tone='late'] text {
+  fill: var(--accent);
+}
+
+.protocol-log {
+  width: 100%;
+  display: grid;
+  gap: 0.3rem;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  background: rgba(5, 10, 20, 0.45);
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.protocol-log p {
+  color: var(--text-2);
+  opacity: 0.22;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.protocol-log p[data-shown='true'] {
+  opacity: 1;
+}
+
+.protocol-log p[data-tone='ok'] {
+  color: var(--accent);
+}
+
+.protocol-log p[data-tone='dup'] {
+  color: var(--text-3);
+}
+
+.protocol-log p[data-tone='late'] {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------
+   Artifact: layers
+   ------------------------------------------------------------------ */
+
+.layers {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 2rem clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.layers-scene {
+  display: grid;
+  place-items: center;
+  height: 30rem;
+  perspective: 1800px;
+}
+
+.layers-stack {
+  position: relative;
+  width: min(19rem, 70vw);
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-38deg) translateZ(-60px);
+}
+
+@supports (animation-timeline: view()) {
+  .layers-stack {
+    animation: explode linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 45%;
+  }
+}
+
+@keyframes explode {
+  from {
+    --gap: 6px;
+  }
+  to {
+    --gap: var(--gap-max, 76px);
+  }
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  gap: 0.4rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.025)
+    ),
+    rgba(10, 11, 15, 0.35);
+  box-shadow:
+    inset 0 0 40px rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+  transform: translateZ(calc(var(--i) * var(--gap)));
+  transition:
+    transform 640ms var(--ease-out),
+    background 400ms var(--ease-out),
+    border-color 400ms var(--ease-out),
+    box-shadow 400ms var(--ease-out);
+}
+
+.layer[data-active='true'] {
+  transform: translateZ(calc(var(--i) * var(--gap) + 22px));
+  border-color: color-mix(in srgb, var(--accent) 80%, transparent);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 30%, transparent),
+      color-mix(in srgb, var(--accent) 6%, transparent)
+    ),
+    rgba(10, 11, 15, 0.25);
+  box-shadow:
+    inset 0 0 50px color-mix(in srgb, var(--accent) 14%, transparent),
+    0 0 50px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.layer-name,
+.layer-terms {
+  opacity: 0.32;
+  transition: opacity 400ms var(--ease-out);
+}
+
+.layer:first-child .layer-name,
+.layer[data-active='true'] .layer-name,
+.layer[data-active='true'] .layer-terms {
+  opacity: 1;
+}
+
+.layer:not([data-active='true']) .layer-terms {
+  opacity: 0;
+}
+
+.layer-name {
+  font-size: 0.95rem;
+  font-weight: 620;
+  color: var(--accent);
+}
+
+.layer-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.layer-terms i {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--text-2);
+}
+
+.layers-key li + li {
+  border-top: 1px solid var(--line);
+}
+
+.layers-key button {
+  display: grid;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 1rem 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.layers-key-name {
+  font-weight: 580;
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.layers-key-body {
+  font-size: var(--step--1);
+  color: var(--text-3);
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.layers-key button[aria-pressed='true'] .layers-key-name {
+  color: var(--accent);
+}
+
+.layers-key button[aria-pressed='true'] .layers-key-body {
+  color: var(--text-2);
+}
+
+.terminal {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 1.1rem 1.25rem;
+  border-radius: 12px;
+  background: rgba(5, 10, 20, 0.5);
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text-2);
+  overflow-x: auto;
+}
+
+.terminal-prompt {
+  color: var(--text);
+}
+
+.terminal-note {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------
+   Artifact: ledger
+   ------------------------------------------------------------------ */
+
+.ledger table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger th,
+.ledger td {
+  padding: 0.85rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.ledger thead th {
+  font-size: 0.8rem;
+  font-weight: 520;
+  color: var(--text-3);
+  padding-top: 0;
+}
+
+.ledger tbody th {
+  font-weight: 560;
+}
+
+.ledger tbody tr {
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.ledger tr[data-state='pending'] {
+  opacity: 0.35;
+}
+
+.ledger tr[data-state='flagged'] {
+  background: linear-gradient(90deg, var(--accent-soft), transparent 80%);
+}
+
+.ledger td[data-odd] {
+  color: var(--accent);
+  text-decoration: underline wavy
+    color-mix(in srgb, var(--accent) 60%, transparent);
+  text-underline-offset: 0.3em;
+}
+
+.ledger-result {
+  min-width: 12rem;
+  color: var(--text-3);
+}
+
+.ledger tr[data-state='matched'] .ledger-result {
+  color: var(--accent);
+}
+
+.ledger tr[data-state='flagged'] .ledger-result {
+  color: var(--accent);
+  font-weight: 540;
+}
+
+.ledger-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  color: var(--text-2);
+  font-size: var(--step--1);
+}
+
+/* ------------------------------------------------------------------
+   Artifacts at narrower widths
+   ------------------------------------------------------------------ */
+
+/* The layers stage is only seven columns wide on desktop. */
+@media (max-width: 1400px) {
+  .layers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .layers-scene {
+    height: 24rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .stage > :first-child {
+    border-radius: 16px;
+    padding: 1.1rem;
+  }
+
+  .swipe {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'deck'
+      'controls'
+      'model';
+  }
+
+  .swipe-deck {
+    height: 24rem;
+  }
+
+  /* The diagram keeps a readable size and scrolls on its own; the log and
+     the replay button stay put. */
+  .protocol {
+    min-width: 0;
+  }
+
+  .protocol-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+
+  .protocol-diagram {
+    width: 36rem;
+    max-width: none;
+  }
+
+  .layers-scene {
+    height: 22rem;
+    padding-top: 2.5rem;
+  }
+
+  .layers-stack {
+    --gap-max: 46px;
+    --gap: 40px;
+    width: 12rem;
+  }
+
+  .ledger thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .ledger table,
+  .ledger tbody {
+    display: block;
+  }
+
+  .ledger tbody tr {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem 0.6rem;
+    padding: 1rem 0.25rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.82rem;
+  }
+
+  .ledger tbody th,
+  .ledger td {
+    padding: 0;
+    border: 0;
+  }
+
+  .ledger tbody th {
+    grid-column: 1 / -1;
+  }
+
+  .ledger .ledger-result {
+    grid-column: 1 / -1;
+    min-width: 0;
+    min-height: 1.4em;
+  }
+
+  .ledger td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-3);
+    text-decoration: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layers-stack {
+    animation: none !important;
+    --gap: 52px;
+  }
+}

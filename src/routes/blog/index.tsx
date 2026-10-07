@@ -43,7 +43,7 @@ function BlogIndex() {
   const entries = Route.useLoaderData()
 
   return (
-    <main id="main" className="blog-index">
+    <main id="main" className="wrap blog-index" data-atmo="quiet">
       <header className="page-head">
         <h1>Writing</h1>
         <p>

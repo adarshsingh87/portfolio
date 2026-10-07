@@ -4,6 +4,7 @@ import { SwipeArtifact } from './artifacts/swipe'
 import { ProtocolArtifact } from './artifacts/protocol'
 import { LayersArtifact } from './artifacts/layers'
 import { LedgerArtifact } from './artifacts/ledger'
+import { Registered } from './registered'
 
 export function caseTransitionName(slug: string) {
   return `case-${slug}`
@@ -75,26 +76,28 @@ export function Facts({ facts }: { facts: Project['facts'] }) {
 export function Chapter({ project }: { project: Project }) {
   return (
     <article
+      id={project.slug}
       className="chapter"
       data-artifact={project.artifact}
+      data-atmo={project.slug}
       data-chapter={project.title}
       aria-labelledby={`chapter-${project.slug}`}
     >
-      <header className="chapter-head">
-        <p className="chapter-meta">
-          <VisibilityMark value={project.visibility} />
-          <span>{project.period}</span>
-        </p>
-        <h3
-          className="chapter-title"
-          id={`chapter-${project.slug}`}
-          style={{ viewTransitionName: caseTransitionName(project.slug) }}
-        >
-          {project.title}
-        </h3>
-        <p className="chapter-line">{project.line}</p>
-      </header>
-      <div className="chapter-body">
+      <div className="wrap chapter-grid">
+        <header className="chapter-head">
+          <p className="chapter-meta">
+            <VisibilityMark value={project.visibility} />
+            <span>{project.period}</span>
+          </p>
+          <Registered
+            as="h3"
+            id={`chapter-${project.slug}`}
+            className="chapter-title"
+            text={project.title}
+            style={{ viewTransitionName: caseTransitionName(project.slug) }}
+          />
+          <p className="chapter-line">{project.line}</p>
+        </header>
         <div className="chapter-text">
           <p>{project.summary}</p>
           <Facts facts={project.facts} />

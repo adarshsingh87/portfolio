@@ -8,6 +8,8 @@ import {
   VisibilityMark,
   caseTransitionName,
 } from '../../components/work'
+import { Registered } from '../../components/registered'
+import { previewAtmosphere } from '../../lib/atmosphere'
 
 export const Route = createFileRoute('/work/$slug')({
   loader: ({ params }) => {
@@ -42,17 +44,17 @@ function CaseStudy() {
   const next = CASES[(index + 1) % CASES.length]
 
   return (
-    <main id="main" className="case">
-      <header className="case-head" data-chapter={project.title}>
+    <main id="main" className="case" data-atmo={project.slug}>
+      <header className="wrap case-head" data-chapter={project.title}>
         <Link to="/work" className="back-link">
           All work
         </Link>
-        <h1
+        <Registered
+          as="h1"
           className="case-title"
+          text={project.title}
           style={{ viewTransitionName: caseTransitionName(project.slug) }}
-        >
-          {project.title}
-        </h1>
+        />
         <p className="case-line">{project.line}</p>
         <dl className="case-meta">
           <div>
@@ -76,15 +78,15 @@ function CaseStudy() {
         </dl>
       </header>
 
-      <div className="case-stage">
+      <div className="wrap case-stage">
         <Stage project={project} />
       </div>
 
-      <div className="case-facts">
+      <div className="wrap case-facts">
         <Facts facts={project.facts} />
       </div>
 
-      <div className="case-body">
+      <div className="wrap case-body">
         {project.sections.map((section) => (
           <section key={section.heading} className="case-section">
             <h2>{section.heading}</h2>
@@ -123,15 +125,19 @@ function CaseStudy() {
         ) : null}
       </div>
 
-      <nav className="case-next" aria-label="Next case study">
-        <Link to="/work/$slug" params={{ slug: next.slug }}>
-          <span className="case-next-label">Next</span>
-          <span
+      <nav className="wrap case-next" aria-label="Next case study">
+        <Link
+          to="/work/$slug"
+          params={{ slug: next.slug }}
+          onPointerEnter={() => previewAtmosphere(next.slug)}
+          onPointerLeave={() => previewAtmosphere(null, project.slug)}
+        >
+          <span className="case-next-label">Next case study</span>
+          <Registered
             className="case-next-title"
+            text={next.title}
             style={{ viewTransitionName: caseTransitionName(next.slug) }}
-          >
-            {next.title}
-          </span>
+          />
           <span className="case-next-line">{next.line}</span>
         </Link>
       </nav>

@@ -1,0 +1,234 @@
+/* ------------------------------------------------------------------
+   Blog
+   Quiet, set for reading. The light behind it is nearly off.
+   ------------------------------------------------------------------ */
+
+.blog-index .page-head h1 {
+  font-size: var(--step-4);
+  font-weight: 280;
+  font-stretch: 118%;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.blog-index {
+  padding-bottom: 2rem;
+}
+
+.post {
+  padding-bottom: 2rem;
+}
+
+.post-head {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 54rem;
+  margin-inline: auto;
+  padding-top: calc(var(--nav-h) + clamp(3rem, 8vw, 6rem));
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.post-head .back-link {
+  justify-self: start;
+}
+
+.post-title {
+  font-size: clamp(2.3rem, 1.4rem + 3.8vw, 4.6rem);
+  font-weight: 320;
+  font-stretch: 114%;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.post-dek {
+  font-family: var(--body);
+  font-size: var(--step-2);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--text-2);
+  max-width: 36ch;
+}
+
+.post-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: var(--step--1);
+  color: var(--text-3);
+}
+
+.prose {
+  max-width: 40rem;
+  margin-inline: auto;
+  padding-top: clamp(2rem, 5vw, 3.5rem);
+  font-family: var(--body);
+  font-size: clamp(1.08rem, 1rem + 0.3vw, 1.22rem);
+  line-height: 1.7;
+  font-weight: 400;
+  color: #dcdee4;
+  hanging-punctuation: first;
+}
+
+.prose > * + * {
+  margin-top: 1.15em;
+}
+
+.prose h2 {
+  margin-top: 2.5em;
+  font-family: var(--display);
+  font-size: 1.65rem;
+  font-weight: 450;
+  font-stretch: 106%;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  color: var(--text);
+}
+
+.prose h3 {
+  margin-top: 2em;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 560;
+  color: var(--text);
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.6em;
+}
+
+.prose a {
+  color: var(--text);
+  text-decoration-color: rgb(255 255 255 / 0.4);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color var(--dur-1) var(--ease-out);
+}
+
+.prose a:hover {
+  text-decoration-color: var(--text);
+}
+
+.prose strong {
+  font-weight: 640;
+  color: var(--text);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25em;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: 0.4em;
+}
+
+.prose li::marker {
+  color: var(--text-3);
+}
+
+.prose blockquote {
+  padding-left: 1.25em;
+  border-left: 2px solid var(--line-strong);
+  font-style: italic;
+  color: var(--text-2);
+}
+
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.8em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--glass-strong);
+  color: var(--text);
+}
+
+.prose pre {
+  padding: 1.25rem 1.4rem;
+  border-radius: 12px;
+  background: var(--ink-sunk);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--display);
+  font-size: 0.95rem;
+}
+
+.prose th,
+.prose td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.prose img {
+  border-radius: 10px;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin-block: 2.5em;
+}
+
+.post-more {
+  max-width: 54rem;
+  margin: clamp(4rem, 8vw, 6rem) auto 0;
+}
+
+.post-more h2 {
+  margin-bottom: 1rem;
+  font-size: var(--step--1);
+  font-weight: 520;
+  color: var(--text-3);
+}
+
+.post-more .post-row {
+  grid-template-columns: 8rem minmax(0, 1fr);
+}
+
+.post-more .post-row time {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+.post-more .post-row h3,
+.post-more .post-row p,
+.post-more .post-row-meta {
+  grid-column: 2;
+}
+
+@media (max-width: 700px) {
+  .post-more .post-row {
+    grid-template-columns: 1fr;
+  }
+  .post-more .post-row time {
+    grid-row: auto;
+  }
+  .post-more .post-row h3,
+  .post-more .post-row p,
+  .post-more .post-row-meta {
+    grid-column: 1;
+  }
+}

@@ -6,7 +6,9 @@ export function getRouter() {
     routeTree,
     scrollRestoration: true,
     defaultPreload: 'intent',
-    defaultPreloadStaleTime: 0,
+    // Writing and case studies only change when the site is redeployed, so
+    // data preloaded on hover is reused on click instead of fetched again.
+    defaultPreloadStaleTime: 30_000,
     // Wrap client navigations in document.startViewTransition().
     // Ignored by browsers without support. Styling lives in styles.css.
     defaultViewTransition: true,

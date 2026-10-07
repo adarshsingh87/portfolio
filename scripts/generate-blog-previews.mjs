@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
+import { LIGHTS, SANS, mark, registered } from './card-parts.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const blogDir = join(root, 'src/content/blog')
@@ -141,19 +142,25 @@ function createPostPreview({ title, date, tags }) {
   const lineHeight = fontSize * 1.08
   const firstLineY = 340 - ((lines.length - 1) * lineHeight) / 2
   const titleMarkup = lines
-    .map(
-      (line, index) =>
-        `<text x="80" y="${firstLineY + index * lineHeight}" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="${fontSize}" font-weight="300" letter-spacing="-1.5" fill="#e6ebf2">${escapeXml(line)}</text>`,
+    .map((line, index) =>
+      registered({
+        x: 80,
+        y: firstLineY + index * lineHeight,
+        size: fontSize,
+        text: escapeXml(line),
+        weight: 300,
+        spacing: -1.5,
+      }),
     )
     .join('')
   const tagText = tags.length ? tags.join(', ') : 'Writing'
   const safeTitle = escapeXml(title)
   const safeTagText = escapeXml(tagText)
   const safeDate = escapeXml(date)
-  const sans = 'Helvetica Neue, Helvetica, Arial, sans-serif'
+  const sans = SANS
 
-  // The site's night palette, with the author's real activity for the year
-  // before the post as a row of lit windows along the bottom.
+  // The site's three lights, with the author's real activity for the year
+  // before the post as a row of bars along the bottom.
   const weeks = Number.isNaN(Date.parse(`${date}T00:00:00Z`))
     ? []
     : weeksBefore(date)
@@ -163,25 +170,19 @@ function createPostPreview({ title, date, tags }) {
       const x = (80 + i * 19.6).toFixed(1)
       const t = Math.sqrt(v / peak)
       const h = v === 0 ? 2 : 3 + 22 * t
-      return `<rect x="${x}" y="${(580 - h).toFixed(1)}" width="15" height="${h.toFixed(1)}" rx="1" fill="${v ? '#ffb45e' : '#96acd6'}" opacity="${v ? (0.4 + 0.6 * t).toFixed(2) : 0.1}"/>`
+      return `<rect x="${x}" y="${(580 - h).toFixed(1)}" width="15" height="${h.toFixed(1)}" rx="1" fill="#ffffff" opacity="${v ? (0.25 + 0.6 * t).toFixed(2) : 0.1}"/>`
     })
     .join('')
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
   <title id="title">${safeTitle}</title>
   <desc id="description">Preview image for ${safeTitle}</desc>
-  <defs>
-    <radialGradient id="warm" cx="0.92" cy="0" r="0.75">
-      <stop offset="0" stop-color="#ffaa50" stop-opacity="0.14"/>
-      <stop offset="1" stop-color="#ffaa50" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#0d1524"/>
-  <rect width="1200" height="630" fill="url(#warm)"/>
-  <text x="80" y="112" font-family="${sans}" font-size="24" font-weight="600" fill="#e6ebf2">Adarsh Singh</text>
-  <text x="1120" y="112" text-anchor="end" font-family="${sans}" font-size="22" fill="#a6b2c5">${safeDate}</text>
+  ${LIGHTS}
+  ${mark(80, 70, 40)}
+  <text x="136" y="100" font-family="${sans}" font-size="24" font-weight="600" fill="#f4f3ef">Adarsh Singh</text>
+  <text x="1120" y="112" text-anchor="end" font-family="${sans}" font-size="22" fill="#959ba9">${safeDate}</text>
   ${titleMarkup}
-  <text x="80" y="526" font-family="${sans}" font-size="20" fill="#a6b2c5">${safeTagText}</text>
+  <text x="80" y="526" font-family="${sans}" font-size="20" fill="#959ba9">${safeTagText}</text>
   ${windows}
 </svg>`
 }

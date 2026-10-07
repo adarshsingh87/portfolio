@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from '@tanstack/react-router'
+import { Registered } from './registered'
 
 export function NotFoundPage() {
   useEffect(() => {
@@ -7,15 +8,13 @@ export function NotFoundPage() {
   }, [])
 
   return (
-    <main id="main" className="missing">
+    <main id="main" className="wrap missing" data-atmo="home">
       <meta name="robots" content="noindex" />
-      <div className="missing-pane" aria-hidden="true">
-        <span>404</span>
-      </div>
-      <h1>Nothing behind this glass.</h1>
+      <Registered hero as="p" className="missing-code" text="404" />
+      <h1>This address is out of register.</h1>
       <p>
-        This address does not lead anywhere. The link may be old, or the page
-        may have moved when the site was rebuilt.
+        It does not lead anywhere. The link may be old, or the page may have
+        moved when the site was rebuilt.
       </p>
       <p className="missing-links">
         <Link to="/" className="arrow-link">

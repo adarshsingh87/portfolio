@@ -1,0 +1,130 @@
+/* ------------------------------------------------------------------
+   Registered type
+   A white core with three coloured signals on top. At rest the signals
+   sum to white and the fringes vanish.
+   ------------------------------------------------------------------ */
+
+@property --s0 {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --s2 {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+.reg {
+  --vx: 0;
+  --vy: 0;
+  --off: calc(var(--s0) + var(--s2));
+  position: relative;
+  display: block;
+  isolation: isolate;
+  font-stretch: 118%;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  color: #fff;
+}
+
+.reg-core {
+  display: block;
+  position: relative;
+}
+
+.reg-line {
+  display: block;
+}
+
+.reg-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  mix-blend-mode: screen;
+  will-change: translate;
+}
+
+.reg-a {
+  color: var(--sig-a);
+  translate: calc(var(--off) * -1 - var(--vx) * 0.6em)
+    calc(var(--off) * -0.35 - var(--vy) * 0.6em);
+}
+
+.reg-b {
+  color: var(--sig-b);
+  translate: calc(var(--off) * 0.15 + var(--vx) * 0.12em)
+    calc(var(--off) * 0.9 + var(--vy) * 0.5em);
+}
+
+.reg-c {
+  color: var(--sig-c);
+  translate: calc(var(--off) + var(--vx) * 0.6em)
+    calc(var(--off) * -0.5 + var(--vy) * 0.6em);
+}
+
+/* Headings come in out of register and settle as they scroll into view. */
+@supports (animation-timeline: view()) {
+  .reg:not([data-hero]) {
+    animation: reg-in linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 85%;
+  }
+}
+
+@keyframes reg-in {
+  from {
+    --s0: 0.075em;
+  }
+  to {
+    --s0: 0px;
+  }
+}
+
+/* The hero: arrives out of register with a small overshoot, then drifts
+   apart again as you scroll away from it. */
+.reg[data-hero] {
+  animation: reg-load 2.8s var(--spring) 0.2s backwards;
+}
+
+@supports (animation-timeline: scroll()) {
+  .reg[data-hero] {
+    animation:
+      reg-load 2.8s var(--spring) 0.2s backwards,
+      reg-away linear both;
+    animation-timeline: auto, scroll(root);
+    animation-range:
+      normal,
+      0 90vh;
+  }
+}
+
+@keyframes reg-load {
+  from {
+    --s0: 0.2em;
+  }
+  to {
+    --s0: 0px;
+  }
+}
+
+@keyframes reg-away {
+  from {
+    --s2: 0px;
+  }
+  to {
+    --s2: 0.1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reg,
+  .reg[data-hero] {
+    animation: none;
+  }
+}

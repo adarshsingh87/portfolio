@@ -1,11 +1,18 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Scripts,
+  createRootRoute,
+  useRouterState,
+} from '@tanstack/react-router'
 
 import appCss from '../styles.css?url'
-import monaSans from '@fontsource-variable/mona-sans/files/mona-sans-latin-wdth-normal.woff2?url'
-import { Dock, Masthead, SiteFooter } from '../components/chrome'
+import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url'
+import literata from '@fontsource-variable/literata/files/literata-latin-wght-normal.woff2?url'
+import { Atmosphere, Halo, Nav, SiteFooter } from '../components/chrome'
 import { NotFoundPage } from '../components/not-found'
 import { SITE } from '../data/site'
+import { defaultAtmosphere } from '../lib/atmosphere'
 
 const Console = lazy(() => import('../components/console'))
 
@@ -39,7 +46,7 @@ export const Route = createRootRoute({
       {
         property: 'og:image:alt',
         content:
-          'A building of lit windows, one per day of Adarsh Singh’s GitHub contributions since 2019',
+          'Making every system agree. Three coloured lights overlap into white over the name of Adarsh Singh, CTO at SmokeTrees Digital',
       },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:site', content: SITE.twitterHandle },
@@ -50,7 +57,14 @@ export const Route = createRootRoute({
     links: [
       {
         rel: 'preload',
-        href: monaSans,
+        href: archivo,
+        as: 'font',
+        type: 'font/woff2',
+        crossOrigin: 'anonymous',
+      },
+      {
+        rel: 'preload',
+        href: literata,
         as: 'font',
         type: 'font/woff2',
         crossOrigin: 'anonymous',
@@ -85,20 +99,23 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+
   return (
-    <html lang="en">
+    <html lang="en" data-atmo={defaultAtmosphere(pathname)}>
       <head>
-        <meta name="theme-color" content="#0d1524" />
+        <meta name="theme-color" content="#07080b" />
         <HeadContent />
       </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <Masthead />
+        <Atmosphere />
+        <Nav />
         {children}
         <SiteFooter />
-        <Dock />
+        <Halo />
         <ConsoleHost />
         <Scripts />
       </body>

@@ -1,0 +1,93 @@
+/* ------------------------------------------------------------------
+   Page transitions
+   Quick and non-blocking: the old page fades while the new one is already
+   readable and settles up into place. Nothing waits for the motion to end.
+   The nav and the light stay put.
+   ------------------------------------------------------------------ */
+
+::view-transition-group(nav-mark),
+::view-transition-group(nav-links),
+::view-transition-group(atmo) {
+  animation-duration: 0s;
+}
+
+::view-transition-old(root) {
+  animation: page-out 160ms ease-out both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 420ms var(--ease-out) both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+/* Shared titles glide. Everything else around them trades places. */
+::view-transition-group(*) {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-out);
+}
+
+/* The blog title glides between list and article, and the page around it
+   only fades, so the title is the one thing that moves. */
+html:active-view-transition-type(blog-open)::view-transition-old(root) {
+  animation: fade-out 260ms ease both;
+}
+
+html:active-view-transition-type(blog-open)::view-transition-new(root) {
+  animation: fade-in 420ms ease both;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Reduced motion: everything arrives in place, nothing drifts.
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    animation-timeline: auto !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .atmo i {
+    animation: none !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
+  .nav-progress {
+    transform: none;
+    opacity: 0.6;
+  }
+}
