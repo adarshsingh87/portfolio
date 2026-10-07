@@ -22,7 +22,7 @@
   ],
   "workers_dev": true,
   "preview_urls": true,
-  // Deploy: npm run build && wrangler deploy
+  // Deploy: pnpm run deploy (not `pnpm deploy`, which is a pnpm builtin)
   // Custom domain: `wrangler domains add adarshsingh87.com` or set Routes in the Cloudflare dashboard.
   // www redirect and HTTPS are handled in the Cloudflare dashboard, not here.
 }

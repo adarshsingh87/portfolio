@@ -1,8 +1,6 @@
 export const SITE = {
   name: 'Adarsh Singh',
-  role: 'CTO, builder, and systems thinker',
-  tagline:
-    'CTO at SmokeTrees Digital. I help teams turn hard product questions into clear architecture, dependable delivery, and systems that keep working after launch.',
+  title: 'Adarsh Singh, CTO at SmokeTrees Digital',
   domain: 'https://adarshsingh87.com',
   email: 'me@adarshsingh87.com',
   github: 'https://github.com/adarshsingh87',
@@ -12,16 +10,12 @@ export const SITE = {
   twitterHandle: '@adarshsingh87',
   company: 'SmokeTrees Digital',
   companyUrl: 'https://smoketrees.in/',
-  location: 'India',
   education: 'Computer Science, VIT Vellore',
   description:
-    'Adarsh Singh is a CTO and builder at SmokeTrees Digital. He helps teams turn hard product questions into clear architecture, dependable delivery, and systems that keep working after launch.',
+    "Adarsh Singh is CTO at SmokeTrees Digital. He and his team build the backends behind other people's products: a swipe-driven fashion app, ONDC protocol integrations, reconciliation systems, and the shared templates every new service starts from.",
 } as const
 
 export const NAV = [
-  { label: 'Work', href: '/#work' },
-  { label: 'Experience', href: '/#experience' },
-  { label: 'Writing', href: '/blog' },
-  { label: 'About', href: '/#about' },
-  { label: 'Contact', href: `mailto:${SITE.email}` },
+  { label: 'Work', to: '/work' },
+  { label: 'Writing', to: '/blog' },
 ] as const

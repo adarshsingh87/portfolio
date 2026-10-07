@@ -2,6 +2,7 @@
   "name": "adarsh-portfolio",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@12.9.1",
   "imports": {
     "#/*": "./src/*"
   },
@@ -9,28 +10,26 @@
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
     "generate:seo": "node scripts/generate-seo.mjs",
-    "generate:previews": "node scripts/generate-blog-previews.mjs",
-    "build": "node scripts/generate-seo.mjs && node scripts/generate-blog-previews.mjs && vite build",
+    "generate:previews": "node scripts/generate-og.mjs && node scripts/generate-blog-previews.mjs",
+    "generate:contributions": "node scripts/fetch-contributions.mjs",
+    "build": "node scripts/generate-seo.mjs && node scripts/generate-og.mjs && node scripts/generate-blog-previews.mjs && vite build",
     "preview": "vite preview",
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",
     "check": "prettier --check .",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "pnpm build && wrangler deploy"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "@tanstack/react-devtools": "latest",
+    "@fontsource-variable/mona-sans": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
     "@tanstack/react-router": "latest",
-    "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-start": "latest",
+    "marked": "^16.4.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.18",
-    "marked": "^16.4.1"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.26.0",
-    "@tanstack/devtools-vite": "latest",
     "@tanstack/eslint-config": "latest",
     "@tanstack/router-cli": "^1.132.0",
     "@types/node": "^22.10.2",

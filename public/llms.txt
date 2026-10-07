@@ -1,37 +1,32 @@
 # Adarsh Singh, CTO at SmokeTrees Digital
 
-> Adarsh Singh leads engineering at SmokeTrees Digital in India. He builds web
-> applications, ONDC integrations, and financial reconciliation systems. He
-> also maintains open-source tools and shared project templates.
-> Contact him by email at me@adarshsingh87.com.
+> Adarsh Singh is CTO at SmokeTrees Digital, a software studio in Bengaluru.
+> He and his team build backends for other people's products: a swipe-driven
+> fashion app, ONDC protocol integrations, reconciliation systems, and the
+> open-source templates every new service starts from. Most of the work lives
+> in private repositories. Contact: me@adarshsingh87.com.
 
 ## Key pages
 
-- [Home](https://adarshsingh87.com/): profile, selected work, experience, stack, latest notes
-- [Work archive](https://adarshsingh87.com/work): full project list, OSS and tooling first
-- [Blog](https://adarshsingh87.com/blog): notes on tooling, ONDC lessons, reconciliation patterns, running a small eng team
+- [Home](https://adarshsingh87.com/): four case studies, a year-by-year record of GitHub contributions, latest writing
+- [Work index](https://adarshsingh87.com/work): every project, marked open source or private
+- [Writing](https://adarshsingh87.com/blog): notes on backend systems, protocols, and developer tooling
 
-## Selected work
+## Case studies
 
-- Smoke Context: an Express library that uses async storage to pass request context through a call chain. It lets you trace logs without passing IDs to every function. [GitHub](https://github.com/smoke-trees/smoke-context)
-- SmokeTrees Backend Template: shared project layout and setup for TypeScript, Express, and PostgreSQL services. [GitHub](https://github.com/smoke-trees/node-template-ts)
-- SmokeTrees Frontend Template: shared routing, data fetching, and styling conventions for Next.js projects using React, TypeScript, and Tailwind CSS. [GitHub](https://github.com/smoke-trees/next-FE-template)
-- Fomofy / MyFomo: e-commerce product with discovery-focused views and recommendations. [myfomo.in](https://myfomo.in/)
-- ONDC integrations: buyer-side and seller-side gift card flows plus a B2B retail seller implementation; production systems serving millions of customers.
-- Reconciliation and financial automation: systems that reconcile 3Cr+ in transactions daily. Automation cut repetitive manual work by 50-60% where applied.
-- AI chatbots: client support and operations bots with retrieval over client docs and human handoff.
-- Shopify connectors: orders, inventory, and storefront-to-system sync.
-- Business applications: LMS, CRM, and rewards/recognition builds.
+- [Fomofy](https://adarshsingh87.com/work/fomofy): a fashion app for Kreative Motion Ventures, live on iOS and Android. A swipe feed built from each shopper's style signals, skin-tone colour matching, virtual try-on, and the commerce underneath.
+- [ONDC integrations](https://adarshsingh87.com/work/ondc): gift card buyer and seller integrations and a B2B retail seller on India's open commerce network, plus gift-card brand validation cut from 3.5 hours to 2 minutes.
+- [The backend kit](https://adarshsingh87.com/work/backend-kit): open-source TypeScript template (node-template-ts) on top of postgres-backend and smoke-context, with AGENTS.md conventions for coding agents. [GitHub](https://github.com/smoke-trees/node-template-ts)
+- [Reconciliation](https://adarshsingh87.com/work/reconciliation): stock and money reconciled across ERP, OMS, marketplaces, payments, couriers, and warehouses. 3 weeks to 20 minutes, 1,00,000+ units a week, 67% less manual finance effort on commissions.
 
-More detail on each: [Work archive](https://adarshsingh87.com/work)
+## Also
 
-## Stack
-
-- Frontend and mobile: React, Next.js, Tailwind CSS, React Native, Flutter
-- Backend: Go, TypeScript, JavaScript, Express, Hono, Flask, FastAPI, LangChain
-- Data: PostgreSQL, MySQL, MongoDB, ElasticSearch
-- Cloud and deployment: AWS, Azure, Vercel, Cloudflare, Kubernetes
-- Daily drivers: Arch Linux, Hyprland, Neovim, OpenCode
+- Event ticketing with wallet passes: gate entry 50%+ faster
+- Property buying estimates: 3 hours to 5 minutes
+- Support chatbots over client documents with human handoff (TypeScript, LangChain)
+- Shopify connectors for orders, inventory, and catalogue sync
+- Business software: LMS, CRM, employee rewards
+- Next.js frontend template: https://github.com/smoke-trees/next-FE-template
 
 ## Notes (blog)
 

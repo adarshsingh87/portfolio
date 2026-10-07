@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const BLOG_DIR = join(root, 'src/content/blog')
 const WRITING_TS = join(root, 'src/data/writing.ts')
+const WORK_TS = join(root, 'src/data/work.ts')
 const SITEMAP_PATH = join(root, 'public/sitemap.xml')
 const LLMS_PATH = join(root, 'public/llms.txt')
 const SITE = 'https://adarshsingh87.com'
@@ -82,6 +83,19 @@ function getExternalPosts() {
   }
 }
 
+// Case study slugs, read from the CASES array in src/data/work.ts.
+function getCaseSlugs() {
+  try {
+    const src = readFileSync(WORK_TS, 'utf8')
+    const start = src.indexOf('export const CASES')
+    const end = src.indexOf('export const ENTRIES')
+    const block = src.slice(start, end === -1 ? undefined : end)
+    return [...block.matchAll(/^\s{4}slug: '([^']+)'/gm)].map((m) => m[1])
+  } catch {
+    return []
+  }
+}
+
 function escapeXml(s) {
   return s
     .replace(/&/g, '&amp;')
@@ -91,10 +105,15 @@ function escapeXml(s) {
     .replace(/'/g, '&apos;')
 }
 
-function buildSitemap(posts) {
+function buildSitemap(posts, cases) {
   const urls = [
     { loc: `${SITE}/`, changefreq: 'weekly', priority: '1.0' },
     { loc: `${SITE}/work`, changefreq: 'monthly', priority: '0.8' },
+    ...cases.map((slug) => ({
+      loc: `${SITE}/work/${slug}`,
+      changefreq: 'monthly',
+      priority: '0.8',
+    })),
     { loc: `${SITE}/blog`, changefreq: 'weekly', priority: '0.7' },
     ...posts.map((p) => ({
       loc: `${SITE}/blog/${p.slug}`,
@@ -159,9 +178,11 @@ function updateLlmsTxt(internal, external) {
 const internal = getInternalPosts()
 const external = getExternalPosts()
 
-writeFileSync(SITEMAP_PATH, buildSitemap(internal))
+const cases = getCaseSlugs()
+
+writeFileSync(SITEMAP_PATH, buildSitemap(internal, cases))
 writeFileSync(LLMS_PATH, updateLlmsTxt(internal, external))
 
 console.log(
-  `seo: ${internal.length} internal post(s), ${external.length} external post(s) -> sitemap.xml, llms.txt`,
+  `seo: ${cases.length} case studies, ${internal.length} internal post(s), ${external.length} external post(s) -> sitemap.xml, llms.txt`,
 )

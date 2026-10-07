@@ -1,18 +1,26 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { SITE } from '../../data/site'
 import { NotFoundPage } from '../../components/not-found'
-import { SiteFooter, SiteNav } from '../../components/site'
+import { PostList } from '../../components/post-list'
 import {
   BLOG_TITLE_TRANSITION_TYPE,
   blogTitleTransitionName,
-  getPost,
-} from '../../lib/blog'
+} from '../../lib/blog-shared'
+import { fetchEntries, fetchPost } from '../../lib/blog-api'
+import { formatDate } from '../../lib/format'
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
-    const post = await getPost(params.slug)
+    // Independent requests, so they run in parallel.
+    const [post, entries] = await Promise.all([
+      fetchPost({ data: params.slug }),
+      fetchEntries({ data: undefined }),
+    ])
     if (!post) throw notFound()
-    return post
+    const others = entries
+      .filter((e) => e.kind !== 'internal' || e.slug !== post.slug)
+      .slice(0, 2)
+    return { ...post, others }
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] }
@@ -33,7 +41,7 @@ export const Route = createFileRoute('/blog/$slug')({
           content: loaderData.draft ? 'noindex, nofollow' : 'index, follow',
         },
         { property: 'og:type', content: 'article' },
-        { property: 'og:site_name', content: `${SITE.name}, portfolio` },
+        { property: 'og:site_name', content: SITE.name },
         { property: 'og:title', content: loaderData.title },
         { property: 'og:description', content: loaderData.description },
         { property: 'og:url', content: postUrl },
@@ -76,7 +84,7 @@ export const Route = createFileRoute('/blog/$slug')({
             keywords: loaderData.tags.join(', '),
             isPartOf: {
               '@type': 'Blog',
-              name: `Notes by ${SITE.name}`,
+              name: `Writing by ${SITE.name}`,
               url: `${SITE.domain}/blog`,
             },
           }),
@@ -90,32 +98,42 @@ export const Route = createFileRoute('/blog/$slug')({
 
 function Post() {
   const post = Route.useLoaderData()
+  const { others } = post
+
   return (
-    <div className="post-page">
-      <SiteNav />
-      <main id="main" className="post-main">
-        <Link
-          to="/blog"
-          viewTransition={{ types: [BLOG_TITLE_TRANSITION_TYPE] }}
-          className="post-back"
-        >
-          ← All notes
-        </Link>
-        <h1
-          className="post-title"
-          style={{ viewTransitionName: blogTitleTransitionName(post.slug) }}
-        >
-          {post.title}
-        </h1>
-        <p className="post-meta">
-          {post.date} · {post.readingMinutes} min · {post.tags.join(', ')}
-        </p>
-        <article
-          className="prose-blog"
+    <main id="main" className="post">
+      <article>
+        <header className="post-head" data-chapter={post.title}>
+          <Link
+            to="/blog"
+            viewTransition={{ types: [BLOG_TITLE_TRANSITION_TYPE] }}
+            className="back-link"
+          >
+            Writing
+          </Link>
+          <h1
+            className="post-title"
+            style={{ viewTransitionName: blogTitleTransitionName(post.slug) }}
+          >
+            {post.title}
+          </h1>
+          <p className="post-dek">{post.description}</p>
+          <p className="post-meta">
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
+            <span>{post.readingMinutes} min read</span>
+          </p>
+        </header>
+        <div
+          className="prose"
           dangerouslySetInnerHTML={{ __html: post.html }}
         />
-      </main>
-      <SiteFooter />
-    </div>
+      </article>
+      {others.length > 0 ? (
+        <aside className="post-more" aria-labelledby="more-title">
+          <h2 id="more-title">Keep reading</h2>
+          <PostList entries={others} />
+        </aside>
+      ) : null}
+    </main>
   )
 }

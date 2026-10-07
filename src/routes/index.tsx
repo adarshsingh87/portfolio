@@ -1,443 +1,145 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { EDUCATION, EXPERIENCE } from '../data/experience'
-import { PROJECTS } from '../data/projects'
-import { PRINCIPLES, SKILL_GROUPS } from '../data/skills'
 import { SITE } from '../data/site'
-import { ProjectSequence } from '../components/project-sequence'
-import { SignalField } from '../components/signal-field'
-import { SiteFooter, SiteNav } from '../components/site'
-import { MailIcon, SocialLinks, TechIcon } from '../components/icons'
-import { Reveal } from '../components/reveal'
-import { getAllEntries } from '../lib/blog'
+import { CASES, ENTRIES } from '../data/work'
+import { RECORD_TOTAL } from '../data/record'
+import { GlassFacade } from '../components/glass-facade'
+import { Chapter, VisibilityMark } from '../components/work'
+import { Record } from '../components/record'
+import { PostList } from '../components/post-list'
+import { fetchEntries } from '../lib/blog-api'
 
 export const Route = createFileRoute('/')({
-  loader: () => getAllEntries().slice(0, 3),
+  loader: () => fetchEntries({ data: 3 }),
   head: () => ({
     meta: [
-      { title: `${SITE.name}, CTO at ${SITE.company}` },
+      { title: SITE.title },
       { name: 'description', content: SITE.description },
-      { property: 'og:title', content: `${SITE.name}, CTO at ${SITE.company}` },
-      { property: 'og:description', content: SITE.description },
-      { property: 'og:url', content: SITE.domain },
     ],
   }),
   component: Home,
 })
 
-const STACK_CONTEXT: Record<string, string> = {
-  React: 'frontend template · business apps',
-  'Next.js': 'frontend template · client builds',
-  'React Native': 'mobile surfaces',
-  Flutter: 'Fomofy / MyFomo',
-  Go: 'reconciliation · business apps',
-  TypeScript: 'Smoke Context · connectors',
-  'Node.js': 'Smoke Context · templates',
-  Express: 'Smoke Context · Shopify',
-  FastAPI: 'Fomofy / MyFomo',
-  PostgreSQL: 'ONDC · reconciliation',
-  MySQL: 'business systems',
-  MongoDB: 'business systems',
-  Elasticsearch: 'ONDC search',
-  AWS: 'production deployments',
-  Azure: 'production deployments',
-  Vercel: 'frontend delivery',
-  Cloudflare: 'edge delivery',
-  Kubernetes: 'ONDC services',
-  'Arch Linux': 'daily driver',
-  Hyprland: 'daily driver',
-  Neovim: 'daily driver',
-  OpenCode: 'daily driver',
-  'Tailwind CSS': 'frontend template',
-  JavaScript: 'web builds',
-  Hono: 'service templates',
-  Flask: 'service templates',
-  LangChain: 'AI chatbots',
-}
+const TOTAL = new Intl.NumberFormat('en-IN').format(RECORD_TOTAL)
 
 function Home() {
-  const latestPosts = Route.useLoaderData()
-  const experience = EXPERIENCE[0]
-  const featuredPost = latestPosts.at(0)
+  const posts = Route.useLoaderData()
 
   return (
-    <div className="site-shell home-page">
-      <SiteNav />
-      <main id="main">
-        <section className="hero-section" aria-labelledby="hero-title">
-          <div className="container hero-grid">
-            <Reveal className="hero-copy">
-              <p className="hero-overline">
-                <span className="hero-overline-line" aria-hidden="true" />{' '}
-                Adarsh Singh / CTO / builder
-              </p>
-              <h1 id="hero-title" className="hero-title">
-                I build the systems that make a product hold up in the real
-                world<span className="hero-title-mark">.</span>
-              </h1>
-              <p className="hero-dek">
-                CTO at SmokeTrees Digital. Architecture, delivery, templates,
-                integrations, and the code that keeps the whole thing honest.
-              </p>
-              <div className="hero-actions">
-                <a className="button button-primary" href="#work">
-                  Enter the work <span aria-hidden="true">↘</span>
-                </a>
-                <a className="text-link" href="#contact">
-                  Start a conversation <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-            </Reveal>
-            <div className="signal-wrap">
-              <SignalField />
-            </div>
-          </div>
-          <div className="container hero-index" aria-label="Page index">
-            <span>Portfolio / 01</span>
-            <span>CTO · engineer · builder</span>
-            <span>India / 2026</span>
-          </div>
-          <div className="scroll-cue" aria-hidden="true">
-            <span>Scroll to inspect</span>
-            <i />
-          </div>
-        </section>
+    <main id="main" className="home">
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="hero-copy">
+          <h1 id="hero-title" className="hero-title">
+            <span>Most of what</span> <span>we build happens</span>{' '}
+            <span>behind glass.</span>
+          </h1>
+          <p className="hero-lede">
+            I’m Adarsh Singh, CTO at{' '}
+            <a href={SITE.companyUrl} target="_blank" rel="noopener noreferrer">
+              SmokeTrees Digital
+            </a>
+            . My team and I build the backends behind other people’s products: a
+            fashion app that learns from swipes, integrations with India’s open
+            commerce network, systems that reconcile stock and money. Nearly all
+            of it lives in private repositories, so this site shows you the
+            shape of it.
+          </p>
+        </div>
+        <figure className="hero-figure">
+          <GlassFacade />
+          <figcaption className="hero-key">
+            Each window is a day since October 2019, lit by that day’s GitHub
+            contributions, {TOTAL} in all. Each floor is a year.{' '}
+            <span className="hint-fine">
+              Move across the glass to look closer.
+            </span>
+            <span className="hint-coarse">
+              Drag across the glass to look closer.
+            </span>
+          </figcaption>
+        </figure>
+      </section>
 
-        <section className="metrics-section" aria-labelledby="metrics-title">
-          <div className="container metrics-intro">
-            <p className="section-label">Evidence, not adjectives</p>
-            <h2 id="metrics-title">
-              The system gets interesting when real people use it.
-            </h2>
-          </div>
-          <div className="container metrics-list">
-            <Reveal className="metric-row metric-row-featured" delay={0}>
-              <span className="metric-index">01</span>
-              <strong>millions</strong>
-              <p>of customers touched by systems I helped build or lead.</p>
-            </Reveal>
-            <Reveal className="metric-row" delay={80}>
-              <span className="metric-index">02</span>
-              <strong>
-                3Cr<span>+</span>
-              </strong>
-              <p>per day through reconciliation flows.</p>
-            </Reveal>
-            <Reveal className="metric-row" delay={160}>
-              <span className="metric-index">03</span>
-              <strong>
-                50–60<span>%</span>
-              </strong>
-              <p>
-                less repetitive setup work where shared templates and automation
-                applied.
-              </p>
-            </Reveal>
-          </div>
-        </section>
+      <section className="work" id="work" aria-labelledby="work-title">
+        <header className="section-head">
+          <h2 id="work-title">Four systems, up close</h2>
+          <p>
+            Three of the four are private. For those I can describe the problem,
+            the decisions, and the outcome, and draw you a working sketch. The
+            fourth is open source, so you can read every line.
+          </p>
+        </header>
+        {CASES.map((project) => (
+          <Chapter key={project.slug} project={project} />
+        ))}
+      </section>
 
-        <section
-          className="thesis-section"
-          id="approach"
-          aria-labelledby="approach-title"
-        >
-          <div className="container thesis-grid">
-            <Reveal className="thesis-marker">
-              <span>Operating thesis</span>
-              <i aria-hidden="true" />
-              <small>02 / 06</small>
-            </Reveal>
-            <Reveal className="thesis-statement" delay={100}>
-              <h2 id="approach-title">
-                My job is to make the next engineering decision easier.
-              </h2>
-              <p>
-                Name the trade-off. Make the operating model visible. Leave
-                enough behind for the team to move without waiting for me.
-              </p>
-            </Reveal>
-            <Reveal className="thesis-principles" delay={180}>
-              {PRINCIPLES.map((principle, index) => (
-                <div key={principle.title}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <strong>{principle.title}</strong>
-                  <p>{principle.body}</p>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </section>
-
-        <section
-          className="work-section"
-          id="work"
-          aria-labelledby="work-title"
-        >
-          <div className="container work-intro">
-            <Reveal>
-              <p className="section-label">Selected work / 2021 → now</p>
-              <h2 id="work-title">The work behind the work.</h2>
-              <p>
-                Products, protocols, and operating systems that keep their shape
-                after launch.
-              </p>
-            </Reveal>
-            <Reveal delay={100} className="work-intro-note">
-              <span>06 case studies</span>
-              <span>open tools / client systems / internal work</span>
-            </Reveal>
-          </div>
-          <ProjectSequence
-            projects={PROJECTS.filter((project) => project.featured).slice(
-              0,
-              6,
-            )}
-          />
-        </section>
-
-        <section
-          className="experience-section"
-          id="experience"
-          aria-labelledby="experience-title"
-        >
-          <div className="container experience-grid">
-            <Reveal className="experience-intro">
-              <p className="section-label">Now / CTO at SmokeTrees Digital</p>
-              <h2 id="experience-title">Architecture is a team sport.</h2>
-              <p>{experience.summary}</p>
-              <a
-                className="text-link"
-                href={experience.orgUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                smoketrees.in <span aria-hidden="true">↗</span>
-              </a>
-            </Reveal>
-            <Reveal delay={120} className="experience-ledger">
-              <div className="ledger-head">
-                <span>In practice</span>
-                <span>2021 → now</span>
-              </div>
-              <ol>
-                {experience.bullets.map((bullet, index) => (
-                  <li key={bullet}>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <p>{bullet}</p>
-                  </li>
-                ))}
-              </ol>
-              <div className="ledger-foot">
-                {EDUCATION.degree} · {EDUCATION.school}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        <section
-          className="stack-section"
-          id="stack"
-          aria-labelledby="stack-title"
-        >
-          <div className="container stack-intro">
-            <p className="section-label">Systems I work with</p>
-            <h2 id="stack-title">The stack is a means, not the point.</h2>
-            <p>
-              Choose for the constraint. Keep enough context that the next
-              engineer can pick up the work.
-            </p>
-          </div>
-          <div className="container stack-groups">
-            {SKILL_GROUPS.map((group, groupIndex) => (
-              <Reveal
-                className="stack-group"
-                delay={groupIndex * 50}
-                key={group.label}
-              >
-                <h3>{group.label}</h3>
-                <ul>
-                  {group.items.map((item) => (
-                    <li key={item} tabIndex={0}>
-                      <span className="stack-item">
-                        <TechIcon name={item} size={16} />
-                        {item}
-                      </span>
-                      <span className="stack-context">
-                        {STACK_CONTEXT[item] ??
-                          'used across the systems I build'}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-
-        <section
-          className="writing-section"
-          id="blog"
-          aria-labelledby="writing-title"
-        >
-          <div className="container writing-intro">
-            <p className="section-label">Writing / field notes</p>
-            <h2 id="writing-title">Notes from the operating layer.</h2>
-            <p>Decisions, systems, and the occasional useful detour.</p>
-          </div>
-          {featuredPost ? (
-            <div className="container writing-feature">
-              <Reveal className="writing-feature-index">
-                <span>Latest note</span>
-                <span>{featuredPost.date}</span>
-              </Reveal>
-              <Reveal className="writing-feature-copy" delay={80}>
-                {featuredPost.kind === 'internal' ? (
-                  <Link to="/blog/$slug" params={{ slug: featuredPost.slug }}>
-                    <h3>{featuredPost.title}</h3>
-                    <p>{featuredPost.description}</p>
-                    <span className="writing-read">
-                      Read note · {featuredPost.readingMinutes} min{' '}
-                      <i aria-hidden="true">↗</i>
-                    </span>
-                  </Link>
-                ) : (
-                  <a
-                    href={featuredPost.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <h3>{featuredPost.title}</h3>
-                    <p>{featuredPost.description}</p>
-                    <span className="writing-read">
-                      Open note · {featuredPost.source}{' '}
-                      <i aria-hidden="true">↗</i>
-                    </span>
-                  </a>
-                )}
-              </Reveal>
-              <Reveal className="writing-feature-mark" delay={160}>
-                <span>AS / 87</span>
-                <i />
-                <strong>
-                  read
-                  <br />
-                  slowly
-                </strong>
-              </Reveal>
-            </div>
-          ) : null}
-          <div className="container writing-list">
-            {latestPosts.slice(1).map((entry, index) =>
-              entry.kind === 'internal' ? (
-                <Link
-                  key={entry.slug}
-                  to="/blog/$slug"
-                  params={{ slug: entry.slug }}
-                  className="writing-row"
-                >
-                  <span className="writing-row-number">
-                    {String(index + 2).padStart(2, '0')}
-                  </span>
-                  <span className="writing-row-date">{entry.date}</span>
-                  <div>
-                    <h3>{entry.title}</h3>
-                    <p>{entry.description}</p>
-                  </div>
-                  <span className="writing-row-action">
-                    {entry.readingMinutes} min <i aria-hidden="true">↗</i>
-                  </span>
-                </Link>
-              ) : (
-                <a
-                  key={entry.url}
-                  href={entry.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="writing-row"
-                >
-                  <span className="writing-row-number">
-                    {String(index + 2).padStart(2, '0')}
-                  </span>
-                  <span className="writing-row-date">{entry.date}</span>
-                  <div>
-                    <h3>{entry.title}</h3>
-                    <p>{entry.description}</p>
-                  </div>
-                  <span className="writing-row-action">
-                    {entry.source} <i aria-hidden="true">↗</i>
-                  </span>
-                </a>
-              ),
-            )}
-            <Link to="/blog" className="writing-all">
-              All writing <span aria-hidden="true">↗</span>
-            </Link>
-          </div>
-        </section>
-
-        <section
-          className="about-section"
-          id="about"
-          aria-labelledby="about-title"
-        >
-          <div className="container about-grid">
-            <Reveal className="about-mark">
-              <span>
-                Adarsh
-                <br />
-                Singh
+      <section className="also" aria-labelledby="also-title">
+        <header className="section-head section-head-compact">
+          <h2 id="also-title">Also on the record</h2>
+          <Link to="/work" className="arrow-link">
+            The full index
+          </Link>
+        </header>
+        <ul className="also-list">
+          {ENTRIES.map((entry) => (
+            <li key={entry.title}>
+              <h3>{entry.title}</h3>
+              <p>{entry.line}</p>
+              <span className="also-meta">
+                <VisibilityMark value={entry.visibility} />
               </span>
-              <i />
-              <small>CTO / engineer / builder</small>
-            </Reveal>
-            <Reveal className="about-copy" delay={100}>
-              <p className="section-label">About the person</p>
-              <h2 id="about-title">
-                I like the point where a product becomes a system.
-              </h2>
-              <p>
-                At SmokeTrees, that means architecture across client and
-                internal builds, delivery decisions, and enough hands-on code to
-                keep the abstractions honest.
-              </p>
-              <p>
-                Computer Science at VIT Vellore. Arch Linux, Neovim, and a bias
-                toward systems that explain themselves.
-              </p>
-            </Reveal>
-            <Reveal className="about-links" delay={180}>
-              <span>Find me elsewhere</span>
-              <SocialLinks size={16} />
-              <a href={`mailto:${SITE.email}`} className="about-email">
-                {SITE.email} <span aria-hidden="true">↗</span>
-              </a>
-            </Reveal>
-          </div>
-        </section>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        <section
-          className="contact-section"
-          id="contact"
-          aria-labelledby="contact-title"
-        >
-          <div className="container contact-panel">
-            <Reveal>
-              <p className="section-label">Next / say hello</p>
-              <h2 id="contact-title">Have something worth building?</h2>
-              <p>If the product is complex, let's make it legible.</p>
-            </Reveal>
-            <Reveal className="contact-actions" delay={120}>
-              <a
-                className="button button-primary"
-                href={`mailto:${SITE.email}`}
-              >
-                <MailIcon size={16} /> Email Adarsh
-              </a>
-              <span>{SITE.email}</span>
-            </Reveal>
-          </div>
-        </section>
-      </main>
-      <SiteFooter />
-    </div>
+      <section
+        className="record"
+        id="record"
+        aria-labelledby="record-title"
+        data-chapter="The record"
+      >
+        <header className="section-head">
+          <h2 id="record-title">The building, floor by floor</h2>
+          <p>
+            The same contributions as the facade at the top, one year to a row.
+            The jump in 2023 is the year my work moved into private
+            repositories.
+          </p>
+        </header>
+        <Record />
+      </section>
+
+      <section
+        className="writing"
+        aria-labelledby="writing-title"
+        data-chapter="Writing"
+      >
+        <header className="section-head section-head-compact">
+          <h2 id="writing-title">Writing</h2>
+          <Link to="/blog" className="arrow-link">
+            All writing
+          </Link>
+        </header>
+        <PostList entries={posts} />
+      </section>
+
+      <section className="desk" aria-labelledby="desk-title">
+        <h2 id="desk-title">At the desk</h2>
+        <div className="desk-copy">
+          <p>
+            Arch Linux, Hyprland, Neovim, Ghostty, and fish. My desktop blurs
+            every popup and takes its colours from the wallpaper, which probably
+            explains this website.
+          </p>
+          <p>
+            I studied Computer Science at VIT Vellore and started out writing
+            websites by hand for small businesses. These days I spend about half
+            my time on architecture and delivery calls, and the other half still
+            writing code.
+          </p>
+        </div>
+      </section>
+    </main>
   )
 }

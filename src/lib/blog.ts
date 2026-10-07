@@ -1,39 +1,8 @@
 import { EXTERNAL_POSTS } from '../data/writing'
 
-export type BlogFrontmatter = {
-  title: string
-  description: string
-  date: string
-  slug: string
-  tags: string[]
-  draft?: boolean
-}
+import type { BlogEntry, BlogPost } from './blog-shared'
 
-export type BlogPost = BlogFrontmatter & {
-  html: string
-  readingMinutes: number
-}
-
-export type { ExternalPost } from '../data/writing'
-
-export type BlogEntry =
-  | {
-      kind: 'internal'
-      slug: string
-      title: string
-      description: string
-      date: string
-      tags: string[]
-      readingMinutes: number
-    }
-  | {
-      kind: 'external'
-      title: string
-      description: string
-      date: string
-      url: string
-      source: string
-    }
+export type { BlogEntry, BlogPost } from './blog-shared'
 
 // Hoisted (js-hoist-regexp): shared instances, no per-call recreation.
 // Non-global on purpose — global RegExp carries mutable lastIndex state.
@@ -134,41 +103,28 @@ function readAllMeta(includeDrafts = false): PostMeta[] {
   return [...metas].sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
-export async function getAllPosts(includeDrafts = false): Promise<BlogPost[]> {
+async function render(meta: PostMeta): Promise<BlogPost> {
   const { marked } = await import('marked')
-  const posts: BlogPost[] = []
-  for (const meta of readAllMeta(includeDrafts)) {
-    const html = String(marked.parse(meta.body)).replace(
-      EXTERNAL_ANCHOR_RE,
-      '<a target="_blank" rel="noopener noreferrer"',
-    )
-    const words = meta.body.split(WS_RE).length
-    posts.push({
-      title: meta.title,
-      description: meta.description,
-      date: meta.date,
-      slug: meta.slug,
-      tags: meta.tags,
-      draft: meta.draft,
-      html,
-      readingMinutes: Math.max(1, Math.round(words / 200)),
-    })
+  const html = String(marked.parse(meta.body)).replace(
+    EXTERNAL_ANCHOR_RE,
+    '<a target="_blank" rel="noopener noreferrer"',
+  )
+  return {
+    title: meta.title,
+    description: meta.description,
+    date: meta.date,
+    slug: meta.slug,
+    tags: meta.tags,
+    draft: meta.draft,
+    html,
+    readingMinutes: meta.readingMinutes,
   }
-  return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
+// Renders Markdown for the one post being read, not the whole archive.
 export async function getPost(slug: string): Promise<BlogPost | undefined> {
-  const posts = await getAllPosts(true)
-  return posts.find((p) => p.slug === slug)
-}
-
-// View-transition wiring for the blog title shared-element morph
-// (list row <-> post header). The `blog-open` transition type lets CSS
-// swap the root cross-fade for a clean title glide; see styles.css.
-export const BLOG_TITLE_TRANSITION_TYPE = 'blog-open'
-
-export function blogTitleTransitionName(slug: string): string {
-  return `blog-title-${slug}`
+  const meta = readAllMeta(true).find((p) => p.slug === slug)
+  return meta ? render(meta) : undefined
 }
 
 // Merged feed for index pages: local Markdown posts plus external posts

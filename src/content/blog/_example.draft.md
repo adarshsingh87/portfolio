@@ -20,10 +20,10 @@ Paragraphs, **bold**, _italic_, and [links](https://adarshsingh87.com) all rende
 > Blockquotes for asides worth keeping.
 
 ```ts
-import { getAllPosts } from '../lib/blog'
+import { getAllEntries } from '../lib/blog'
 
 // posts appear automatically
-const posts = await getAllPosts()
+const posts = getAllEntries()
 ```
 
 | Column | Use        |
