@@ -41,3 +41,5 @@
 - X: [adarshsingh87](https://x.com/adarshsingh87)
 - Company: [SmokeTrees Digital](https://smoketrees.in/)
 - Email: me@adarshsingh87.com
+- Notes for agents: [AGENTS.md](https://adarshsingh87.com/AGENTS.md)
+- Credits: [humans.txt](https://adarshsingh87.com/humans.txt)

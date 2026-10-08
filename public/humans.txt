@@ -1,0 +1,31 @@
+/* TEAM */
+
+  Adarsh Singh
+  CTO, SmokeTrees Digital
+  Site: https://adarshsingh87.com
+  Contact: me@adarshsingh87.com
+  GitHub: adarshsingh87
+
+/* THANKS */
+
+  The SmokeTrees team, who built the work this site describes.
+  https://smoketrees.in/
+
+/* SITE */
+
+  Language: English
+  Standards: HTML, CSS, TypeScript
+  Components: React, TanStack Start, TanStack Router
+  Type: Archivo, Literata
+  Hosting: Cloudflare Workers
+  Written in: Neovim, in Ghostty, on Arch Linux and Hyprland
+  Colours: ember, mint and azure, which add up to white
+
+/* FOR CURIOUS HUMANS */
+
+  Press / for a console, or : if you think in vim.
+  Pull the logo apart.
+  Hold the empty background, then drag the lights.
+  Drop a wallpaper on the page.
+  Press T.
+  Print it.

@@ -244,6 +244,11 @@ svg {
    Atmosphere
    Three large, soft lights behind everything. Only opacity and
    transform ever change, so the browser composites them on the GPU.
+
+   Three things set how bright each light is:
+   --o-a/b/c    what the page on screen asks for (data-atmo, below)
+   --tod-a/b/c  a multiplier from the visitor's clock (lib/time-light.ts)
+   --sig-a/b/c  the colours, which a dropped wallpaper can replace
    ------------------------------------------------------------------ */
 
 @property --split {
@@ -263,6 +268,9 @@ svg {
   --px: 0;
   --py: 0;
   --split: 0px;
+  --o-a: 0.2;
+  --o-b: 0.2;
+  --o-c: 0.2;
 }
 
 .atmo i {
@@ -271,36 +279,59 @@ svg {
   height: 105vmax;
   border-radius: 50%;
   mix-blend-mode: screen;
-  opacity: 0.2;
+  opacity: calc(var(--o) * var(--tod));
   will-change: transform, opacity;
   transition: opacity 1600ms var(--ease-in-out);
 }
 
+/* Each light can also be dragged (--gx, --gy). They stay where you leave
+   them until you reset them. */
 .atmo .a {
+  --o: var(--o-a);
+  --tod: var(--tod-a, 1);
   left: -38vmax;
   top: -46vmax;
-  background: radial-gradient(closest-side, rgb(255 59 48 / 0.95), transparent);
-  translate: calc(var(--split) * -1 + var(--px) * -2.5vmax)
-    calc(var(--split) * -0.4 + var(--py) * -2.5vmax);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--sig-a) 95%, transparent),
+    transparent
+  );
+  translate: calc(var(--split) * -1 + var(--px) * -2.5vmax + var(--gx, 0px))
+    calc(var(--split) * -0.4 + var(--py) * -2.5vmax + var(--gy, 0px));
   animation: drift-a 53s ease-in-out infinite alternate;
 }
 
 .atmo .b {
+  --o: var(--o-b);
+  --tod: var(--tod-b, 1);
   right: -48vmax;
   top: -20vmax;
-  background: radial-gradient(closest-side, rgb(0 255 122 / 0.85), transparent);
-  translate: calc(var(--split) * 0.9 + var(--px) * 3vmax)
-    calc(var(--split) * 0.6 + var(--py) * 1.5vmax);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--sig-b) 85%, transparent),
+    transparent
+  );
+  translate: calc(var(--split) * 0.9 + var(--px) * 3vmax + var(--gx, 0px))
+    calc(var(--split) * 0.6 + var(--py) * 1.5vmax + var(--gy, 0px));
   animation: drift-b 67s ease-in-out infinite alternate;
 }
 
 .atmo .c {
+  --o: var(--o-c);
+  --tod: var(--tod-c, 1);
   left: -10vmax;
-  bottom: -62vmax;
-  background: radial-gradient(closest-side, rgb(58 91 255 / 1), transparent);
-  translate: calc(var(--split) * 0.2 + var(--px) * -1vmax)
-    calc(var(--split) * -1 + var(--py) * 3vmax);
+  bottom: -44vmax;
+  background: radial-gradient(closest-side, var(--sig-c), transparent);
+  translate: calc(var(--split) * 0.2 + var(--px) * -1vmax + var(--gx, 0px))
+    calc(var(--split) * -1 + var(--py) * 3vmax + var(--gy, 0px));
   animation: drift-c 59s ease-in-out infinite alternate;
+}
+
+/* After a reset the lights glide home instead of jumping. */
+.atmo[data-settle] i {
+  transition:
+    opacity 1600ms var(--ease-in-out),
+    translate 1100ms var(--spring);
 }
 
 .atmo::after {
@@ -311,6 +342,40 @@ svg {
   background-size: 180px;
   opacity: 0.06;
   mix-blend-mode: overlay;
+}
+
+/* When all three lights agree, the page blooms white for a moment. */
+.atmo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    closest-side at 50% 50%,
+    rgb(255 255 255 / 0.5),
+    rgb(255 255 255 / 0.12) 55%,
+    transparent
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+.atmo[data-bloom]::before {
+  animation: bloom 2200ms var(--ease-out) both;
+}
+
+@keyframes bloom {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+  }
+  22% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.6;
+  }
 }
 
 @keyframes drift-a {
@@ -330,61 +395,41 @@ svg {
 }
 
 /* Which signals are present depends on what is on screen. */
-html[data-atmo='home'] .atmo .a {
-  opacity: 0.2;
-}
-html[data-atmo='home'] .atmo .b {
-  opacity: 0.12;
-}
-html[data-atmo='home'] .atmo .c {
-  opacity: 0.22;
+html[data-atmo='home'] .atmo {
+  --o-a: 0.2;
+  --o-b: 0.12;
+  --o-c: 0.22;
 }
 
-html[data-atmo='fomofy'] .atmo .a {
-  opacity: 0.3;
-}
-html[data-atmo='fomofy'] .atmo .b {
-  opacity: 0;
-}
-html[data-atmo='fomofy'] .atmo .c {
-  opacity: 0.28;
+html[data-atmo='fomofy'] .atmo {
+  --o-a: 0.3;
+  --o-b: 0;
+  --o-c: 0.28;
 }
 
-html[data-atmo='ondc'] .atmo .a {
-  opacity: 0.28;
-}
-html[data-atmo='ondc'] .atmo .b {
-  opacity: 0.2;
-}
-html[data-atmo='ondc'] .atmo .c {
-  opacity: 0;
+html[data-atmo='ondc'] .atmo {
+  --o-a: 0.28;
+  --o-b: 0.2;
+  --o-c: 0;
 }
 
-html[data-atmo='backend-kit'] .atmo .a {
-  opacity: 0;
-}
-html[data-atmo='backend-kit'] .atmo .b {
-  opacity: 0.18;
-}
-html[data-atmo='backend-kit'] .atmo .c {
-  opacity: 0.26;
+html[data-atmo='backend-kit'] .atmo {
+  --o-a: 0;
+  --o-b: 0.18;
+  --o-c: 0.26;
 }
 
-html[data-atmo='reconciliation'] .atmo .a,
-html[data-atmo='end'] .atmo .a {
-  opacity: 0.24;
-}
-html[data-atmo='reconciliation'] .atmo .b,
-html[data-atmo='end'] .atmo .b {
-  opacity: 0.17;
-}
-html[data-atmo='reconciliation'] .atmo .c,
-html[data-atmo='end'] .atmo .c {
-  opacity: 0.28;
+html[data-atmo='reconciliation'] .atmo,
+html[data-atmo='end'] .atmo {
+  --o-a: 0.24;
+  --o-b: 0.17;
+  --o-c: 0.28;
 }
 
-html[data-atmo='quiet'] .atmo i {
-  opacity: 0.07;
+html[data-atmo='quiet'] .atmo {
+  --o-a: 0.07;
+  --o-b: 0.07;
+  --o-c: 0.07;
 }
 
 /* Scroll pulls the signals together. Chromium and Safari 26 only; other
@@ -403,6 +448,17 @@ html[data-atmo='quiet'] .atmo i {
   to {
     --split: 0px;
   }
+}
+
+/* Holding the background to move the lights. */
+html[data-grab] {
+  cursor: grabbing;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html[data-grab] * {
+  cursor: grabbing !important;
 }
 
 /* ------------------------------------------------------------------

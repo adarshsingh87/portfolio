@@ -1,4 +1,3 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
 import {
   HeadContent,
   Scripts,
@@ -10,11 +9,25 @@ import appCss from '../styles.css?url'
 import archivo from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url'
 import literata from '@fontsource-variable/literata/files/literata-latin-wght-normal.woff2?url'
 import { Atmosphere, Halo, Nav, SiteFooter } from '../components/chrome'
+import { Eggs } from '../components/eggs'
 import { NotFoundPage } from '../components/not-found'
 import { SITE } from '../data/site'
 import { defaultAtmosphere } from '../lib/atmosphere'
+import { RESTORE_SCRIPT } from '../lib/wallpaper'
 
-const Console = lazy(() => import('../components/console'))
+// For whoever opens view-source.
+const SOURCE_NOTE = `<!--
+  Hello, you read source too.
+
+  Three lights, ember, mint and azure, sit behind every page. Where they
+  overlap they add up to white, and that is the whole idea of the site.
+
+  Press / for a console, or : if your fingers think in vim.
+  Pull the logo apart. Hold the empty background and move the lights.
+  Drop a wallpaper on the page. Press T. Print it.
+
+  Agents: /AGENTS.md    Humans: /humans.txt    Everyone: /llms.txt
+-->`
 
 const TRAILING_SLASH_RE = /\/$/
 
@@ -72,8 +85,12 @@ export const Route = createRootRoute({
       { rel: 'stylesheet', href: appCss },
       { rel: 'canonical', href: getCanonicalUrl(matches.at(-1)?.pathname) },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      { rel: 'author', href: '/humans.txt' },
     ],
     scripts: [
+      // Before first paint, so a saved wallpaper palette never flashes the
+      // default one.
+      { children: RESTORE_SCRIPT },
       {
         type: 'application/ld+json',
         children: JSON.stringify({
@@ -102,12 +119,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
   return (
-    <html lang="en" data-atmo={defaultAtmosphere(pathname)}>
+    // The inline restore script may set the signal colours on <html> before
+    // React hydrates it.
+    <html
+      lang="en"
+      data-atmo={defaultAtmosphere(pathname)}
+      suppressHydrationWarning
+    >
       <head>
         <meta name="theme-color" content="#07080b" />
         <HeadContent />
       </head>
       <body>
+        <div hidden dangerouslySetInnerHTML={{ __html: SOURCE_NOTE }} />
         <a href="#main" className="skip-link">
           Skip to content
         </a>
@@ -116,36 +140,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         {children}
         <SiteFooter />
         <Halo />
-        <ConsoleHost />
+        <Eggs />
         <Scripts />
       </body>
     </html>
   )
-}
-
-function ConsoleHost() {
-  const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== '/' || event.metaKey || event.ctrlKey) return
-      const t = event.target
-      if (
-        t instanceof Element &&
-        t.closest('input, textarea, select, [contenteditable="true"]')
-      ) {
-        return
-      }
-      event.preventDefault()
-      setOpen(true)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [])
-
-  return open ? (
-    <Suspense fallback={null}>
-      <Console onClose={() => setOpen(false)} />
-    </Suspense>
-  ) : null
 }
