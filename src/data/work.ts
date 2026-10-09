@@ -118,8 +118,9 @@ export const CASES: Project[] = [
       },
       { value: 'Millions', label: 'of customers served through these flows' },
       {
-        value: '3.5 hr → 2 min',
-        label: 'to validate a gift-card brand before it goes live',
+        value: '30 min',
+        label:
+          'to validate 1,000+ gift-card brands, about as long as one brand took by hand',
       },
     ],
     artifact: 'protocol',
@@ -149,7 +150,7 @@ export const CASES: Project[] = [
       {
         heading: 'Checking brands before they go live',
         body: [
-          'Each gift-card brand needs its own denominations, commissions, margins, provider routing, and settlement rules. A manual check before activation took three and a half hours per brand, and misconfigured brands still slipped through. We built a validation engine that checks all of it in about two minutes, and re-runs daily to catch changes on the provider side.',
+          'Each gift-card brand needs its own denominations, commissions, margins, provider routing, and settlement rules. A manual check before activation took about 30 minutes per brand, and across more than 1,000 brands, misconfigured ones still slipped through. We built a validation engine that checks all of them in about 30 minutes, and re-runs daily to catch changes on the provider side.',
         ],
       },
       {

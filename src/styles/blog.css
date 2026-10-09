@@ -168,6 +168,23 @@
   font-size: inherit;
 }
 
+/* Highlighted blocks (lib/highlight.ts). Shiki writes these variables into
+   inline styles; the colours mix the three signals into the text colour, so
+   they stay readable and follow a dropped wallpaper. */
+.prose {
+  --code-background: var(--ink-sunk);
+  --code-foreground: var(--text);
+  --code-token-keyword: color-mix(in oklab, var(--sig-c) 45%, var(--text));
+  --code-token-function: color-mix(in oklab, var(--sig-c) 15%, var(--text));
+  --code-token-string: color-mix(in oklab, var(--sig-b) 40%, var(--text));
+  --code-token-string-expression: var(--code-token-string);
+  --code-token-constant: color-mix(in oklab, var(--sig-a) 40%, var(--text));
+  --code-token-parameter: var(--text-2);
+  --code-token-punctuation: var(--text-3);
+  --code-token-comment: var(--text-3);
+  --code-token-link: var(--code-token-string);
+}
+
 .prose table {
   width: 100%;
   border-collapse: collapse;

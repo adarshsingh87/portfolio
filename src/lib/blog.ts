@@ -104,7 +104,23 @@ function readAllMeta(includeDrafts = false): PostMeta[] {
 }
 
 async function render(meta: PostMeta): Promise<BlogPost> {
-  const { marked } = await import('marked')
+  const [{ Marked }, { getHighlighter, CODE_THEME }] = await Promise.all([
+    import('marked'),
+    import('./highlight'),
+  ])
+  const highlighter = await getHighlighter()
+  const languages = highlighter.getLoadedLanguages()
+  const marked = new Marked({
+    renderer: {
+      // A fence with no language, or one we do not bundle, falls back to
+      // marked's plain <pre><code> by returning false.
+      code({ text, lang }) {
+        const name = lang?.split(WS_RE)[0]
+        if (!name || !languages.includes(name)) return false
+        return highlighter.codeToHtml(text, { lang: name, theme: CODE_THEME })
+      },
+    },
+  })
   const html = String(marked.parse(meta.body)).replace(
     EXTERNAL_ANCHOR_RE,
     '<a target="_blank" rel="noopener noreferrer"',

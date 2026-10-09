@@ -15,7 +15,7 @@
 ## Case studies
 
 - [Fomofy](https://adarshsingh87.com/work/fomofy): a fashion app for Kreative Motion Ventures, live on iOS and Android. A swipe feed built from each shopper's style signals, skin-tone colour matching, virtual try-on, and the commerce underneath.
-- [ONDC integrations](https://adarshsingh87.com/work/ondc): gift card buyer and seller integrations and a B2B retail seller on India's open commerce network, plus gift-card brand validation cut from 3.5 hours to 2 minutes.
+- [ONDC integrations](https://adarshsingh87.com/work/ondc): gift card buyer and seller integrations and a B2B retail seller on India's open commerce network, plus a validator that checks 1,000+ gift-card brands in about 30 minutes.
 - [The backend kit](https://adarshsingh87.com/work/backend-kit): open-source TypeScript template (node-template-ts) on top of postgres-backend and smoke-context, with AGENTS.md conventions for coding agents. [GitHub](https://github.com/smoke-trees/node-template-ts)
 - [Reconciliation](https://adarshsingh87.com/work/reconciliation): stock and money reconciled across ERP, OMS, marketplaces, payments, couriers, and warehouses. 3 weeks to 20 minutes, 1,00,000+ units a week, 67% less manual finance effort on commissions.
 
