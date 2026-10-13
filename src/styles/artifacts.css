@@ -23,6 +23,7 @@
 .swipe-deck {
   grid-area: deck;
   position: relative;
+  isolation: isolate;
   height: 25rem;
   border-radius: 18px;
 }
@@ -43,6 +44,7 @@
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.6) inset,
     0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  z-index: calc(3 - var(--depth));
   transform: translate3d(calc(var(--dx) * 1px), calc(var(--depth) * 14px), 0)
     rotate(calc(var(--dx) * 0.05deg)) scale(calc(1 - var(--depth) * 0.05));
   filter: brightness(calc(1 - var(--depth) * 0.16));
@@ -84,11 +86,7 @@
   opacity: clamp(0, calc(var(--dx) / -90), 1);
 }
 
-.swipe-card[data-gone] {
-  --dx: 0;
-}
-
-.swipe-card:last-of-type:not([data-gone]) {
+.swipe-card[data-top] {
   cursor: grab;
 }
 
@@ -98,6 +96,8 @@
 }
 
 .swipe-card[data-gone] {
+  /* Above the deck: the card you threw leaves on top. */
+  z-index: 4;
   pointer-events: none;
   animation: fling 640ms var(--ease-out) forwards;
 }
@@ -110,13 +110,15 @@
   --to: 1;
 }
 
+/* Starts exactly where the card was let go (--dx, 0 for the buttons), so
+   a dragged card carries on instead of snapping back to the middle. */
 @keyframes fling {
   from {
-    transform: translate3d(calc(var(--to) * 90px), 0, 0)
-      rotate(calc(var(--to) * 5deg));
+    transform: translate3d(calc(var(--dx) * 1px), 0, 0)
+      rotate(calc(var(--dx) * 0.05deg));
   }
   to {
-    transform: translate3d(calc(var(--to) * 160%), -20px, 0)
+    transform: translate3d(calc(var(--to) * 160% + var(--dx) * 1px), -20px, 0)
       rotate(calc(var(--to) * 22deg));
     opacity: 0;
   }

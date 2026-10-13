@@ -165,7 +165,8 @@ function rank(pool: Item[], weights: Record<string, number>) {
     .map((r) => r.item)
 }
 
-type Gone = { item: Item; dir: 'left' | 'right' }
+// `from` is where the card was let go, so its fling starts there.
+type Gone = { item: Item; dir: 'left' | 'right'; from: number }
 
 export function SwipeArtifact() {
   const [weights, setWeights] = useState<Record<string, number>>({})
@@ -182,7 +183,7 @@ export function SwipeArtifact() {
     .slice(0, 6)
   const maxWeight = Math.max(1, ...learned.map(([, w]) => Math.abs(w)))
 
-  function decide(dir: 'left' | 'right') {
+  function decide(dir: 'left' | 'right', from = 0) {
     if (!top) return
     const delta = dir === 'right' ? KEEP : PASS
     setWeights((w) => {
@@ -191,7 +192,7 @@ export function SwipeArtifact() {
       return next
     })
     setRemaining((r) => r.filter((i) => i.id !== top.id))
-    setGone((g) => [...g.slice(-2), { item: top, dir }])
+    setGone((g) => [...g.slice(-2), { item: top, dir, from }])
     if (dir === 'right') setKept((k) => k + 1)
   }
 
@@ -224,7 +225,7 @@ export function SwipeArtifact() {
     delete el.dataset.dragging
     if (Math.abs(d.x) > THRESHOLD) {
       el.style.removeProperty('--dx')
-      decide(d.x > 0 ? 'right' : 'left')
+      decide(d.x > 0 ? 'right' : 'left', d.x)
     } else {
       el.style.setProperty('--dx', '0')
     }
@@ -249,26 +250,31 @@ export function SwipeArtifact() {
         aria-label="Swipe deck. Left arrow passes, right arrow keeps."
         onKeyDown={onKeyDown}
       >
-        {gone.map(({ item, dir }) => (
+        {gone.map(({ item, dir, from }) => (
           <article
             key={`gone-${item.id}`}
             className="swipe-card"
             data-gone={dir}
+            style={{ '--dx': from } as React.CSSProperties}
             aria-hidden="true"
           >
             <CardFace item={item} />
           </article>
         ))}
+        {/* DOM order stays fixed by id and z-index does the stacking. If a
+            re-rank reordered the nodes, React would move one, and a moved
+            node drops its transition and jumps to its new depth. */}
         {deck
           .slice(0, 3)
-          .reverse()
-          .map((item, i, arr) => {
-            const depth = arr.length - 1 - i
+          .map((item, depth) => ({ item, depth }))
+          .sort((a, b) => a.item.id - b.item.id)
+          .map(({ item, depth }) => {
             const isTop = depth === 0
             return (
               <article
                 key={item.id}
                 className="swipe-card"
+                data-top={isTop || undefined}
                 style={{ '--depth': depth } as React.CSSProperties}
                 aria-hidden={!isTop}
                 onPointerDown={isTop ? onPointerDown : undefined}
