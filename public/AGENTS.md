@@ -16,7 +16,8 @@ describes it at the level SmokeTrees already publishes.
 - `/llms.txt`: the whole site as plain Markdown. Start here.
 - `/work/<slug>`: one case study each. Slugs: `fomofy`, `ondc`,
   `backend-kit`, `reconciliation`.
-- `/blog/<slug>`: writing. `/sitemap.xml` lists every post.
+- `/blog/<slug>`: writing. `/sitemap.xml` lists every post, `/rss.xml`
+  carries the same list as a feed.
 - Open-source code: https://github.com/smoke-trees and
   https://github.com/adarshsingh87
 

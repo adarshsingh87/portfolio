@@ -8,6 +8,14 @@ import {
 } from '../../lib/blog-shared'
 import { fetchEntries, fetchPost } from '../../lib/blog-api'
 import { formatDate } from '../../lib/format'
+import {
+  BLOG_ID,
+  PERSON_REF,
+  absoluteUrl,
+  breadcrumbs,
+  jsonLd,
+  pageMeta,
+} from '../../lib/seo'
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
@@ -25,70 +33,60 @@ export const Route = createFileRoute('/blog/$slug')({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] }
 
-    const postUrl = `${SITE.domain}/blog/${loaderData.slug}`
+    const path = `/blog/${loaderData.slug}`
+    const postUrl = absoluteUrl(path)
     const postPreviewImage = `${SITE.domain}/blog/${loaderData.slug}.png`
-    const postPreviewImageAlt = `Preview image for "${loaderData.title}"`
-    const pageTitle = `${loaderData.title} | ${SITE.name}`
 
     return {
       meta: [
-        { title: pageTitle },
-        { name: 'description', content: loaderData.description },
-        { name: 'author', content: SITE.name },
+        ...pageMeta({
+          title: `${loaderData.title} | ${SITE.name}`,
+          shareTitle: loaderData.title,
+          description: loaderData.description,
+          path,
+          type: 'article',
+          image: postPreviewImage,
+          imageAlt: `Preview image for "${loaderData.title}"`,
+        }),
         { name: 'keywords', content: loaderData.tags.join(', ') },
         {
           name: 'robots',
           content: loaderData.draft ? 'noindex, nofollow' : 'index, follow',
         },
-        { property: 'og:type', content: 'article' },
-        { property: 'og:site_name', content: SITE.name },
-        { property: 'og:title', content: loaderData.title },
-        { property: 'og:description', content: loaderData.description },
-        { property: 'og:url', content: postUrl },
-        { property: 'og:image', content: postPreviewImage },
-        { property: 'og:image:width', content: '1200' },
-        { property: 'og:image:height', content: '630' },
-        { property: 'og:image:alt', content: postPreviewImageAlt },
         { property: 'article:published_time', content: loaderData.date },
         { property: 'article:author', content: SITE.name },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:site', content: SITE.twitterHandle },
-        { name: 'twitter:creator', content: SITE.twitterHandle },
-        { name: 'twitter:title', content: loaderData.title },
-        { name: 'twitter:description', content: loaderData.description },
-        { name: 'twitter:image', content: postPreviewImage },
-        { name: 'twitter:image:alt', content: postPreviewImageAlt },
       ],
       scripts: [
-        {
-          type: 'application/ld+json',
-          children: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
-            headline: loaderData.title,
-            description: loaderData.description,
-            datePublished: loaderData.date,
-            image: postPreviewImage,
-            author: {
-              '@type': 'Person',
-              name: SITE.name,
-              url: SITE.domain,
+        jsonLd({
+          '@graph': [
+            {
+              '@type': 'BlogPosting',
+              headline: loaderData.title,
+              description: loaderData.description,
+              datePublished: loaderData.date,
+              dateModified: loaderData.date,
+              image: postPreviewImage,
+              inLanguage: 'en',
+              author: PERSON_REF,
+              publisher: PERSON_REF,
+              mainEntityOfPage: postUrl,
+              url: postUrl,
+              keywords: loaderData.tags.join(', '),
+              timeRequired: `PT${loaderData.readingMinutes}M`,
+              isPartOf: {
+                '@type': 'Blog',
+                '@id': BLOG_ID,
+                name: `Writing by ${SITE.name}`,
+                url: absoluteUrl('/blog'),
+              },
             },
-            publisher: {
-              '@type': 'Person',
-              name: SITE.name,
-              url: SITE.domain,
-            },
-            mainEntityOfPage: postUrl,
-            url: postUrl,
-            keywords: loaderData.tags.join(', '),
-            isPartOf: {
-              '@type': 'Blog',
-              name: `Writing by ${SITE.name}`,
-              url: `${SITE.domain}/blog`,
-            },
-          }),
-        },
+            breadcrumbs([
+              { name: 'Home', path: '/' },
+              { name: 'Writing', path: '/blog' },
+              { name: loaderData.title, path },
+            ]),
+          ],
+        }),
       ],
     }
   },

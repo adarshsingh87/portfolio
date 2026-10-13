@@ -10,6 +10,14 @@ import {
 } from '../../components/work'
 import { Registered } from '../../components/registered'
 import { previewAtmosphere } from '../../lib/atmosphere'
+import {
+  PERSON_REF,
+  WEBSITE_ID,
+  absoluteUrl,
+  breadcrumbs,
+  jsonLd,
+  pageMeta,
+} from '../../lib/seo'
 
 export const Route = createFileRoute('/work/$slug')({
   loader: ({ params }) => {
@@ -20,17 +28,49 @@ export const Route = createFileRoute('/work/$slug')({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] }
     const title = `${loaderData.title}, ${SITE.name}`
+    const path = `/work/${loaderData.slug}`
+    const image = `${SITE.domain}/work/${loaderData.slug}.png`
     return {
-      meta: [
-        { title },
-        { name: 'description', content: loaderData.line },
-        { property: 'og:type', content: 'article' },
-        { property: 'og:title', content: title },
-        { property: 'og:description', content: loaderData.line },
-        {
-          property: 'og:url',
-          content: `${SITE.domain}/work/${loaderData.slug}`,
-        },
+      meta: pageMeta({
+        title,
+        description: loaderData.line,
+        path,
+        type: 'article',
+        image,
+        imageAlt: `${loaderData.title}: ${loaderData.line}`,
+      }),
+      scripts: [
+        jsonLd({
+          '@graph': [
+            {
+              '@type': 'Article',
+              headline: loaderData.title,
+              description: loaderData.summary,
+              url: absoluteUrl(path),
+              mainEntityOfPage: absoluteUrl(path),
+              image,
+              inLanguage: 'en',
+              author: PERSON_REF,
+              isPartOf: { '@id': WEBSITE_ID },
+              keywords: loaderData.stack.join(', '),
+              // The work itself was built by the SmokeTrees team.
+              about: {
+                '@type': 'CreativeWork',
+                name: loaderData.title,
+                creator: {
+                  '@type': 'Organization',
+                  name: SITE.company,
+                  url: SITE.companyUrl,
+                },
+              },
+            },
+            breadcrumbs([
+              { name: 'Home', path: '/' },
+              { name: 'Work', path: '/work' },
+              { name: loaderData.title, path },
+            ]),
+          ],
+        }),
       ],
     }
   },

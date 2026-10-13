@@ -14,6 +14,13 @@ import { NotFoundPage } from '../components/not-found'
 import { SITE } from '../data/site'
 import { defaultAtmosphere } from '../lib/atmosphere'
 import { RESTORE_SCRIPT } from '../lib/wallpaper'
+import {
+  PERSON_ID,
+  WEBSITE_ID,
+  absoluteUrl,
+  jsonLd,
+  pageMeta,
+} from '../lib/seo'
 
 // For whoever opens view-source.
 const SOURCE_NOTE = `<!--
@@ -29,88 +36,113 @@ const SOURCE_NOTE = `<!--
   Agents: /AGENTS.md    Humans: /humans.txt    Everyone: /llms.txt
 -->`
 
-const TRAILING_SLASH_RE = /\/$/
-
-function getCanonicalUrl(pathname: string | undefined) {
-  if (!pathname || pathname === '/') return SITE.domain
-  return `${SITE.domain}${pathname.replace(TRAILING_SLASH_RE, '')}`
-}
-
 export const Route = createRootRoute({
-  head: ({ matches }) => ({
-    meta: [
-      { charSet: 'utf-8' },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1, viewport-fit=cover',
-      },
-      { title: SITE.title },
-      { name: 'description', content: SITE.description },
-      { name: 'author', content: SITE.name },
-      { name: 'color-scheme', content: 'dark' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:site_name', content: SITE.name },
-      { property: 'og:title', content: SITE.title },
-      { property: 'og:description', content: SITE.description },
-      { property: 'og:url', content: SITE.domain },
-      { property: 'og:image', content: `${SITE.domain}/og.png` },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      {
-        property: 'og:image:alt',
-        content:
-          'Making every system agree. Three coloured lights overlap into white over the name of Adarsh Singh, CTO at SmokeTrees Digital',
-      },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:site', content: SITE.twitterHandle },
-      { name: 'twitter:title', content: SITE.title },
-      { name: 'twitter:description', content: SITE.description },
-      { name: 'twitter:image', content: `${SITE.domain}/og.png` },
-    ],
-    links: [
-      {
-        rel: 'preload',
-        href: archivo,
-        as: 'font',
-        type: 'font/woff2',
-        crossOrigin: 'anonymous',
-      },
-      {
-        rel: 'preload',
-        href: literata,
-        as: 'font',
-        type: 'font/woff2',
-        crossOrigin: 'anonymous',
-      },
-      { rel: 'stylesheet', href: appCss },
-      { rel: 'canonical', href: getCanonicalUrl(matches.at(-1)?.pathname) },
-      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-      { rel: 'author', href: '/humans.txt' },
-    ],
-    scripts: [
-      // Before first paint, so a saved wallpaper palette never flashes the
-      // default one.
-      { children: RESTORE_SCRIPT },
-      {
-        type: 'application/ld+json',
-        children: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          name: SITE.name,
-          jobTitle: 'CTO',
-          worksFor: {
-            '@type': 'Organization',
-            name: SITE.company,
-            url: SITE.companyUrl,
-          },
-          alumniOf: 'VIT Vellore',
-          url: SITE.domain,
-          email: `mailto:${SITE.email}`,
-          sameAs: [SITE.github, SITE.linkedin, SITE.twitter],
+  head: ({ matches }) => {
+    // A 404 must not claim the homepage as its canonical.
+    const missing = matches.some((m) => m.status === 'notFound' || m._notFound)
+    return {
+      meta: [
+        { charSet: 'utf-8' },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, viewport-fit=cover',
+        },
+        { name: 'author', content: SITE.name },
+        { name: 'color-scheme', content: 'dark' },
+        { property: 'og:site_name', content: SITE.name },
+        { property: 'og:locale', content: 'en_IN' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: SITE.twitterHandle },
+        { name: 'twitter:creator', content: SITE.twitterHandle },
+        // Defaults. Every route overrides the whole set with its own.
+        ...pageMeta({
+          title: missing ? `Not found, ${SITE.name}` : SITE.title,
+          description: SITE.description,
+          path: '/',
         }),
-      },
-    ],
-  }),
+      ],
+      links: [
+        {
+          rel: 'preload',
+          href: archivo,
+          as: 'font',
+          type: 'font/woff2',
+          crossOrigin: 'anonymous',
+        },
+        {
+          rel: 'preload',
+          href: literata,
+          as: 'font',
+          type: 'font/woff2',
+          crossOrigin: 'anonymous',
+        },
+        { rel: 'stylesheet', href: appCss },
+        ...(missing
+          ? []
+          : [
+              {
+                rel: 'canonical',
+                href: absoluteUrl(matches.at(-1)?.pathname ?? '/'),
+              },
+            ]),
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        {
+          rel: 'alternate',
+          type: 'application/rss+xml',
+          title: `Writing by ${SITE.name}`,
+          href: '/rss.xml',
+        },
+        { rel: 'author', href: '/humans.txt' },
+      ],
+      scripts: [
+        // Before first paint, so a saved wallpaper palette never flashes the
+        // default one.
+        { children: RESTORE_SCRIPT },
+        jsonLd({
+          '@graph': [
+            {
+              '@type': 'WebSite',
+              '@id': WEBSITE_ID,
+              url: absoluteUrl('/'),
+              name: SITE.name,
+              description: SITE.description,
+              inLanguage: 'en',
+              publisher: { '@id': PERSON_ID },
+            },
+            {
+              '@type': 'Person',
+              '@id': PERSON_ID,
+              name: SITE.name,
+              url: absoluteUrl('/'),
+              description: SITE.description,
+              jobTitle: 'CTO',
+              worksFor: {
+                '@type': 'Organization',
+                name: SITE.company,
+                url: SITE.companyUrl,
+              },
+              alumniOf: {
+                '@type': 'CollegeOrUniversity',
+                name: 'VIT Vellore',
+              },
+              knowsAbout: [
+                'Backend engineering',
+                'Software architecture',
+                'TypeScript',
+                'Node.js',
+                'Go',
+                'PostgreSQL',
+                'ONDC',
+                'Reconciliation systems',
+              ],
+              email: `mailto:${SITE.email}`,
+              sameAs: [SITE.github, SITE.linkedin, SITE.twitter],
+            },
+          ],
+        }),
+      ],
+    }
+  },
   shellComponent: RootDocument,
   notFoundComponent: () => <NotFoundPage />,
 })

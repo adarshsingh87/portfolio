@@ -8,6 +8,7 @@ const WRITING_TS = join(root, 'src/data/writing.ts')
 const WORK_TS = join(root, 'src/data/work.ts')
 const SITEMAP_PATH = join(root, 'public/sitemap.xml')
 const LLMS_PATH = join(root, 'public/llms.txt')
+const RSS_PATH = join(root, 'public/rss.xml')
 const SITE = 'https://adarshsingh87.com'
 
 function parseFrontmatter(raw) {
@@ -106,15 +107,22 @@ function escapeXml(s) {
 }
 
 function buildSitemap(posts, cases) {
+  // Posts are newest first, so the latest one dates the pages that list it.
+  const latest = posts[0]?.date || undefined
   const urls = [
-    { loc: `${SITE}/`, changefreq: 'weekly', priority: '1.0' },
+    { loc: `${SITE}/`, changefreq: 'weekly', priority: '1.0', lastmod: latest },
     { loc: `${SITE}/work`, changefreq: 'monthly', priority: '0.8' },
     ...cases.map((slug) => ({
       loc: `${SITE}/work/${slug}`,
       changefreq: 'monthly',
       priority: '0.8',
     })),
-    { loc: `${SITE}/blog`, changefreq: 'weekly', priority: '0.7' },
+    {
+      loc: `${SITE}/blog`,
+      changefreq: 'weekly',
+      priority: '0.7',
+      lastmod: latest,
+    },
     ...posts.map((p) => ({
       loc: `${SITE}/blog/${p.slug}`,
       changefreq: 'monthly',
@@ -134,6 +142,43 @@ function buildSitemap(posts, cases) {
   }
   lines.push('</urlset>')
   return lines.join('\n') + '\n'
+}
+
+function buildRss(posts) {
+  const items = posts.map((p) => {
+    const url = `${SITE}/blog/${p.slug}`
+    const pubDate = p.date ? new Date(`${p.date}T00:00:00Z`).toUTCString() : ''
+    return [
+      '    <item>',
+      `      <title>${escapeXml(p.title)}</title>`,
+      `      <link>${url}</link>`,
+      `      <guid isPermaLink="true">${url}</guid>`,
+      pubDate ? `      <pubDate>${pubDate}</pubDate>` : '',
+      `      <description>${escapeXml(p.description)}</description>`,
+      '    </item>',
+    ]
+      .filter(Boolean)
+      .join('\n')
+  })
+  const built = posts[0]?.date
+    ? new Date(`${posts[0].date}T00:00:00Z`).toUTCString()
+    : new Date(0).toUTCString()
+  return (
+    [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+      '  <channel>',
+      '    <title>Writing by Adarsh Singh</title>',
+      `    <link>${SITE}/blog</link>`,
+      `    <atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml"/>`,
+      '    <description>Notes by Adarsh Singh on backend systems, protocols, developer tooling, and the decisions behind them.</description>',
+      '    <language>en</language>',
+      `    <lastBuildDate>${built}</lastBuildDate>`,
+      ...items,
+      '  </channel>',
+      '</rss>',
+    ].join('\n') + '\n'
+  )
 }
 
 function buildNotesLines(internal, external) {
@@ -182,7 +227,8 @@ const cases = getCaseSlugs()
 
 writeFileSync(SITEMAP_PATH, buildSitemap(internal, cases))
 writeFileSync(LLMS_PATH, updateLlmsTxt(internal, external))
+writeFileSync(RSS_PATH, buildRss(internal))
 
 console.log(
-  `seo: ${cases.length} case studies, ${internal.length} internal post(s), ${external.length} external post(s) -> sitemap.xml, llms.txt`,
+  `seo: ${cases.length} case studies, ${internal.length} internal post(s), ${external.length} external post(s) -> sitemap.xml, llms.txt, rss.xml`,
 )

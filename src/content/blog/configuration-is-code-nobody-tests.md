@@ -1,6 +1,6 @@
 ---
 title: 'Configuration is code that nobody tests'
-description: 'A gift card platform with 1,000+ brands, a 30-minute manual check per brand, and the validator that now checks all of them in about 30 minutes. Why config needs tests that run on a schedule, not on commit.'
+description: '1,000+ gift card brands took 30 minutes each to check by hand. A validator now checks all of them in about 30 minutes. Why config needs scheduled tests.'
 date: 2026-10-09
 tags: [backend, testing, systems]
 ---

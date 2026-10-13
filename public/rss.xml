@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Writing by Adarsh Singh</title>
+    <link>https://adarshsingh87.com/blog</link>
+    <atom:link href="https://adarshsingh87.com/rss.xml" rel="self" type="application/rss+xml"/>
+    <description>Notes by Adarsh Singh on backend systems, protocols, developer tooling, and the decisions behind them.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 09 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Configuration is code that nobody tests</title>
+      <link>https://adarshsingh87.com/blog/configuration-is-code-nobody-tests</link>
+      <guid isPermaLink="true">https://adarshsingh87.com/blog/configuration-is-code-nobody-tests</guid>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 GMT</pubDate>
+      <description>1,000+ gift card brands took 30 minutes each to check by hand. A validator now checks all of them in about 30 minutes. Why config needs scheduled tests.</description>
+    </item>
+    <item>
+      <title>Why we built a backend template for developers and AI agents</title>
+      <link>https://adarshsingh87.com/blog/backend-template-for-developers-and-ai-agents</link>
+      <guid isPermaLink="true">https://adarshsingh87.com/blog/backend-template-for-developers-and-ai-agents</guid>
+      <pubDate>Fri, 25 Sep 2026 00:00:00 GMT</pubDate>
+      <description>A TypeScript starter that fixes the backend decisions once, so developers and coding agents can spend their time on business logic instead of conventions.</description>
+    </item>
+    <item>
+      <title>What building on ONDC taught me about the difference between an API and a protocol</title>
+      <link>https://adarshsingh87.com/blog/api-vs-protocol-ondc</link>
+      <guid isPermaLink="true">https://adarshsingh87.com/blog/api-vs-protocol-ondc</guid>
+      <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+      <description>No central author, callbacks instead of responses, defensive parsing — what changes when you integrate with a shared agreement instead of a service.</description>
+    </item>
+    <item>
+      <title>Async context as a mental model, not just a library</title>
+      <link>https://adarshsingh87.com/blog/async-context-mental-model</link>
+      <guid isPermaLink="true">https://adarshsingh87.com/blog/async-context-mental-model</guid>
+      <pubDate>Thu, 10 Sep 2026 00:00:00 GMT</pubDate>
+      <description>AsyncLocalStorage is really about how a value survives async boundaries — plus the rule for when context helps and when it hides real dependencies.</description>
+    </item>
+  </channel>
+</rss>

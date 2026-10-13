@@ -8,13 +8,31 @@ import { PostList } from '../components/post-list'
 import { Registered } from '../components/registered'
 import { fetchEntries } from '../lib/blog-api'
 import { previewAtmosphere } from '../lib/atmosphere'
+import {
+  PERSON_ID,
+  WEBSITE_ID,
+  absoluteUrl,
+  jsonLd,
+  pageMeta,
+} from '../lib/seo'
 
 export const Route = createFileRoute('/')({
   loader: () => fetchEntries({ data: 3 }),
   head: () => ({
-    meta: [
-      { title: SITE.title },
-      { name: 'description', content: SITE.description },
+    meta: pageMeta({
+      title: SITE.title,
+      description: SITE.description,
+      path: '/',
+    }),
+    scripts: [
+      jsonLd({
+        '@type': 'ProfilePage',
+        '@id': `${absoluteUrl('/')}#profile`,
+        url: absoluteUrl('/'),
+        name: SITE.title,
+        isPartOf: { '@id': WEBSITE_ID },
+        mainEntity: { '@id': PERSON_ID },
+      }),
     ],
   }),
   component: Home,
@@ -29,13 +47,16 @@ function Home() {
     <main id="main">
       <section className="hero" data-atmo="home" aria-labelledby="hero-title">
         <div className="wrap hero-inner">
-          <Registered
-            hero
-            as="h1"
-            id="hero-title"
-            className="hero-title"
-            text={['Making every', 'system agree.']}
-          />
+          {/* The name sits inside the h1 so the page's main heading says
+              whose site this is, not only the line. */}
+          <h1 id="hero-title" className="hero-heading">
+            <span className="hero-kicker">{SITE.title}</span>{' '}
+            <Registered
+              hero
+              className="hero-title"
+              text={['Making every', 'system agree.']}
+            />
+          </h1>
           <div className="hero-foot">
             <p className="hero-lede">
               I’m Adarsh Singh, CTO at{' '}

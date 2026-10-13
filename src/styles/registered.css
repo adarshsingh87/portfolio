@@ -50,6 +50,10 @@
   will-change: translate;
 }
 
+.reg-layer .reg-line::before {
+  content: attr(data-text);
+}
+
 .reg-a {
   color: var(--sig-a);
   translate: calc(var(--off) * -1 - var(--vx) * 0.6em)

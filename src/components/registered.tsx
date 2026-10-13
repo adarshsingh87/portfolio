@@ -31,10 +31,18 @@ export function Registered({
     if (hero && ref.current) return leanWithPointer(ref.current)
   }, [hero])
 
-  const content = lines.map((line) => (
+  // The core holds the real text. A space between lines keeps them apart in
+  // the text crawlers and readers extract; blocks hide it visually.
+  const content = lines.flatMap((line, i) => [
+    i > 0 ? ' ' : null,
     <span key={line} className="reg-line">
       {line}
-    </span>
+    </span>,
+  ])
+  // The signal layers draw their text from an attribute, so the heading's
+  // text content is said once, not four times.
+  const signal = lines.map((line) => (
+    <span key={line} className="reg-line" data-text={line} />
   ))
 
   return (
@@ -47,13 +55,13 @@ export function Registered({
     >
       <span className="reg-core">{content}</span>
       <span className="reg-layer reg-a" aria-hidden="true">
-        {content}
+        {signal}
       </span>
       <span className="reg-layer reg-b" aria-hidden="true">
-        {content}
+        {signal}
       </span>
       <span className="reg-layer reg-c" aria-hidden="true">
-        {content}
+        {signal}
       </span>
     </Tag>
   )

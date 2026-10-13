@@ -11,8 +11,9 @@ export const SITE = {
   company: 'SmokeTrees Digital',
   companyUrl: 'https://smoketrees.in/',
   education: 'Computer Science, VIT Vellore',
+  // Kept under 160 characters so search results show all of it.
   description:
-    "Adarsh Singh is CTO at SmokeTrees Digital. He and his team build the backends behind other people's products: a swipe-driven fashion app, ONDC protocol integrations, reconciliation systems, and the shared templates every new service starts from.",
+    'Adarsh Singh is CTO at SmokeTrees Digital, where his team builds backends for a fashion app, ONDC integrations, reconciliation, and open-source templates.',
 } as const
 
 export const NAV = [

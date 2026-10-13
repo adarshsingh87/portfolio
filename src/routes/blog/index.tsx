@@ -2,38 +2,52 @@ import { createFileRoute } from '@tanstack/react-router'
 import { SITE } from '../../data/site'
 import { PostList } from '../../components/post-list'
 import { fetchEntries } from '../../lib/blog-api'
+import {
+  BLOG_ID,
+  PERSON_REF,
+  WEBSITE_ID,
+  absoluteUrl,
+  jsonLd,
+  pageMeta,
+} from '../../lib/seo'
 
 const BLOG_DESCRIPTION =
   'Notes by Adarsh Singh on backend systems, protocols, developer tooling, and the decisions behind them.'
-const BLOG_URL = `${SITE.domain}/blog`
+const BLOG_URL = absoluteUrl('/blog')
 const BLOG_PREVIEW_IMAGE = `${SITE.domain}/blog-preview.png`
 const BLOG_PREVIEW_IMAGE_ALT =
   'Writing by Adarsh Singh on backend systems and developer tooling'
 
 export const Route = createFileRoute('/blog/')({
   loader: () => fetchEntries({ data: undefined }),
-  head: () => ({
-    meta: [
-      { title: `Writing, ${SITE.name}` },
-      { name: 'description', content: BLOG_DESCRIPTION },
-      { name: 'author', content: SITE.name },
-      { name: 'robots', content: 'index, follow' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:site_name', content: SITE.name },
-      { property: 'og:title', content: `Writing, ${SITE.name}` },
-      { property: 'og:description', content: BLOG_DESCRIPTION },
-      { property: 'og:url', content: BLOG_URL },
-      { property: 'og:image', content: BLOG_PREVIEW_IMAGE },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      { property: 'og:image:alt', content: BLOG_PREVIEW_IMAGE_ALT },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:site', content: SITE.twitterHandle },
-      { name: 'twitter:creator', content: SITE.twitterHandle },
-      { name: 'twitter:title', content: `Writing, ${SITE.name}` },
-      { name: 'twitter:description', content: BLOG_DESCRIPTION },
-      { name: 'twitter:image', content: BLOG_PREVIEW_IMAGE },
-      { name: 'twitter:image:alt', content: BLOG_PREVIEW_IMAGE_ALT },
+  head: ({ loaderData }) => ({
+    meta: pageMeta({
+      title: `Writing, ${SITE.name}`,
+      description: BLOG_DESCRIPTION,
+      path: '/blog',
+      image: BLOG_PREVIEW_IMAGE,
+      imageAlt: BLOG_PREVIEW_IMAGE_ALT,
+    }),
+    scripts: [
+      jsonLd({
+        '@type': 'Blog',
+        '@id': BLOG_ID,
+        url: BLOG_URL,
+        name: `Writing by ${SITE.name}`,
+        description: BLOG_DESCRIPTION,
+        inLanguage: 'en',
+        isPartOf: { '@id': WEBSITE_ID },
+        author: PERSON_REF,
+        blogPost: (loaderData ?? [])
+          .filter((e) => e.kind === 'internal')
+          .map((e) => ({
+            '@type': 'BlogPosting',
+            headline: e.title,
+            description: e.description,
+            datePublished: e.date,
+            url: absoluteUrl(`/blog/${e.slug}`),
+          })),
+      }),
     ],
   }),
   component: BlogIndex,

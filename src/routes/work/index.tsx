@@ -4,18 +4,42 @@ import { CASES, ENTRIES } from '../../data/work'
 import { VisibilityMark, caseTransitionName } from '../../components/work'
 import { Registered } from '../../components/registered'
 import { previewAtmosphere } from '../../lib/atmosphere'
+import {
+  PERSON_ID,
+  WEBSITE_ID,
+  absoluteUrl,
+  jsonLd,
+  pageMeta,
+} from '../../lib/seo'
 
 const DESCRIPTION =
-  'Everything Adarsh Singh can point to since 2020: a swipe-driven fashion backend, ONDC integrations, reconciliation in Go, open-source backend templates, and more.'
+  'Everything Adarsh Singh can point to since 2020: a swipe-driven fashion backend, ONDC integrations, reconciliation in Go, open-source templates, and more.'
 
 export const Route = createFileRoute('/work/')({
   head: () => ({
-    meta: [
-      { title: `Work, ${SITE.name}` },
-      { name: 'description', content: DESCRIPTION },
-      { property: 'og:title', content: `Work, ${SITE.name}` },
-      { property: 'og:description', content: DESCRIPTION },
-      { property: 'og:url', content: `${SITE.domain}/work` },
+    meta: pageMeta({
+      title: `Work, ${SITE.name}`,
+      description: DESCRIPTION,
+      path: '/work',
+    }),
+    scripts: [
+      jsonLd({
+        '@type': 'CollectionPage',
+        url: absoluteUrl('/work'),
+        name: `Work, ${SITE.name}`,
+        description: DESCRIPTION,
+        isPartOf: { '@id': WEBSITE_ID },
+        author: { '@id': PERSON_ID },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: CASES.map((c, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: c.title,
+            url: absoluteUrl(`/work/${c.slug}`),
+          })),
+        },
+      }),
     ],
   }),
   component: WorkIndex,
