@@ -6,7 +6,14 @@
     <atom:link href="https://adarshsingh87.com/rss.xml" rel="self" type="application/rss+xml"/>
     <description>Notes by Adarsh Singh on backend systems, protocols, developer tooling, and the decisions behind them.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 09 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 26 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Agent, harness, interface, tools: what each one is and how much to care</title>
+      <link>https://adarshsingh87.com/blog/agent-harness-interface-tools</link>
+      <guid isPermaLink="true">https://adarshsingh87.com/blog/agent-harness-interface-tools</guid>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 GMT</pubDate>
+      <description>An agent is a model running tools in a loop. The harness runs that loop, the interface is where you watch it. Which layer actually decides the quality.</description>
+    </item>
     <item>
       <title>Configuration is code that nobody tests</title>
       <link>https://adarshsingh87.com/blog/configuration-is-code-nobody-tests</link>

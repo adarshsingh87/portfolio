@@ -30,6 +30,7 @@
 
 ## Notes (blog)
 
+- [Agent, harness, interface, tools: what each one is and how much to care](https://adarshsingh87.com/blog/agent-harness-interface-tools): An agent is a model running tools in a loop. The harness runs that loop, the interface is where you watch it. Which layer actually decides the quality.
 - [Configuration is code that nobody tests](https://adarshsingh87.com/blog/configuration-is-code-nobody-tests): 1,000+ gift card brands took 30 minutes each to check by hand. A validator now checks all of them in about 30 minutes. Why config needs scheduled tests.
 - [Why we built a backend template for developers and AI agents](https://adarshsingh87.com/blog/backend-template-for-developers-and-ai-agents): A TypeScript starter that fixes the backend decisions once, so developers and coding agents can spend their time on business logic instead of conventions.
 - [What building on ONDC taught me about the difference between an API and a protocol](https://adarshsingh87.com/blog/api-vs-protocol-ondc): No central author, callbacks instead of responses, defensive parsing — what changes when you integrate with a shared agreement instead of a service.
